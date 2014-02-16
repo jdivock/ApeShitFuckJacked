@@ -1,0 +1,50 @@
+<div ng-include="'partials/navbar.html'"></div>
+
+<form name="form" novalidate>
+    <div class="row" ng-repeat="tmpLift in formLifts">
+        <div class="col-sm-3">
+            <label>Lift</label>
+            <br/>
+            <select name="lift" ng-model="tmpLift.lift">
+                <option>Squat</option>
+                <option>Strict Press</option>
+                <option>Bench Press</option>
+                <option>Deadlift</option>
+            </select>
+        </div>
+
+        <div class="col-sm-3">
+            <label>Weight</label>
+            <input name="weight" type="text" ng-model="tmpLift.weight" />
+        </div>
+
+        <div class="col-sm-3">
+            <label>Sets</label>
+            <input name='sets' type="text" ng-model="tmpLift.sets" />
+        </div>
+
+        <div class="col-sm-3">
+            <label>Reps</label>
+            <input name="reps" type="text" ng-model="tmpLift.reps" />
+        </div>
+    </div>
+
+    <button class="btn btn-secondary" ng-click="addLift()">Add Lift</button>
+    <button class="btn btn-primary" ng-click="saveLifts(form)">Submit</button>
+</form>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Last workout</h3>
+
+        <div ng-repeat="workout in user.workouts">
+            <div ng-repeat="lift in workout.lifts">
+
+                {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,14 +1,16 @@
 'use strict';
 
 angular.module('lifterlyApp')
-  .controller('LoginCtrl', function ($scope, Auth, $location) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};
 
-    $scope.login = function(form) {
+    $scope.login = function(form, provider) {
       $scope.submitted = true;
       
-      if(form.$valid) {
+      if(provider){
+         $window.location.href = '/api/auth/' + provider;
+      } else if(form.$valid) {
         Auth.login({
           email: $scope.user.email,
           password: $scope.user.password

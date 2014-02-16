@@ -5,6 +5,9 @@ angular.module('lifterlyApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'My Lifts',
+      'link': '/lifts'
     }, {
       'title': 'Settings',
       'link': '/settings'
