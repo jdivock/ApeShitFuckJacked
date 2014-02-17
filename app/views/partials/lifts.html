@@ -1,50 +1,123 @@
 <div ng-include="'partials/navbar.html'"></div>
 
-<form name="form" novalidate>
-    <div class="row" ng-repeat="tmpLift in formLifts">
-        <div class="col-sm-3">
-            <label>Lift</label>
-            <br/>
-            <select name="lift" ng-model="tmpLift.lift">
-                <option>Squat</option>
-                <option>Strict Press</option>
-                <option>Bench Press</option>
-                <option>Deadlift</option>
-            </select>
-        </div>
+<div class="row">
 
-        <div class="col-sm-3">
-            <label>Weight</label>
-            <input name="weight" type="text" ng-model="tmpLift.weight" />
-        </div>
-
-        <div class="col-sm-3">
-            <label>Sets</label>
-            <input name='sets' type="text" ng-model="tmpLift.sets" />
-        </div>
-
-        <div class="col-sm-3">
-            <label>Reps</label>
-            <input name="reps" type="text" ng-model="tmpLift.reps" />
-        </div>
+    <div class="col-md-3">
+        <nav class="sidenav">
+            <ul class="nav">
+                <li>Lifts</li>
+                <li>Records</li>
+                <li>Compare
+                    <ul>
+                        <li>My Weight</li>
+                        <li>My Friends</li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
     </div>
 
-    <button class="btn btn-secondary" ng-click="addLift()">Add Lift</button>
-    <button class="btn btn-primary" ng-click="saveLifts(form)">Submit</button>
-</form>
+    <div class="col-md-9">
 
+        <div class="well">
+            <form name="form" novalidate>
 
-<div class="row">
-    <div class="col-sm-12">
-        <h3>Last workout</h3>
+                <!-- main Lifts -->
+                <div class="row" ng-repeat="tmpLift in formLifts">
+                    <div class="col-sm-3">
 
-        <div ng-repeat="workout in user.workouts">
-            <div ng-repeat="lift in workout.lifts">
+                        <div ng-if="!tmpLift.main">
+                            <label>Accessory</label>
+                            <br/>
+                            <select name="name" ng-model="tmpLift.name">
+                                <option>Kroc Rows</option>
+                                <option>Lat Pulldown</option>
+                                <option>DB Rows</option>
+                                <option>BB Rows</option>
+                                <option>Ab Wheel</option>
+                                <option>Squat</option>
+                                <option>Strict Press</option>
+                                <option>Bench Press</option>
+                                <option>Deadlift</option>
+                            </select>
+                        </div>
 
-                {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+                        <div ng-if="tmpLift.main">
+                            <label>Lift</label>
+                            <br/>
+                            <select name="name" ng-model="tmpLift.name">
+                                <option>Squat</option>
+                                <option>Strict Press</option>
+                                <option>Bench Press</option>
+                                <option>Deadlift</option>
+                            </select>
+                        </div>
+                    </div>
 
-            </div>
+                    <div class="col-sm-3">
+                        <label>Weight</label>
+                        <input name="weight" type="text" ng-model="tmpLift.weight" />
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label>Sets</label>
+                        <input name='sets' type="text" ng-model="tmpLift.sets" />
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label>Reps</label>
+                        <input name="reps" type="text" ng-model="tmpLift.reps" />
+                    </div>
+                </div>
+                <!-- /end main lifts -->
+
+                <div class="row btn-row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-secondary" ng-click="addLift(true)">Add Lift</button>
+                        <button class="btn btn-secondary" ng-click="addLift(false)">Add Accessory</button>
+                        <button class="btn btn-primary" ng-click="saveLifts(form)">Submit</button>
+                    </div>
+                </div>
+            </form>
         </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Last Workout ({{user.workouts[0].date | date: 'medium'}})</h3>
+
+                <div>
+                    <h5 ng-if="hasMain(user.workouts[0].lifts)">Main Lifts</h5>
+                    <div ng-repeat="lift in user.workouts[0].lifts | filter: {main: true}">
+                        {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+                    </div>
+                    <h5 ng-if="hasAcc(user.workouts[0].lifts)">Accessory Work</h5>
+                    <div ng-repeat="lift in user.workouts[0].lifts | filter: {main: false}">
+                        {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <h3>Workout History</h3>
+
+                <div ng-repeat="workout in user.workouts" ng-if="$index > 0">
+                    <h4>Workout on {{workout.date | date: 'short'}}</h4>
+
+                    <h5 ng-if="hasMain(workout.lifts)">Main Lifts</h5>
+                    <div ng-repeat="lift in workout.lifts | filter: {main: true}">
+                        {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+                    </div>
+                    <h5 ng-if="hasAcc(workout.lifts)">Accessory Work</h5>
+                    <div ng-repeat="lift in workout.lifts | filter: {main: false}">
+                        {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
