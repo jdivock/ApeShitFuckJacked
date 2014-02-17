@@ -18,7 +18,8 @@ angular.module('lifterlyApp', [
             })
             .when('/lifts', {
                 templateUrl: 'partials/lifts',
-                controller: 'LiftsCtrl'
+                controller: 'LiftsCtrl',
+                authenticate: true
             })
             .when('/signup', {
                 templateUrl: 'partials/signup',
