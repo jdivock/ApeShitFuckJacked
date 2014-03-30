@@ -2,6 +2,22 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
+.lifts {
+    select {
+        width: 100%;
+        margin-bottom: .5em;
+    }
+
+    .workout .lift {
+        margin-bottom: .5em;
+        padding-bottom: .5em;
+        border-bottom: 1px solid #666;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -11,16 +27,16 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    // padding-top: 20px;
+    // padding-bottom: 20px;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
 .footer {
-    padding-left: 15px;
-    padding-right: 15px;
+    // padding-left: 15px;
+    // padding-right: 15px;
 }
 
 /* Custom page header */

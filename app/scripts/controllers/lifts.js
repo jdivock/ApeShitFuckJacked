@@ -5,10 +5,9 @@ angular.module('lifterlyApp')
         $scope.user = Auth.currentUser();
 
         $scope.formLifts = [{
-            main: true
+           
         }];
 
-        console.log("user", $scope.user);
 
         $scope.hasMain = function(liftArr) {
             if (!liftArr) {
@@ -52,9 +51,9 @@ angular.module('lifterlyApp')
             });
         };
 
-        $scope.addLift = function(isMain) {
+        $scope.addLift = function() {
             $scope.formLifts.push({
-                main: isMain
+               
             });
 
         };

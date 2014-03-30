@@ -9,8 +9,9 @@ angular.module('lifterlyApp', [
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/main',
-                controller: 'MainCtrl'
+                templateUrl: 'partials/lifts',
+                controller: 'LiftsCtrl',
+                authenticate: true
             })
             .when('/login', {
                 templateUrl: 'partials/login',
@@ -29,6 +30,9 @@ angular.module('lifterlyApp', [
                 templateUrl: 'partials/settings',
                 controller: 'SettingsCtrl',
                 authenticate: true
+            })
+            .when('/about', {
+                templateUrl: 'partials/about'
             })
             .otherwise({
                 redirectTo: '/'
