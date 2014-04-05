@@ -9,7 +9,7 @@
     <base href="/">
     <title></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
     <!-- bower:css -->
@@ -46,6 +46,14 @@
     <!-- build:js(app) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
+
+    <script src="bower_components/sass-bootstrap/js/dropdown.js"></script>
+    <script src="bower_components/sass-bootstrap/js/collapse.js"></script>
+    <script src="bower_components/sass-bootstrap/js/tab.js"></script>
+    <script src="bower_components/sass-bootstrap/js/transition.js"></script>
+    <script src="bower_components/sass-bootstrap/js/button.js"></script>
+
+
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -54,19 +62,19 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/navbar.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/signup.js"></script>
-        <script src="scripts/controllers/lifts.js"></script>
-        <script src="scripts/controllers/settings.js"></script>
-        <script src="scripts/services/auth.js"></script>
-        <script src="scripts/services/session.js"></script>
-        <script src="scripts/services/user.js"></script>
-        <script src="scripts/services/workout.js"></script>
-        <script src="scripts/directives/mongooseError.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/navbar.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/signup.js"></script>
+    <script src="scripts/controllers/lifts.js"></script>
+    <script src="scripts/controllers/settings.js"></script>
+    <script src="scripts/services/auth.js"></script>
+    <script src="scripts/services/session.js"></script>
+    <script src="scripts/services/user.js"></script>
+    <script src="scripts/services/workout.js"></script>
+    <script src="scripts/directives/mongooseError.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
