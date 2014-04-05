@@ -4,7 +4,8 @@ angular.module('lifterlyApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'ngTouch'
 ])
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider

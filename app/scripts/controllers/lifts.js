@@ -5,8 +5,24 @@ angular.module('lifterlyApp')
         $scope.user = Auth.currentUser();
 
         $scope.formLifts = [{
-           
+
         }];
+
+        $scope.workoutIdx = 0;
+
+        $scope.prevWorkout = function() {
+            if( $scope.workoutIdx === 0){
+                return;
+            }
+            $scope.workoutIdx--;
+        };
+
+        $scope.nextWorkout = function() {
+            if( $scope.workoutIdx === $scope.user.workouts.length){
+                return;
+            }
+            $scope.workoutIdx++;
+        };
 
 
         $scope.hasMain = function(liftArr) {
@@ -53,7 +69,7 @@ angular.module('lifterlyApp')
 
         $scope.addLift = function() {
             $scope.formLifts.push({
-               
+
             });
 
         };
