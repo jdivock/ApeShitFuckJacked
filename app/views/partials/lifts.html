@@ -71,6 +71,8 @@
 
 
   <div class="workout-card" ng-repeat="workout in user.workouts" ng-class='{prev: $index + 1 <= workoutIdx - 1, curr: $index + 1 === workoutIdx  , next: $index + 1 >= workoutIdx + 1}' >
+    <!-- <a ng-click="backToFirst()">Back to current workout</a> -->
+
     <h5>{{workout.date | date: 'shortDate'}}</h5>
     <div ng-repeat="lift in workout.lifts">
       {{lift.name}}: {{lift.weight}} {{lift.unit}} x {{lift.sets}} x {{lift.reps}}
