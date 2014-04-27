@@ -58,10 +58,14 @@ module.exports = function(grunt) {
                 files: ['test/spec/{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'karma']
             },
-            compass: {
+            sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['sass:server', 'autoprefixer']
             },
+            // compass: {
+            //     files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+            //     tasks: ['compass:server', 'autoprefixer']
+            // },
             gruntfile: {
                 files: ['Gruntfile.js']
             },
@@ -188,6 +192,27 @@ module.exports = function(grunt) {
             server: {
                 options: {
                     debugInfo: true
+                }
+            }
+        },
+
+        sass: {
+            dist: {
+                files: {
+                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
+                }
+            },
+            options: {
+                // includePaths: '<%= yeoman.app %>/styles',
+                includePaths: ['<%= yeoman.app %>/bower_components/'],  
+                imagePath: '/images'
+            },
+            server: {
+                files: {
+                    '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.scss'
+                },
+                options: {
+                    sourceComments: 'normal'
                 }
             }
         },
@@ -336,13 +361,13 @@ module.exports = function(grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
-                'compass:server'
+                'sass:server'
             ],
             test: [
-                'compass'
+                'sass'
             ],
             dist: [
-                'compass:dist',
+                'sass',
                 'imagemin',
                 'svgmin',
                 'htmlmin'
