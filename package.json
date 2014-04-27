@@ -10,7 +10,8 @@
     "passport": "latest",
     "passport-local": "latest",
     "ejs": "~0.8.4",
-    "passport-twitter": "^1.0.2"
+    "passport-twitter": "^1.0.2",
+    "evernote": "^1.25.3"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
