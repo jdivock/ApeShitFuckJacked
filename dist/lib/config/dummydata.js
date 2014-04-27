@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 
 
 // Clear old users, then add a default user
-User.find({}).remove(function() {
+/*User.find({}).remove(function() {
     User.create({
         provider: 'local',
         name: 'Test User',
@@ -86,20 +86,5 @@ User.find({}).remove(function() {
 
 
     });
-});
+});*/
 
-// Workout.find({}).remove(function() {
-
-//     Workout.create({
-//         date: '1/1/2013',
-//         lifts: [{
-//             main: true,
-//             name: 'TEST ORPHAN LIFT \\ WORKOUT',
-//             reps: 5,
-//             sets: 3
-//         }]
-//     }, function() {
-//         console.log('finished populating workouts');
-//     });
-
-// });

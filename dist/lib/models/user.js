@@ -23,10 +23,14 @@ var UserSchema = new Schema({
         type: String,
         default: 'user'
     },
+    evernote: {
+        notebookGuid: String,
+        sync: Boolean
+    },
     workouts: [Workout],
     hashedPassword: String,
     provider: String,
-    salt: String,
+    salt: String, 
     facebook: {},
     twitter: {},
     github: {},
@@ -54,7 +58,8 @@ UserSchema
         return {
             'name': this.name,
             'role': this.role,
-            'provider': this.provider
+            'provider': this.provider,
+            'evernoteNotebookGuid': this.evernoteNotebookGuid
         };
     });
 
@@ -129,7 +134,7 @@ UserSchema.statics = {
                         name: user.name,
                         email: user.email
                     }, function(err, newUser) {
-                        console.log('user saved', newUser);
+                        // console.log('user saved', newUser);
                         done(err, newUser);
                     });
 

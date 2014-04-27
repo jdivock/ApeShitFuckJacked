@@ -14,10 +14,12 @@ var middleware = require('./middleware');
 module.exports = function(app) {
 
     // Server API Routes
-    // app.get('/api/awesomeThings', api.awesomeThings);
-
     app.post('/api/users', users.create);
     app.put('/api/users', users.changePassword);
+
+    app.get('/api/users/evernoteConnect', users.linkEvernote);
+    app.get('/api/users/evernoteCb', users.evOauthCb);
+
     app.get('/api/users/me', users.me);
     app.get('/api/users/:id', users.show);
 
