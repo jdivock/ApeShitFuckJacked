@@ -1,11 +1,19 @@
 'use strict';
 
 angular.module('lifterlyApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, User, Auth, $window) {
     $scope.errors = {};
+
+    $scope.user = User.get();
+
+    $scope.evernoteConnect = function(){
+      $window.location = '/api/users/evernoteConnect';
+    };
 
     $scope.changePassword = function(form) {
       $scope.submitted = true;
+
+
 
       if(form.$valid) {
         Auth.changePassword( $scope.user.oldPassword, $scope.user.newPassword )

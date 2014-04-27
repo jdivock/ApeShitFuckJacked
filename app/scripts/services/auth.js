@@ -98,6 +98,10 @@ angular.module('lifterlyApp')
                 return User.get();
             },
 
+            
+
+
+
             /**
              * Simple check to see if a user is logged in
              *
