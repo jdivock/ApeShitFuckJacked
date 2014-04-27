@@ -34,10 +34,10 @@ angular.module('lifterlyApp', [
             })
             .when('/about', {
                 templateUrl: 'partials/about'
-            })
-            .otherwise({
-                redirectTo: '/'
             });
+            // .otherwise({
+            //     redirectTo: '/'
+            // });
 
         $locationProvider.html5Mode(true);
 
