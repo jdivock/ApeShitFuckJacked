@@ -9,10 +9,11 @@ var mongoose = require('mongoose'),
 var config = {
     EVER_KEY: process.env.APE_EVERNOTE_KEY,
     EVER_SECRET: process.env.APE_EVERNOTE_SECRET,
-    SANDBOX: process.env.APE_SANDBOX,
     APP_NAME: 'ApeShitFuckJacked',
     APP_HOST: process.env.APE_HOST
 };
+
+config.SANDBOX = process.env.APE_SANDBOX === 'false' ? false : true;
 
 var dateSort = function(a, b) {
     // Turn your strings into dates, and then subtract them
@@ -36,21 +37,21 @@ var workoutToNote = function(workout){
     return content;
 };
 
-var saveWorkoutToEvernote = function(workout,token, guid){
+var saveWorkoutToEvernote = function(workout,user){
 
     var client = new Evernote.Client({
-        token: token,
+        token: user.evernote.oauthAccessToken,
         sandbox: config.SANDBOX
     });
     var noteStore = client.getNoteStore();
 
     var note = new Evernote.Note({
         title: workout.date,
-        notebookGuid: guid,
+        notebookGuid: user.evernote.notebookGuid,
         content: workoutToNote(workout)
     });
 
-    noteStore.createNote(token, note, function(err) {
+    noteStore.createNote(user.evernote.oauthAccessToken, note, function(err) {
         if(err) {
             console.log("ERROR", err);
         }
@@ -79,7 +80,7 @@ exports.addWorkouts = function(req, res, next) {
             }
 
             if(user.evernote.sync){
-                saveWorkoutToEvernote(workout, req.session.everOauthAccessToken, req.session.everNotebookGuid);
+                saveWorkoutToEvernote(workout, user);
             }
 
             res.send(200);
@@ -121,6 +122,8 @@ exports.create = function(req, res, next) {
 exports.show = function(req, res, next) {
     var userId = req.params.id;
 
+    // console.log('userId');
+
     User.findById(userId, function(err, user) {
         if (err) return next(new Error('Failed to load User'));
 
@@ -153,7 +156,7 @@ exports.linkEvernote = function(req, res, next) {
         } else {
             // store the tokens in the session
             req.session.everOauthToken = oauthToken;
-            req.session.everOoauthTokenSecret = oauthTokenSecret;
+            req.session.everOauthTokenSecret = oauthTokenSecret;
 
             // redirect the user to authorize the token
             res.redirect(client.getAuthorizeUrl(oauthToken));
@@ -208,11 +211,21 @@ var initNotebook = function(token) {
 
 };
 
-var saveNotebookId = function(guid, userId) {
+/* 
+ * Save evernote credentials and notebook guid to the db
+ * 
+ * @param {String} guid - evernote notebook guid
+ * @param {String} userId - userId extracted from user data stored in session
+ * @param {String} - evernote oauthAccessToken to commit notes and actions with
+ * @param {String} - evernote secret token to commit actions with
+ */
+var saveEvernoteInfo = function(guid, userId, oauthAccessToken, oauthAccessTokenSecret) {
     User.findById(userId, function(err, user) {
 
         user.evernote.notebookGuid = guid;
         user.evernote.sync = true;
+        user.evernote.oauthAccessToken = oauthAccessToken;
+        user.evernote.oauthAccessTokenSecret = oauthAccessTokenSecret;
 
         user.save(function(err) {
                 if (err) {
@@ -236,7 +249,7 @@ exports.evOauthCb = function(req, res) {
 
     client.getAccessToken(
         req.session.everOauthToken,
-        req.session.everOoauthTokenSecret,
+        req.session.everOauthTokenSecret,
         req.param('oauth_verifier'),
         function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
             if (error) {
@@ -246,8 +259,9 @@ exports.evOauthCb = function(req, res) {
                 // res.redirect('/');
             } else {
                 // store the access token in the session
-                req.session.everOauthAccessToken = oauthAccessToken;
-                req.session.everOauthAccessTtokenSecret = oauthAccessTokenSecret;
+                // req.session.everOauthAccessToken = oauthAccessToken;
+                // req.session.everOauthAccessTtokenSecret = oauthAccessTokenSecret;
+                console.log('one', oauthAccessTokenSecret);
                 req.session.edamShard = results.edam_shard;
                 req.session.edamUserId = results.edam_userId;
                 req.session.edamExpires = results.edam_expires;
@@ -257,10 +271,10 @@ exports.evOauthCb = function(req, res) {
 
                 initNotebook(oauthAccessToken).then(function(guid) {
 
+                        console.log('two', oauthAccessTokenSecret);
                         //optimistic saving? sure.
-                        saveNotebookId(guid,req.user._id);
+                        saveEvernoteInfo(guid,req.user._id, oauthAccessToken, oauthAccessTokenSecret);
 
-                        req.session.everNotebookGuid = guid;
                         // res.send(req.session);
                         res.redirect('/settings');
 

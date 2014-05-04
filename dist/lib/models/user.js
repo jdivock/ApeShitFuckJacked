@@ -25,6 +25,8 @@ var UserSchema = new Schema({
     },
     evernote: {
         notebookGuid: String,
+        oauthAccessToken: String,
+        oauthAccessTokenSecret: String,
         sync: Boolean
     },
     workouts: [Workout],
