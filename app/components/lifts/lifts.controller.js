@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly.lifts')
     .controller('LiftsCtrl', function($scope, Auth, User, Workout) {
         $scope.user = Auth.currentUser();
 
@@ -40,21 +40,21 @@ angular.module('lifterlyApp')
         };
 
         //TODO combine this with hasMain
-        $scope.hasAcc = function(liftArr) {
-            if (!liftArr) {
-                return false;
-            }
-            var hasAcc = false;
+        // $scope.hasAcc = function(liftArr) {
+        //     if (!liftArr) {
+        //         return false;
+        //     }
+        //     var hasAcc = false;
 
-            for (var i = 0; i < liftArr.length; i++) {
-                if (!liftArr[i].main) {
-                    hasAcc = true;
-                }
-            }
-            return hasAcc;
-        };
+        //     for (var i = 0; i < liftArr.length; i++) {
+        //         if (!liftArr[i].main) {
+        //             hasAcc = true;
+        //         }
+        //     }
+        //     return hasAcc;
+        // };
 
-        $scope.saveLifts = function(form) {
+        $scope.saveLifts = function() {
             Workout.save({
                 id: $scope.user._id,
                 lifts: $scope.formLifts

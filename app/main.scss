@@ -2,8 +2,8 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
-@import 'lifts';
-@import 'settings';
+@import 'components/lifts/lifts';
+@import 'components/profile/settings/settings';
 
 .browsehappy {
     margin: 0.2em 0;

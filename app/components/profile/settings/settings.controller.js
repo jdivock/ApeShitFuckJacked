@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly.profile.settings')
   .controller('SettingsCtrl', function ($scope, User, Auth, $window) {
     $scope.errors = {};
 

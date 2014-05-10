@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly.profile.login')
     .factory('Auth', function Auth($location, $rootScope, Session, User, $cookieStore) {
 
         // Get currentUser from cookie

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly')
 
   /**
    * Removes server error when user updates input

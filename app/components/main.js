@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly')
   .controller('MainCtrl', function () {
     
   });

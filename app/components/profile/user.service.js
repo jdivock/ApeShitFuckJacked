@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lifterlyApp')
+angular.module('lifterly')
     .factory('User', function($resource) {
         return $resource('/api/users/:id/:action', {
             id: '@id'

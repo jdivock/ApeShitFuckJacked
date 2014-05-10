@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="lifterlyApp">
+  <body ng-app="lifterly">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -58,18 +58,31 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/navbar.js"></script>
-    <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/signup.js"></script>
-    <script src="scripts/controllers/lifts.js"></script>
-    <script src="scripts/controllers/settings.js"></script>
-    <script src="scripts/services/auth.js"></script>
-    <script src="scripts/services/session.js"></script>
-    <script src="scripts/services/user.js"></script>
-    <script src="scripts/services/workout.js"></script>
-    <script src="scripts/directives/mongooseError.js"></script>
+    <script src="app.js"></script>
+    <script src="components/main.js"></script>
+
+    <script src="components/navbar/navbar.module.js"></script>
+    <script src="components/navbar/navbar.controller.js"></script>
+
+    <script src="components/profile/profile.module.js"></script>
+    <script src="components/profile/session.service.js"></script>
+    <script src="components/profile/user.service.js"></script>
+
+    <script src="components/profile/login/login.module.js"></script>
+    <script src="components/profile/login/login.controller.js"></script>
+    <script src="components/profile/login/auth.service.js"></script>
+
+    <script src="components/profile/signup/signup.module.js"></script>
+    <script src="components/profile/signup/signup.controller.js"></script>
+
+    <script src="components/profile/settings/settings.module.js"></script>
+    <script src="components/profile/settings/settings.controller.js"></script>  
+
+    <script src="components/lifts/lifts.module.js"></script>
+    <script src="components/lifts/lifts.controller.js"></script>
+    <script src="components/lifts/workout.service.js"></script>
+
+    <script src="components/mongooseError.directive.js"></script>
     <!-- endbuild -->
 </body>
 </html>

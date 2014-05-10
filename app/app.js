@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('lifterlyApp', [
+angular.module('lifterly', [
+    'lifterly.navbar',
+    'lifterly.lifts',
+    'lifterly.profile',
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -10,30 +13,30 @@ angular.module('lifterlyApp', [
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/lifts',
+                templateUrl: 'components/lifts/lifts.html',
                 controller: 'LiftsCtrl',
                 authenticate: true
             })
             .when('/login', {
-                templateUrl: 'partials/login',
+                templateUrl: 'components/profile/login/login.html',
                 controller: 'LoginCtrl'
             })
             .when('/lifts', {
-                templateUrl: 'partials/lifts',
+                templateUrl: 'components/lifts/lifts.html',
                 controller: 'LiftsCtrl',
                 authenticate: true
             })
             .when('/signup', {
-                templateUrl: 'partials/signup',
+                templateUrl: 'components/profile/signup/signup.html',
                 controller: 'SignupCtrl'
             })
             .when('/settings', {
-                templateUrl: 'partials/settings',
+                templateUrl: 'components/profile/settings/settings.html',
                 controller: 'SettingsCtrl',
                 authenticate: true
             })
             .when('/about', {
-                templateUrl: 'partials/about'
+                templateUrl: 'components/about/about.html'
             });
             // .otherwise({
             //     redirectTo: '/'
@@ -62,8 +65,12 @@ angular.module('lifterlyApp', [
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function(event, next) {
 
+            console.log(event, next);
+
             if (next.authenticate && !Auth.isLoggedIn()) {
                 $location.path('/login');
+            } else if(next.templateUrl === 'components/profile/login/login.html' && Auth.isLoggedIn()){
+                $location.path('/');
             }
         });
     });

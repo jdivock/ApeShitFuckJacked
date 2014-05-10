@@ -1,4 +1,4 @@
-<div ng-include="'partials/navbar.html'"></div>
+<div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container lifts" ng-swipe-right="prevWorkout()" ng-swipe-left="nextWorkout()">
 
@@ -14,23 +14,16 @@
 
                 <select name="lift" ng-model="tmpLift.name">
                   <option value="" disabled selected>Lift</option>
-                  <optgroup label="Main">
                     <option>Squat</option>
                     <option>Strict Press</option>
                     <option>Bench Press</option>
                     <option>Deadlift</option>
-                  </optgroup>
-                  <optgroup label="Accessory">
                     <option>Kroc Rows</option>
                     <option>Lat Pulldown</option>
+                    <option>Good Mornings</option>
                     <option>DB Rows</option>
                     <option>BB Rows</option>
                     <option>Ab Wheel</option>
-                    <option>Squat</option>
-                    <option>Strict Press</option>
-                    <option>Bench Press</option>
-                    <option>Deadlift</option>
-                  </optgroup>
                 </select>
               </div>
             </div>
