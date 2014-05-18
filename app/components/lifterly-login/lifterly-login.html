@@ -1,0 +1,62 @@
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="lifterly-login">
+    <style>
+    .show {
+        display: block;
+    }
+    .hide {
+        display: none;
+    }
+    .general-error {
+        color: #ee352a;
+    }
+    </style>
+    <template>
+        <core-ajax id="login" method="POST" url="/api/session/" params='{"email":"{{email}}", "password":"{{password}}"}' handleAs="json" on-core-response="{{handleResponse}}" on-core-error="{{handleError}}"></core-ajax>
+
+
+        <div class="login-form {{ {'hide': state === 'logged-in'} | tokenList }}">
+
+            <div class="general-error {{ {'hide': !error} | tokenList }}">
+                {{error}}
+            </div>
+
+            <div class="form-control">
+                <label for="email">Email</label>
+                <input type="email" name="Email" value={{email}} />
+            </div>
+
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input type="password" name="password" value={{password}} />
+            </div>
+
+            <button on-click={{submit}}>Submit</button>
+        </div>
+
+        <div class="logged-in-banner {{ {'hide': state !== 'logged-in'} | tokenList }}">
+            <h3>Welcome</h3>
+        </div>
+    </template>
+    <script>
+    'use strict';
+
+    Polymer('lifterly-login', {
+        state: 'logged-out',
+        error: null,
+        submit: function() {
+            this.$.login.go();
+        },
+        handleResponse: function(ev, resp) {
+            this.state = 'logged-in';
+            this.fire('logged-in');
+        },
+        handleError: function(ev, resp, foo) {
+            // console.log(JSON.parse(resp.response));
+            var error = JSON.parse(resp.xhr.responseText);
+            this.error = error.message;
+        }
+    });
+    </script>
+</polymer-element>

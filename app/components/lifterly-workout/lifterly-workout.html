@@ -1,0 +1,19 @@
+<polymer-element name="lifterly-workout" attributes="workout">
+
+    <template>
+        <h3>Workout: {{workout.date}}</h3>
+        <template repeat="{{lift in workout.lifts}}">
+            <div>
+                {{lift.name}} x {{lift.sets}} x {{lift.reps}}
+            </div>
+
+        </template>
+    </template>
+    <script>
+    'use strict';
+
+    Polymer('lifterly-workout', {
+
+    });
+    </script>
+</polymer-element>

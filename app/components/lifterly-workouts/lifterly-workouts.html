@@ -1,0 +1,20 @@
+<link rel="import" href="../lifterly-workout/lifterly-workout.html">
+
+<polymer-element name="lifterly-workouts" attributes="workouts">
+
+    <template>
+
+        <template repeat="{{workout in workouts}}">
+            <lifterly-workout workout="{{workout}}"></lifterly-workout>
+        </template>
+
+    </template>
+
+    <script>
+    'use strict';
+
+    Polymer('lifterly-workouts', {
+
+    });
+    </script>
+</polymer-element>

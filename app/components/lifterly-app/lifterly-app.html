@@ -1,0 +1,31 @@
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../lifterly-workouts/lifterly-workouts.html">
+<link rel="import" href="../lifterly-login/lifterly-login.html">
+
+<polymer-element name="lifterly-app">
+    <template>
+        <core-ajax id="getProfile" url="/api/users/me" handleAs="json" on-core-response="{{handleLogin}}" on-core-error="{{handleError}}"></core-ajax>
+
+
+        <lifterly-login></lifterly-login>
+
+        <lifterly-workouts workouts="{{user.workouts}}"></lifterly-workouts>
+
+    </template>
+    <script>
+    'use strict';
+
+    Polymer('lifterly-app', {
+        ready: function() {
+            this.addEventListener('logged-in', this.onLogin);
+        },
+        onLogin: function() {
+            this.$.getProfile.go();
+        },
+        handleLogin: function(e, resp){
+            this.user = resp.response;
+            console.log(this.user);
+        }
+    });
+    </script>
+</polymer-element>
