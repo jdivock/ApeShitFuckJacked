@@ -1,16 +1,18 @@
 /** @jsx React.DOM */
+'use strict';
 
 var React = require('react');
 var $ = require('zepto');
+
 window.React = React;
 
 var CreateAccountForm = React.createClass({
 	onStateChange: function(){
-		this.props.changeFormState('LOGIN');
-		console.log($);
+		this.props.changeFormState({view: 'LOGIN'});
 	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			<div>
 				<EmailInput />
 				<PasswordInput />
@@ -22,30 +24,59 @@ var CreateAccountForm = React.createClass({
 					Cancel
 				</button>
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 }); 
 
 var EmailInput = React.createClass({
+	setEmail: function(){
+		this.props.onUserInput({
+			email: this.refs.loginEmail.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			<div className="form-control">
 				<label htmlFor="loginEmail">Email
-					<input name="email" id="loginEmail" type="email" />
+					<input 
+						name="email" 
+						id="loginEmail" 
+						type="email" 
+						ref="loginEmail" 
+						value={this.props.email} 
+						onChange={this.setEmail}
+					/>
 				</label>
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });
 
 var PasswordInput = React.createClass({
+	setPassword: function(){
+		this.props.onUserInput({
+			password: this.refs.loginPassword.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			<div className="form-control">
 				<label htmlFor="loginPassword">Password
-					<input name="password" id="loginPassword" type="password" />
+					<input 
+						name="password" 
+						ref="loginPassword" 
+						id="loginPassword" 
+						type="password" 
+						value={this.props.password}
+						onChange={this.setPassword}
+					/>
 				</label>
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });
@@ -53,27 +84,67 @@ var PasswordInput = React.createClass({
 var PasswordRepeatInput = React.createClass({
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			<div className="form-control">
 				<label htmlFor="loginPasswordRepeat">Password Repeat
 					<input name="passwordRepeat" id="loginPasswordRepeat" type="password" />
 				</label>
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });
 
 var LoginForm = React.createClass({
 	onStateChange: function(){
-		this.props.changeFormState('CREATE_ACCOUNT');
+		this.props.changeFormState({view: 'CREATE_ACCOUNT'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: '',
+			status: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
 	},
 	login: function(){
-
-	},	
+		$.ajax({
+			type: 'POST',
+			url: '/api/session',
+			data: {
+				email: this.state.email,
+				password: this.state.password
+			},
+			success: function(data){
+				//TODO: Display welcome state?
+				this.props.changeFormState({view: 'WELCOME'});
+			}.bind(this),
+			error: function(xhr, type){
+			    console.error('Login failed');
+			    this.setState({
+			    	status: 'Login Failed'
+			    });
+			}.bind(this)
+		});
+	},
 	render: function(){
+		var status;
+
+
 		return (
+			/*jshint ignore:start */
 			<div>
-				<EmailInput />
-				<PasswordInput />
+				<span>{this.state.status}</span>
+				<EmailInput 
+					email={this.state.email}
+					onUserInput={this.handleUserInput}
+				/>
+				<PasswordInput 
+					password={this.state.password}
+					onUserInput={this.handleUserInput}
+				/>
 				<button 
 					type="submit"
 					onClick={this.login}>
@@ -85,6 +156,7 @@ var LoginForm = React.createClass({
 					Create Account
 				</button>
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });
@@ -95,35 +167,47 @@ var Login = React.createClass({
 			view: 'LOGIN'
 		};
 	},
-	changeFormState: function(view){
-		this.setState({
-			view: view
-		});
+	changeFormState: function(state){
+		this.setState(state);
 	},
 	render: function(){
 		var form;
 
 		switch (this.state.view) {
 			case 'LOGIN': 
+				/*jshint ignore:start */
 				form = <LoginForm 
 						changeFormState={this.changeFormState}
+						email={this.state.email}
 					/>;
+				/*jshint ignore:end */
 				break;
 			case 'CREATE_ACCOUNT':
+				/*jshint ignore:start */
 				form = <CreateAccountForm 
 						changeFormState={this.changeFormState}
+						email={this.state.email}
 					/>;
+				/*jshint ignore:end */
 				break;
 			default:
-				form = <div></div>;
+				/*jshint ignore:start */
+				form = <div>Hello.</div>;
+				/*jshint ignore:end */
 		}
 
 		return (
+			/*jshint ignore:start */
 			<div>
 				{form}
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });
 
-React.renderComponent(<Login />, document.body);
+/*jshint ignore:start */
+React.renderComponent(
+	<Login />, 
+	document.body);
+/*jshint ignore:end */

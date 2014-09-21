@@ -1589,18 +1589,20 @@ window.$ === undefined && (window.$ = Zepto)
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/app.js":[function(require,module,exports){
 /** @jsx React.DOM */
+'use strict';
 
 var React = require('react');
 var $ = require('zepto');
+
 window.React = React;
 
 var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 	onStateChange: function(){
-		this.props.changeFormState('LOGIN');
-		console.log($);
+		this.props.changeFormState({view: 'LOGIN'});
 	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			React.DOM.div(null, 
 				EmailInput(null), 
 				PasswordInput(null), 
@@ -1612,30 +1614,59 @@ var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 					"Cancel"
 				)
 			)
+			/*jshint ignore:end */
 		);
 	}
 }); 
 
 var EmailInput = React.createClass({displayName: 'EmailInput',
+	setEmail: function(){
+		this.props.onUserInput({
+			email: this.refs.loginEmail.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			React.DOM.div({className: "form-control"}, 
 				React.DOM.label({htmlFor: "loginEmail"}, "Email", 
-					React.DOM.input({name: "email", id: "loginEmail", type: "email"})
+					React.DOM.input({
+						name: "email", 
+						id: "loginEmail", 
+						type: "email", 
+						ref: "loginEmail", 
+						value: this.props.email, 
+						onChange: this.setEmail}
+					)
 				)
 			)
+			/*jshint ignore:end */
 		);
 	}
 });
 
 var PasswordInput = React.createClass({displayName: 'PasswordInput',
+	setPassword: function(){
+		this.props.onUserInput({
+			password: this.refs.loginPassword.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			React.DOM.div({className: "form-control"}, 
 				React.DOM.label({htmlFor: "loginPassword"}, "Password", 
-					React.DOM.input({name: "password", id: "loginPassword", type: "password"})
+					React.DOM.input({
+						name: "password", 
+						ref: "loginPassword", 
+						id: "loginPassword", 
+						type: "password", 
+						value: this.props.password, 
+						onChange: this.setPassword}
+					)
 				)
 			)
+			/*jshint ignore:end */
 		);
 	}
 });
@@ -1643,27 +1674,67 @@ var PasswordInput = React.createClass({displayName: 'PasswordInput',
 var PasswordRepeatInput = React.createClass({displayName: 'PasswordRepeatInput',
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			React.DOM.div({className: "form-control"}, 
 				React.DOM.label({htmlFor: "loginPasswordRepeat"}, "Password Repeat", 
 					React.DOM.input({name: "passwordRepeat", id: "loginPasswordRepeat", type: "password"})
 				)
 			)
+			/*jshint ignore:end */
 		);
 	}
 });
 
 var LoginForm = React.createClass({displayName: 'LoginForm',
 	onStateChange: function(){
-		this.props.changeFormState('CREATE_ACCOUNT');
+		this.props.changeFormState({view: 'CREATE_ACCOUNT'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: '',
+			status: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
 	},
 	login: function(){
-
-	},	
+		$.ajax({
+			type: 'POST',
+			url: '/api/session',
+			data: {
+				email: this.state.email,
+				password: this.state.password
+			},
+			success: function(data){
+				//TODO: Display welcome state?
+				this.props.changeFormState({view: 'WELCOME'});
+			}.bind(this),
+			error: function(xhr, type){
+			    console.error('Login failed');
+			    this.setState({
+			    	status: 'Login Failed'
+			    });
+			}.bind(this)
+		});
+	},
 	render: function(){
+		var status;
+
+
 		return (
+			/*jshint ignore:start */
 			React.DOM.div(null, 
-				EmailInput(null), 
-				PasswordInput(null), 
+				React.DOM.span(null, this.state.status), 
+				EmailInput({
+					email: this.state.email, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordInput({
+					password: this.state.password, 
+					onUserInput: this.handleUserInput}
+				), 
 				React.DOM.button({
 					type: "submit", 
 					onClick: this.login}, 
@@ -1675,6 +1746,7 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
 					"Create Account"
 				)
 			)
+			/*jshint ignore:end */
 		);
 	}
 });
@@ -1685,38 +1757,50 @@ var Login = React.createClass({displayName: 'Login',
 			view: 'LOGIN'
 		};
 	},
-	changeFormState: function(view){
-		this.setState({
-			view: view
-		});
+	changeFormState: function(state){
+		this.setState(state);
 	},
 	render: function(){
 		var form;
 
 		switch (this.state.view) {
 			case 'LOGIN': 
+				/*jshint ignore:start */
 				form = LoginForm({
-						changeFormState: this.changeFormState}
+						changeFormState: this.changeFormState, 
+						email: this.state.email}
 					);
+				/*jshint ignore:end */
 				break;
 			case 'CREATE_ACCOUNT':
+				/*jshint ignore:start */
 				form = CreateAccountForm({
-						changeFormState: this.changeFormState}
+						changeFormState: this.changeFormState, 
+						email: this.state.email}
 					);
+				/*jshint ignore:end */
 				break;
 			default:
-				form = React.DOM.div(null);
+				/*jshint ignore:start */
+				form = React.DOM.div(null, "Hello.");
+				/*jshint ignore:end */
 		}
 
 		return (
+			/*jshint ignore:start */
 			React.DOM.div(null, 
 				form
 			)
+			/*jshint ignore:end */
 		);
 	}
 });
 
-React.renderComponent(Login(null), document.body);
+/*jshint ignore:start */
+React.renderComponent(
+	Login(null), 
+	document.body);
+/*jshint ignore:end */
 },{"react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/bower_components/zepto/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
