@@ -1592,9 +1592,22 @@ window.$ === undefined && (window.$ = Zepto)
 'use strict';
 
 var React = require('react');
-var $ = require('zepto');
+var Login = require('./components/login.react');
 
 window.React = React;
+
+
+/*jshint ignore:start */
+React.renderComponent(
+	Login(null), 
+	document.body);
+/*jshint ignore:end */
+},{"./components/login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/login.react.js":[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+var $ = require('zepto');
 
 var validateEmail = function(email){
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1866,11 +1879,8 @@ var Login = React.createClass({displayName: 'Login',
 	}
 });
 
-/*jshint ignore:start */
-React.renderComponent(
-	Login(null), 
-	document.body);
-/*jshint ignore:end */
+module.exports = Login;
+
 },{"react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/bower_components/zepto/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
