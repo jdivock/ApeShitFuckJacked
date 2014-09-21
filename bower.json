@@ -2,7 +2,6 @@
   "name": "lifterly",
   "version": "0.0.0",
   "dependencies": {
-    "zepto": "~1.1.4"
   },
   "devDependencies": {}
 }

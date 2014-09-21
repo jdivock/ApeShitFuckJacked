@@ -29,7 +29,7 @@
     "test-r": "jest"
   },
   "browser": {
-    "zepto": "./app/bower_components/zepto/zepto.js"
+    "zepto": "./app/vendor/zepto.js"
   },
   "browserify-shim": {
     "zepto": "$"

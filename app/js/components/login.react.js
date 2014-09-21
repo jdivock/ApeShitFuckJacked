@@ -3,6 +3,8 @@
 
 var React = require('react');
 var $ = require('zepto');
+var AuthStore = require('../stores/AuthStore');
+var AuthActions = require('../actions/AuthActions');
 
 var validateEmail = function(email){
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -170,41 +172,21 @@ var LoginForm = React.createClass({
 	getInitialState: function(){
 		return {
 			email: '',
-			password: '',
-			status: ''
+			password: ''
 		};
 	},
 	handleUserInput: function(newInput){
 		this.setState(newInput);
 	},
 	login: function(){
-		$.ajax({
-			type: 'POST',
-			url: '/api/session',
-			data: {
-				email: this.state.email,
-				password: this.state.password
-			},
-			success: function(data){
-				//TODO: Display welcome state?
-				this.props.changeFormState({view: 'WELCOME'});
-			}.bind(this),
-			error: function(xhr, type){
-			    console.error('Login failed');
-			    this.setState({
-			    	status: 'Login Failed'
-			    });
-			}.bind(this)
-		});
+		AuthActions.login(this.state.email, this.state.password);
 	},
 	render: function(){
-		var status;
-
 
 		return (
 			/*jshint ignore:start */
 			<div>
-				<span>{this.state.status}</span>
+				<span>{this.props.error}</span>
 				<EmailInput 
 					email={this.state.email}
 					onUserInput={this.handleUserInput}
@@ -229,14 +211,38 @@ var LoginForm = React.createClass({
 	}
 });
 
+
+
+/**
+ * Still figuring this one out, right now the form can toggle it's state
+ * by moving back and forth from login to create. Do I want the AuthStore
+ * as well coming in and changing state? Seems like multiple sources
+ * of change which is what this whole architecture is trying to stop
+ * in the first place
+ */
+
+function getCurrentView(){
+	return {
+		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN'
+	};
+}
+
 var Login = React.createClass({
+
 	getInitialState: function(){
-		return {
-			view: 'LOGIN'
-		};
+		return getCurrentView();
+	},
+	componentDidMount: function() {
+		AuthStore.addChangeListener(this._onChange);
+	},
+	componentWillUnmount: function() {
+		AuthStore.removeChangeListener(this._onChange);
 	},
 	changeFormState: function(state){
 		this.setState(state);
+	},
+	_onChange: function() {
+	    this.setState(getCurrentView());
 	},
 	render: function(){
 		var form;
@@ -247,6 +253,7 @@ var Login = React.createClass({
 				form = <LoginForm 
 						changeFormState={this.changeFormState}
 						email={this.state.email}
+						error={this.state.error}
 					/>;
 				/*jshint ignore:end */
 				break;
@@ -255,12 +262,13 @@ var Login = React.createClass({
 				form = <CreateAccountForm 
 						changeFormState={this.changeFormState}
 						email={this.state.email}
+						error={this.state.error}
 					/>;
 				/*jshint ignore:end */
 				break;
 			default:
 				/*jshint ignore:start */
-				form = <div>Hello.</div>;
+				form = <div>Hello {this.state.email}.</div>;
 				/*jshint ignore:end */
 		}
 

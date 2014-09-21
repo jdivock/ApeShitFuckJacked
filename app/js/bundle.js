@@ -1,7 +1,451 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/jdivock/Projects/ApeShitFuckJacked/app/bower_components/zepto/zepto.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js":[function(require,module,exports){
+'use strict';
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AuthConstants = require('../constants/AuthConstants');
+
+var AuthActions = {
+
+  /**
+   * @param  {string} text
+   */
+  login: function(email, password) {
+    AppDispatcher.dispatch({
+      actionType: AuthConstants.LOGIN,
+      email: email,
+      password: password
+    });
+  }
+};
+
+module.exports = AuthActions;
+},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/app.js":[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+
+var ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
+
+window.React = React;
+
+
+/*jshint ignore:start */
+React.renderComponent(
+	ApeShitFuckJackedApp(null), 
+	document.body);
+/*jshint ignore:end */
+},{"./components/ApeShitFuckJackedApp.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js":[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+var Login = require('./Login.react');
+
+
+var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp',
+	render: function(){
+		return (
+			/*jshint ignore:start */
+			Login(null)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+module.exports = ApeShitFuckJackedApp;
+},{"./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+var $ = require('zepto');
+var AuthStore = require('../stores/AuthStore');
+var AuthActions = require('../actions/AuthActions');
+
+var validateEmail = function(email){
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   	return re.test(email);
+};
+
+var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
+	onStateChange: function(){
+		this.props.changeFormState({view: 'LOGIN'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: '',
+			passwordRepeat: '',
+			status: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
+	},
+	createAccount: function(){
+		if(this.state.password !== this.state.passwordRepeat){
+			this.setState({
+				status: 'Passwords Do not Match'
+			});
+		} else if ( !validateEmail(this.state.email) ){
+			this.setState({
+				status: 'Invalid Email Address'
+			});
+		} else {
+			
+			$.ajax({
+				type: 'POST',
+				url: '/api/users',
+				data: {
+					email: this.state.email,
+					password: this.state.password
+				},
+				success: function(data){
+					this.props.changeFormState({view: 'WELCOME'});
+				}.bind(this),
+				error: function(xhr, type){
+				    console.error('Create Account failed');
+				    this.setState({
+				    	status: 'Create Account Failed'
+				    });
+				}.bind(this)
+			});
+		}
+	},
+	render: function(){
+		return (
+			/*jshint ignore:start */
+			React.DOM.div(null, 
+				React.DOM.span(null, this.state.status), 
+				EmailInput({
+					email: this.state.email, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordInput({
+					password: this.state.password, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordRepeatInput({
+					onUserInput: this.handleUserInput}
+				), 
+				React.DOM.button({
+					type: "submit", 
+					onClick: this.createAccount}, 
+					"Create Account"
+				), 
+				React.DOM.button({
+					className: "btn-link", 
+					onClick: this.onStateChange}, 
+					"Cancel"
+				)
+			)
+			/*jshint ignore:end */
+		);
+	}
+}); 
+
+var EmailInput = React.createClass({displayName: 'EmailInput',
+	setEmail: function(){
+		this.props.onUserInput({
+			email: this.refs.loginEmail.getDOMNode().value
+		});
+	},
+	render: function(){
+		return (
+			/*jshint ignore:start */
+			React.DOM.div({className: "form-control"}, 
+				React.DOM.label({htmlFor: "loginEmail"}, "Email", 
+					React.DOM.input({
+						name: "email", 
+						id: "loginEmail", 
+						type: "email", 
+						ref: "loginEmail", 
+						value: this.props.email, 
+						onChange: this.setEmail}
+					)
+				)
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+var PasswordInput = React.createClass({displayName: 'PasswordInput',
+	setPassword: function(){
+		this.props.onUserInput({
+			password: this.refs.loginPassword.getDOMNode().value
+		});
+	},
+	render: function(){
+		return (
+			/*jshint ignore:start */
+			React.DOM.div({className: "form-control"}, 
+				React.DOM.label({htmlFor: "loginPassword"}, "Password", 
+					React.DOM.input({
+						name: "password", 
+						ref: "loginPassword", 
+						id: "loginPassword", 
+						type: "password", 
+						value: this.props.password, 
+						onChange: this.setPassword}
+					)
+				)
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+var PasswordRepeatInput = React.createClass({displayName: 'PasswordRepeatInput',
+	setPassword: function(){
+		this.props.onUserInput({
+			passwordRepeat: this.refs.passwordRepeat.getDOMNode().value
+		});
+	},
+	render: function(){
+		return (
+			/*jshint ignore:start */
+			React.DOM.div({className: "form-control"}, 
+				React.DOM.label({htmlFor: "loginPasswordRepeat"}, "Password Repeat", 
+					React.DOM.input({
+						name: "passwordRepeat", 
+						ref: "passwordRepeat", 
+						id: "loginPasswordRepeat", 
+						type: "password", 
+						onChange: this.setPassword}
+					)
+				)
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+var LoginForm = React.createClass({displayName: 'LoginForm',
+	onStateChange: function(){
+		this.props.changeFormState({view: 'CREATE_ACCOUNT'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
+	},
+	login: function(){
+		AuthActions.login(this.state.email, this.state.password);
+	},
+	render: function(){
+
+		return (
+			/*jshint ignore:start */
+			React.DOM.div(null, 
+				React.DOM.span(null, this.props.error), 
+				EmailInput({
+					email: this.state.email, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordInput({
+					password: this.state.password, 
+					onUserInput: this.handleUserInput}
+				), 
+				React.DOM.button({
+					type: "submit", 
+					onClick: this.login}, 
+					"Submit"
+				), 
+				React.DOM.button({
+					className: "btn-link", 
+					onClick: this.onStateChange}, 
+					"Create Account"
+				)
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+
+
+/**
+ * Still figuring this one out, right now the form can toggle it's state
+ * by moving back and forth from login to create. Do I want the AuthStore
+ * as well coming in and changing state? Seems like multiple sources
+ * of change which is what this whole architecture is trying to stop
+ * in the first place
+ */
+
+function getCurrentView(){
+	return {
+		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN'
+	};
+}
+
+var Login = React.createClass({displayName: 'Login',
+
+	getInitialState: function(){
+		return getCurrentView();
+	},
+	componentDidMount: function() {
+		AuthStore.addChangeListener(this._onChange);
+	},
+	componentWillUnmount: function() {
+		AuthStore.removeChangeListener(this._onChange);
+	},
+	changeFormState: function(state){
+		this.setState(state);
+	},
+	_onChange: function() {
+	    this.setState(getCurrentView());
+	},
+	render: function(){
+		var form;
+
+		switch (this.state.view) {
+			case 'LOGIN': 
+				/*jshint ignore:start */
+				form = LoginForm({
+						changeFormState: this.changeFormState, 
+						email: this.state.email, 
+						error: this.state.error}
+					);
+				/*jshint ignore:end */
+				break;
+			case 'CREATE_ACCOUNT':
+				/*jshint ignore:start */
+				form = CreateAccountForm({
+						changeFormState: this.changeFormState, 
+						email: this.state.email, 
+						error: this.state.error}
+					);
+				/*jshint ignore:end */
+				break;
+			default:
+				/*jshint ignore:start */
+				form = React.DOM.div(null, "Hello ", this.state.email, ".");
+				/*jshint ignore:end */
+		}
+
+		return (
+			/*jshint ignore:start */
+			React.DOM.div(null, 
+				form
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+module.exports = Login;
+
+},{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js":[function(require,module,exports){
+var keyMirror = require('react/lib/keyMirror');
+
+module.exports = keyMirror({
+  AUTH_CREATE: null,
+  AUTH_LOGIN: null,
+  AUTH_LOGOUT: null
+});
+},{"react/lib/keyMirror":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/keyMirror.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js":[function(require,module,exports){
+'use strict';
+
+var Dispatcher = require('Flux').Dispatcher;
+
+var AppDispatcher = new Dispatcher();
+
+module.exports = AppDispatcher;
+},{"Flux":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/index.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js":[function(require,module,exports){
+'use strict';
+
+
+var EventEmitter = require('events').EventEmitter;
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AuthConstants = require('../constants/AuthConstants');
+var merge = require('react/lib/merge');
+var $ = require('zepto');
+
+var CHANGE_EVENT = 'change';
+
+var _auth = {
+    loggedIn: false,
+    error: null
+};
+
+function setLogin(loggedIn) {
+    _auth.loggedIn = loggedIn;
+}
+
+function setAuthError(error) {
+    _auth.error = error;
+}
+
+var AuthStore = merge(EventEmitter.prototype, {
+
+    isLoggedIn: function() {
+        return _auth.loggedIn;
+    },
+
+    emitChange: function() {
+        this.emit(CHANGE_EVENT);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    addChangeListener: function(callback) {
+        this.on(CHANGE_EVENT, callback);
+    },
+
+    /**
+     * @param {function} callback
+     */
+    removeChangeListener: function(callback) {
+        this.removeListener(CHANGE_EVENT, callback);
+    }
+
+});
+
+
+AppDispatcher.register(function(action) {
+    var text;
+
+    switch (action.actionType) {
+        case AuthConstants.LOGIN:
+            var jqr = $.ajax({
+                type: 'POST',
+                url: '/api/session',
+                data: {
+                    email: action.email,
+                    password: action.password
+                }
+            }).done(function(data){
+				setLogin(true);
+            }.bind(this)).fail(function(xhr, type){
+            	setAuthError('Login Failed');
+            }.bind(this)).always(function(){
+            	AuthStore.emitChange();
+            });
+            break;
+
+        default:
+            return true;
+    }
+
+    return true;
+});
+
+module.exports = AuthStore;
+
+},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js","events":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/events/events.js","react/lib/merge":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/merge.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js":[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
-/* Zepto v1.1.4 - zepto event ajax form ie - zeptojs.com/license */
+// Zepto 1.1.4 (generated with Zepto Builder) - zepto ajax deferred callbacks event - zeptojs.com/license 
+//     Zepto.js
+//     (c) 2010-2014 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
 
 var Zepto = (function() {
   var undefined, key, $, classList, emptyArray = [], slice = emptyArray.slice, filter = emptyArray.filter,
@@ -289,7 +733,7 @@ var Zepto = (function() {
 
   // access className property while respecting SVGAnimatedString
   function className(node, value){
-    var klass = node.className,
+    var klass = node.className || '',
         svg   = klass && klass.baseVal !== undefined
 
     if (value === undefined) return svg ? klass.baseVal : klass
@@ -679,7 +1123,7 @@ var Zepto = (function() {
           return element.style[camelize(property)] || computedStyle.getPropertyValue(property)
         else if (isArray(property)) {
           var props = {}
-          $.each(isArray(property) ? property: [property], function(_, prop){
+          $.each(property, function(_, prop){
             props[prop] = (element.style[camelize(prop)] || computedStyle.getPropertyValue(prop))
           })
           return props
@@ -714,6 +1158,7 @@ var Zepto = (function() {
     addClass: function(name){
       if (!name) return this
       return this.each(function(idx){
+        if (!('className' in this)) return
         classList = []
         var cls = className(this), newName = funcArg(this, name, idx, cls)
         newName.split(/\s+/g).forEach(function(klass){
@@ -724,6 +1169,7 @@ var Zepto = (function() {
     },
     removeClass: function(name){
       return this.each(function(idx){
+        if (!('className' in this)) return
         if (name === undefined) return className(this, '')
         classList = className(this)
         funcArg(this, name, idx, classList).split(/\s+/g).forEach(function(klass){
@@ -880,287 +1326,12 @@ var Zepto = (function() {
   return $
 })()
 
+// If `$` is not yet defined, point it to `Zepto`
 window.Zepto = Zepto
 window.$ === undefined && (window.$ = Zepto)
-
-;(function($){
-  var _zid = 1, undefined,
-      slice = Array.prototype.slice,
-      isFunction = $.isFunction,
-      isString = function(obj){ return typeof obj == 'string' },
-      handlers = {},
-      specialEvents={},
-      focusinSupported = 'onfocusin' in window,
-      focus = { focus: 'focusin', blur: 'focusout' },
-      hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }
-
-  specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialEvents.mousemove = 'MouseEvents'
-
-  function zid(element) {
-    return element._zid || (element._zid = _zid++)
-  }
-  function findHandlers(element, event, fn, selector) {
-    event = parse(event)
-    if (event.ns) var matcher = matcherFor(event.ns)
-    return (handlers[zid(element)] || []).filter(function(handler) {
-      return handler
-        && (!event.e  || handler.e == event.e)
-        && (!event.ns || matcher.test(handler.ns))
-        && (!fn       || zid(handler.fn) === zid(fn))
-        && (!selector || handler.sel == selector)
-    })
-  }
-  function parse(event) {
-    var parts = ('' + event).split('.')
-    return {e: parts[0], ns: parts.slice(1).sort().join(' ')}
-  }
-  function matcherFor(ns) {
-    return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)')
-  }
-
-  function eventCapture(handler, captureSetting) {
-    return handler.del &&
-      (!focusinSupported && (handler.e in focus)) ||
-      !!captureSetting
-  }
-
-  function realEvent(type) {
-    return hover[type] || (focusinSupported && focus[type]) || type
-  }
-
-  function add(element, events, fn, data, selector, delegator, capture){
-    var id = zid(element), set = (handlers[id] || (handlers[id] = []))
-    events.split(/\s/).forEach(function(event){
-      if (event == 'ready') return $(document).ready(fn)
-      var handler   = parse(event)
-      handler.fn    = fn
-      handler.sel   = selector
-      // emulate mouseenter, mouseleave
-      if (handler.e in hover) fn = function(e){
-        var related = e.relatedTarget
-        if (!related || (related !== this && !$.contains(this, related)))
-          return handler.fn.apply(this, arguments)
-      }
-      handler.del   = delegator
-      var callback  = delegator || fn
-      handler.proxy = function(e){
-        e = compatible(e)
-        if (e.isImmediatePropagationStopped()) return
-        e.data = data
-        var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
-        if (result === false) e.preventDefault(), e.stopPropagation()
-        return result
-      }
-      handler.i = set.length
-      set.push(handler)
-      if ('addEventListener' in element)
-        element.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-    })
-  }
-  function remove(element, events, fn, selector, capture){
-    var id = zid(element)
-    ;(events || '').split(/\s/).forEach(function(event){
-      findHandlers(element, event, fn, selector).forEach(function(handler){
-        delete handlers[id][handler.i]
-      if ('removeEventListener' in element)
-        element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
-      })
-    })
-  }
-
-  $.event = { add: add, remove: remove }
-
-  $.proxy = function(fn, context) {
-    var args = (2 in arguments) && slice.call(arguments, 2)
-    if (isFunction(fn)) {
-      var proxyFn = function(){ return fn.apply(context, args ? args.concat(slice.call(arguments)) : arguments) }
-      proxyFn._zid = zid(fn)
-      return proxyFn
-    } else if (isString(context)) {
-      if (args) {
-        args.unshift(fn[context], fn)
-        return $.proxy.apply(null, args)
-      } else {
-        return $.proxy(fn[context], fn)
-      }
-    } else {
-      throw new TypeError("expected function")
-    }
-  }
-
-  $.fn.bind = function(event, data, callback){
-    return this.on(event, data, callback)
-  }
-  $.fn.unbind = function(event, callback){
-    return this.off(event, callback)
-  }
-  $.fn.one = function(event, selector, data, callback){
-    return this.on(event, selector, data, callback, 1)
-  }
-
-  var returnTrue = function(){return true},
-      returnFalse = function(){return false},
-      ignoreProperties = /^([A-Z]|returnValue$|layer[XY]$)/,
-      eventMethods = {
-        preventDefault: 'isDefaultPrevented',
-        stopImmediatePropagation: 'isImmediatePropagationStopped',
-        stopPropagation: 'isPropagationStopped'
-      }
-
-  function compatible(event, source) {
-    if (source || !event.isDefaultPrevented) {
-      source || (source = event)
-
-      $.each(eventMethods, function(name, predicate) {
-        var sourceMethod = source[name]
-        event[name] = function(){
-          this[predicate] = returnTrue
-          return sourceMethod && sourceMethod.apply(source, arguments)
-        }
-        event[predicate] = returnFalse
-      })
-
-      if (source.defaultPrevented !== undefined ? source.defaultPrevented :
-          'returnValue' in source ? source.returnValue === false :
-          source.getPreventDefault && source.getPreventDefault())
-        event.isDefaultPrevented = returnTrue
-    }
-    return event
-  }
-
-  function createProxy(event) {
-    var key, proxy = { originalEvent: event }
-    for (key in event)
-      if (!ignoreProperties.test(key) && event[key] !== undefined) proxy[key] = event[key]
-
-    return compatible(proxy, event)
-  }
-
-  $.fn.delegate = function(selector, event, callback){
-    return this.on(event, selector, callback)
-  }
-  $.fn.undelegate = function(selector, event, callback){
-    return this.off(event, selector, callback)
-  }
-
-  $.fn.live = function(event, callback){
-    $(document.body).delegate(this.selector, event, callback)
-    return this
-  }
-  $.fn.die = function(event, callback){
-    $(document.body).undelegate(this.selector, event, callback)
-    return this
-  }
-
-  $.fn.on = function(event, selector, data, callback, one){
-    var autoRemove, delegator, $this = this
-    if (event && !isString(event)) {
-      $.each(event, function(type, fn){
-        $this.on(type, selector, data, fn, one)
-      })
-      return $this
-    }
-
-    if (!isString(selector) && !isFunction(callback) && callback !== false)
-      callback = data, data = selector, selector = undefined
-    if (isFunction(data) || data === false)
-      callback = data, data = undefined
-
-    if (callback === false) callback = returnFalse
-
-    return $this.each(function(_, element){
-      if (one) autoRemove = function(e){
-        remove(element, e.type, callback)
-        return callback.apply(this, arguments)
-      }
-
-      if (selector) delegator = function(e){
-        var evt, match = $(e.target).closest(selector, element).get(0)
-        if (match && match !== element) {
-          evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
-          return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
-        }
-      }
-
-      add(element, event, callback, data, selector, delegator || autoRemove)
-    })
-  }
-  $.fn.off = function(event, selector, callback){
-    var $this = this
-    if (event && !isString(event)) {
-      $.each(event, function(type, fn){
-        $this.off(type, selector, fn)
-      })
-      return $this
-    }
-
-    if (!isString(selector) && !isFunction(callback) && callback !== false)
-      callback = selector, selector = undefined
-
-    if (callback === false) callback = returnFalse
-
-    return $this.each(function(){
-      remove(this, event, callback, selector)
-    })
-  }
-
-  $.fn.trigger = function(event, args){
-    event = (isString(event) || $.isPlainObject(event)) ? $.Event(event) : compatible(event)
-    event._args = args
-    return this.each(function(){
-      // items in the collection might not be DOM elements
-      if('dispatchEvent' in this) this.dispatchEvent(event)
-      else $(this).triggerHandler(event, args)
-    })
-  }
-
-  // triggers event handlers on current element just as if an event occurred,
-  // doesn't trigger an actual event, doesn't bubble
-  $.fn.triggerHandler = function(event, args){
-    var e, result
-    this.each(function(i, element){
-      e = createProxy(isString(event) ? $.Event(event) : event)
-      e._args = args
-      e.target = element
-      $.each(findHandlers(element, event.type || event), function(i, handler){
-        result = handler.proxy(e)
-        if (e.isImmediatePropagationStopped()) return false
-      })
-    })
-    return result
-  }
-
-  // shortcut methods for `.bind(event, fn)` for each event type
-  ;('focusin focusout load resize scroll unload click dblclick '+
-  'mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave '+
-  'change select keydown keypress keyup error').split(' ').forEach(function(event) {
-    $.fn[event] = function(callback) {
-      return callback ?
-        this.bind(event, callback) :
-        this.trigger(event)
-    }
-  })
-
-  ;['focus', 'blur'].forEach(function(name) {
-    $.fn[name] = function(callback) {
-      if (callback) this.bind(name, callback)
-      else this.each(function(){
-        try { this[name]() }
-        catch(e) {}
-      })
-      return this
-    }
-  })
-
-  $.Event = function(type, props) {
-    if (!isString(type)) props = type, type = props.type
-    var event = document.createEvent(specialEvents[type] || 'Events'), bubbles = true
-    if (props) for (var name in props) (name == 'bubbles') ? (bubbles = !!props[name]) : (event[name] = props[name])
-    event.initEvent(type, bubbles, true)
-    return compatible(event)
-  }
-
-})(Zepto)
+//     Zepto.js
+//     (c) 2010-2014 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
 
 ;(function($){
   var jsonpID = 0,
@@ -1509,77 +1680,528 @@ window.$ === undefined && (window.$ = Zepto)
     return params.join('&').replace(/%20/g, '+')
   }
 })(Zepto)
+//     Zepto.js
+//     (c) 2010-2014 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
 
 ;(function($){
-  $.fn.serializeArray = function() {
-    var result = [], el
-    $([].slice.call(this.get(0).elements)).each(function(){
-      el = $(this)
-      var type = el.attr('type')
-      if (this.nodeName.toLowerCase() != 'fieldset' &&
-        !this.disabled && type != 'submit' && type != 'reset' && type != 'button' &&
-        ((type != 'radio' && type != 'checkbox') || this.checked))
-        result.push({
-          name: el.attr('name'),
-          value: el.val()
-        })
+  // Create a collection of callbacks to be fired in a sequence, with configurable behaviour
+  // Option flags:
+  //   - once: Callbacks fired at most one time.
+  //   - memory: Remember the most recent context and arguments
+  //   - stopOnFalse: Cease iterating over callback list
+  //   - unique: Permit adding at most one instance of the same callback
+  $.Callbacks = function(options) {
+    options = $.extend({}, options)
+
+    var memory, // Last fire value (for non-forgettable lists)
+        fired,  // Flag to know if list was already fired
+        firing, // Flag to know if list is currently firing
+        firingStart, // First callback to fire (used internally by add and fireWith)
+        firingLength, // End of the loop when firing
+        firingIndex, // Index of currently firing callback (modified by remove if needed)
+        list = [], // Actual callback list
+        stack = !options.once && [], // Stack of fire calls for repeatable lists
+        fire = function(data) {
+          memory = options.memory && data
+          fired = true
+          firingIndex = firingStart || 0
+          firingStart = 0
+          firingLength = list.length
+          firing = true
+          for ( ; list && firingIndex < firingLength ; ++firingIndex ) {
+            if (list[firingIndex].apply(data[0], data[1]) === false && options.stopOnFalse) {
+              memory = false
+              break
+            }
+          }
+          firing = false
+          if (list) {
+            if (stack) stack.length && fire(stack.shift())
+            else if (memory) list.length = 0
+            else Callbacks.disable()
+          }
+        },
+
+        Callbacks = {
+          add: function() {
+            if (list) {
+              var start = list.length,
+                  add = function(args) {
+                    $.each(args, function(_, arg){
+                      if (typeof arg === "function") {
+                        if (!options.unique || !Callbacks.has(arg)) list.push(arg)
+                      }
+                      else if (arg && arg.length && typeof arg !== 'string') add(arg)
+                    })
+                  }
+              add(arguments)
+              if (firing) firingLength = list.length
+              else if (memory) {
+                firingStart = start
+                fire(memory)
+              }
+            }
+            return this
+          },
+          remove: function() {
+            if (list) {
+              $.each(arguments, function(_, arg){
+                var index
+                while ((index = $.inArray(arg, list, index)) > -1) {
+                  list.splice(index, 1)
+                  // Handle firing indexes
+                  if (firing) {
+                    if (index <= firingLength) --firingLength
+                    if (index <= firingIndex) --firingIndex
+                  }
+                }
+              })
+            }
+            return this
+          },
+          has: function(fn) {
+            return !!(list && (fn ? $.inArray(fn, list) > -1 : list.length))
+          },
+          empty: function() {
+            firingLength = list.length = 0
+            return this
+          },
+          disable: function() {
+            list = stack = memory = undefined
+            return this
+          },
+          disabled: function() {
+            return !list
+          },
+          lock: function() {
+            stack = undefined;
+            if (!memory) Callbacks.disable()
+            return this
+          },
+          locked: function() {
+            return !stack
+          },
+          fireWith: function(context, args) {
+            if (list && (!fired || stack)) {
+              args = args || []
+              args = [context, args.slice ? args.slice() : args]
+              if (firing) stack.push(args)
+              else fire(args)
+            }
+            return this
+          },
+          fire: function() {
+            return Callbacks.fireWith(this, arguments)
+          },
+          fired: function() {
+            return !!fired
+          }
+        }
+
+    return Callbacks
+  }
+})(Zepto)
+//     Zepto.js
+//     (c) 2010-2014 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
+//
+//     Some code (c) 2005, 2013 jQuery Foundation, Inc. and other contributors
+
+;(function($){
+  var slice = Array.prototype.slice
+
+  function Deferred(func) {
+    var tuples = [
+          // action, add listener, listener list, final state
+          [ "resolve", "done", $.Callbacks({once:1, memory:1}), "resolved" ],
+          [ "reject", "fail", $.Callbacks({once:1, memory:1}), "rejected" ],
+          [ "notify", "progress", $.Callbacks({memory:1}) ]
+        ],
+        state = "pending",
+        promise = {
+          state: function() {
+            return state
+          },
+          always: function() {
+            deferred.done(arguments).fail(arguments)
+            return this
+          },
+          then: function(/* fnDone [, fnFailed [, fnProgress]] */) {
+            var fns = arguments
+            return Deferred(function(defer){
+              $.each(tuples, function(i, tuple){
+                var fn = $.isFunction(fns[i]) && fns[i]
+                deferred[tuple[1]](function(){
+                  var returned = fn && fn.apply(this, arguments)
+                  if (returned && $.isFunction(returned.promise)) {
+                    returned.promise()
+                      .done(defer.resolve)
+                      .fail(defer.reject)
+                      .progress(defer.notify)
+                  } else {
+                    var context = this === promise ? defer.promise() : this,
+                        values = fn ? [returned] : arguments
+                    defer[tuple[0] + "With"](context, values)
+                  }
+                })
+              })
+              fns = null
+            }).promise()
+          },
+
+          promise: function(obj) {
+            return obj != null ? $.extend( obj, promise ) : promise
+          }
+        },
+        deferred = {}
+
+    $.each(tuples, function(i, tuple){
+      var list = tuple[2],
+          stateString = tuple[3]
+
+      promise[tuple[1]] = list.add
+
+      if (stateString) {
+        list.add(function(){
+          state = stateString
+        }, tuples[i^1][2].disable, tuples[2][2].lock)
+      }
+
+      deferred[tuple[0]] = function(){
+        deferred[tuple[0] + "With"](this === deferred ? promise : this, arguments)
+        return this
+      }
+      deferred[tuple[0] + "With"] = list.fireWith
+    })
+
+    promise.promise(deferred)
+    if (func) func.call(deferred, deferred)
+    return deferred
+  }
+
+  $.when = function(sub) {
+    var resolveValues = slice.call(arguments),
+        len = resolveValues.length,
+        i = 0,
+        remain = len !== 1 || (sub && $.isFunction(sub.promise)) ? len : 0,
+        deferred = remain === 1 ? sub : Deferred(),
+        progressValues, progressContexts, resolveContexts,
+        updateFn = function(i, ctx, val){
+          return function(value){
+            ctx[i] = this
+            val[i] = arguments.length > 1 ? slice.call(arguments) : value
+            if (val === progressValues) {
+              deferred.notifyWith(ctx, val)
+            } else if (!(--remain)) {
+              deferred.resolveWith(ctx, val)
+            }
+          }
+        }
+
+    if (len > 1) {
+      progressValues = new Array(len)
+      progressContexts = new Array(len)
+      resolveContexts = new Array(len)
+      for ( ; i < len; ++i ) {
+        if (resolveValues[i] && $.isFunction(resolveValues[i].promise)) {
+          resolveValues[i].promise()
+            .done(updateFn(i, resolveContexts, resolveValues))
+            .fail(deferred.reject)
+            .progress(updateFn(i, progressContexts, progressValues))
+        } else {
+          --remain
+        }
+      }
+    }
+    if (!remain) deferred.resolveWith(resolveContexts, resolveValues)
+    return deferred.promise()
+  }
+
+  $.Deferred = Deferred
+})(Zepto)
+
+//     Zepto.js
+//     (c) 2010-2014 Thomas Fuchs
+//     Zepto.js may be freely distributed under the MIT license.
+
+;(function($){
+  var _zid = 1, undefined,
+      slice = Array.prototype.slice,
+      isFunction = $.isFunction,
+      isString = function(obj){ return typeof obj == 'string' },
+      handlers = {},
+      specialEvents={},
+      focusinSupported = 'onfocusin' in window,
+      focus = { focus: 'focusin', blur: 'focusout' },
+      hover = { mouseenter: 'mouseover', mouseleave: 'mouseout' }
+
+  specialEvents.click = specialEvents.mousedown = specialEvents.mouseup = specialEvents.mousemove = 'MouseEvents'
+
+  function zid(element) {
+    return element._zid || (element._zid = _zid++)
+  }
+  function findHandlers(element, event, fn, selector) {
+    event = parse(event)
+    if (event.ns) var matcher = matcherFor(event.ns)
+    return (handlers[zid(element)] || []).filter(function(handler) {
+      return handler
+        && (!event.e  || handler.e == event.e)
+        && (!event.ns || matcher.test(handler.ns))
+        && (!fn       || zid(handler.fn) === zid(fn))
+        && (!selector || handler.sel == selector)
+    })
+  }
+  function parse(event) {
+    var parts = ('' + event).split('.')
+    return {e: parts[0], ns: parts.slice(1).sort().join(' ')}
+  }
+  function matcherFor(ns) {
+    return new RegExp('(?:^| )' + ns.replace(' ', ' .* ?') + '(?: |$)')
+  }
+
+  function eventCapture(handler, captureSetting) {
+    return handler.del &&
+      (!focusinSupported && (handler.e in focus)) ||
+      !!captureSetting
+  }
+
+  function realEvent(type) {
+    return hover[type] || (focusinSupported && focus[type]) || type
+  }
+
+  function add(element, events, fn, data, selector, delegator, capture){
+    var id = zid(element), set = (handlers[id] || (handlers[id] = []))
+    events.split(/\s/).forEach(function(event){
+      if (event == 'ready') return $(document).ready(fn)
+      var handler   = parse(event)
+      handler.fn    = fn
+      handler.sel   = selector
+      // emulate mouseenter, mouseleave
+      if (handler.e in hover) fn = function(e){
+        var related = e.relatedTarget
+        if (!related || (related !== this && !$.contains(this, related)))
+          return handler.fn.apply(this, arguments)
+      }
+      handler.del   = delegator
+      var callback  = delegator || fn
+      handler.proxy = function(e){
+        e = compatible(e)
+        if (e.isImmediatePropagationStopped()) return
+        e.data = data
+        var result = callback.apply(element, e._args == undefined ? [e] : [e].concat(e._args))
+        if (result === false) e.preventDefault(), e.stopPropagation()
+        return result
+      }
+      handler.i = set.length
+      set.push(handler)
+      if ('addEventListener' in element)
+        element.addEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+    })
+  }
+  function remove(element, events, fn, selector, capture){
+    var id = zid(element)
+    ;(events || '').split(/\s/).forEach(function(event){
+      findHandlers(element, event, fn, selector).forEach(function(handler){
+        delete handlers[id][handler.i]
+      if ('removeEventListener' in element)
+        element.removeEventListener(realEvent(handler.e), handler.proxy, eventCapture(handler, capture))
+      })
+    })
+  }
+
+  $.event = { add: add, remove: remove }
+
+  $.proxy = function(fn, context) {
+    var args = (2 in arguments) && slice.call(arguments, 2)
+    if (isFunction(fn)) {
+      var proxyFn = function(){ return fn.apply(context, args ? args.concat(slice.call(arguments)) : arguments) }
+      proxyFn._zid = zid(fn)
+      return proxyFn
+    } else if (isString(context)) {
+      if (args) {
+        args.unshift(fn[context], fn)
+        return $.proxy.apply(null, args)
+      } else {
+        return $.proxy(fn[context], fn)
+      }
+    } else {
+      throw new TypeError("expected function")
+    }
+  }
+
+  $.fn.bind = function(event, data, callback){
+    return this.on(event, data, callback)
+  }
+  $.fn.unbind = function(event, callback){
+    return this.off(event, callback)
+  }
+  $.fn.one = function(event, selector, data, callback){
+    return this.on(event, selector, data, callback, 1)
+  }
+
+  var returnTrue = function(){return true},
+      returnFalse = function(){return false},
+      ignoreProperties = /^([A-Z]|returnValue$|layer[XY]$)/,
+      eventMethods = {
+        preventDefault: 'isDefaultPrevented',
+        stopImmediatePropagation: 'isImmediatePropagationStopped',
+        stopPropagation: 'isPropagationStopped'
+      }
+
+  function compatible(event, source) {
+    if (source || !event.isDefaultPrevented) {
+      source || (source = event)
+
+      $.each(eventMethods, function(name, predicate) {
+        var sourceMethod = source[name]
+        event[name] = function(){
+          this[predicate] = returnTrue
+          return sourceMethod && sourceMethod.apply(source, arguments)
+        }
+        event[predicate] = returnFalse
+      })
+
+      if (source.defaultPrevented !== undefined ? source.defaultPrevented :
+          'returnValue' in source ? source.returnValue === false :
+          source.getPreventDefault && source.getPreventDefault())
+        event.isDefaultPrevented = returnTrue
+    }
+    return event
+  }
+
+  function createProxy(event) {
+    var key, proxy = { originalEvent: event }
+    for (key in event)
+      if (!ignoreProperties.test(key) && event[key] !== undefined) proxy[key] = event[key]
+
+    return compatible(proxy, event)
+  }
+
+  $.fn.delegate = function(selector, event, callback){
+    return this.on(event, selector, callback)
+  }
+  $.fn.undelegate = function(selector, event, callback){
+    return this.off(event, selector, callback)
+  }
+
+  $.fn.live = function(event, callback){
+    $(document.body).delegate(this.selector, event, callback)
+    return this
+  }
+  $.fn.die = function(event, callback){
+    $(document.body).undelegate(this.selector, event, callback)
+    return this
+  }
+
+  $.fn.on = function(event, selector, data, callback, one){
+    var autoRemove, delegator, $this = this
+    if (event && !isString(event)) {
+      $.each(event, function(type, fn){
+        $this.on(type, selector, data, fn, one)
+      })
+      return $this
+    }
+
+    if (!isString(selector) && !isFunction(callback) && callback !== false)
+      callback = data, data = selector, selector = undefined
+    if (isFunction(data) || data === false)
+      callback = data, data = undefined
+
+    if (callback === false) callback = returnFalse
+
+    return $this.each(function(_, element){
+      if (one) autoRemove = function(e){
+        remove(element, e.type, callback)
+        return callback.apply(this, arguments)
+      }
+
+      if (selector) delegator = function(e){
+        var evt, match = $(e.target).closest(selector, element).get(0)
+        if (match && match !== element) {
+          evt = $.extend(createProxy(e), {currentTarget: match, liveFired: element})
+          return (autoRemove || callback).apply(match, [evt].concat(slice.call(arguments, 1)))
+        }
+      }
+
+      add(element, event, callback, data, selector, delegator || autoRemove)
+    })
+  }
+  $.fn.off = function(event, selector, callback){
+    var $this = this
+    if (event && !isString(event)) {
+      $.each(event, function(type, fn){
+        $this.off(type, selector, fn)
+      })
+      return $this
+    }
+
+    if (!isString(selector) && !isFunction(callback) && callback !== false)
+      callback = selector, selector = undefined
+
+    if (callback === false) callback = returnFalse
+
+    return $this.each(function(){
+      remove(this, event, callback, selector)
+    })
+  }
+
+  $.fn.trigger = function(event, args){
+    event = (isString(event) || $.isPlainObject(event)) ? $.Event(event) : compatible(event)
+    event._args = args
+    return this.each(function(){
+      // items in the collection might not be DOM elements
+      if('dispatchEvent' in this) this.dispatchEvent(event)
+      else $(this).triggerHandler(event, args)
+    })
+  }
+
+  // triggers event handlers on current element just as if an event occurred,
+  // doesn't trigger an actual event, doesn't bubble
+  $.fn.triggerHandler = function(event, args){
+    var e, result
+    this.each(function(i, element){
+      e = createProxy(isString(event) ? $.Event(event) : event)
+      e._args = args
+      e.target = element
+      $.each(findHandlers(element, event.type || event), function(i, handler){
+        result = handler.proxy(e)
+        if (e.isImmediatePropagationStopped()) return false
+      })
     })
     return result
   }
 
-  $.fn.serialize = function(){
-    var result = []
-    this.serializeArray().forEach(function(elm){
-      result.push(encodeURIComponent(elm.name) + '=' + encodeURIComponent(elm.value))
-    })
-    return result.join('&')
-  }
-
-  $.fn.submit = function(callback) {
-    if (callback) this.bind('submit', callback)
-    else if (this.length) {
-      var event = $.Event('submit')
-      this.eq(0).trigger(event)
-      if (!event.isDefaultPrevented()) this.get(0).submit()
+  // shortcut methods for `.bind(event, fn)` for each event type
+  ;('focusin focusout load resize scroll unload click dblclick '+
+  'mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave '+
+  'change select keydown keypress keyup error').split(' ').forEach(function(event) {
+    $.fn[event] = function(callback) {
+      return callback ?
+        this.bind(event, callback) :
+        this.trigger(event)
     }
-    return this
-  }
+  })
 
-})(Zepto)
-
-;(function($){
-  // __proto__ doesn't exist on IE<11, so redefine
-  // the Z function to use object extension instead
-  if (!('__proto__' in {})) {
-    $.extend($.zepto, {
-      Z: function(dom, selector){
-        dom = dom || []
-        $.extend(dom, $.fn)
-        dom.selector = selector || ''
-        dom.__Z = true
-        return dom
-      },
-      // this is a kludge but works
-      isZ: function(object){
-        return $.type(object) === 'array' && '__Z' in object
-      }
-    })
-  }
-
-  // getComputedStyle shouldn't freak out when called
-  // without a valid element as argument
-  try {
-    getComputedStyle(undefined)
-  } catch(e) {
-    var nativeGetComputedStyle = getComputedStyle;
-    window.getComputedStyle = function(element){
-      try {
-        return nativeGetComputedStyle(element)
-      } catch(e) {
-        return null
-      }
+  ;['focus', 'blur'].forEach(function(name) {
+    $.fn[name] = function(callback) {
+      if (callback) this.bind(name, callback)
+      else this.each(function(){
+        try { this[name]() }
+        catch(e) {}
+      })
+      return this
     }
+  })
+
+  $.Event = function(type, props) {
+    if (!isString(type)) props = type, type = props.type
+    var event = document.createEvent(specialEvents[type] || 'Events'), bubbles = true
+    if (props) for (var name in props) (name == 'bubbles') ? (bubbles = !!props[name]) : (event[name] = props[name])
+    event.initEvent(type, bubbles, true)
+    return compatible(event)
   }
+
 })(Zepto)
 
 ; browserify_shim__define__module__export__(typeof $ != "undefined" ? $ : window.$);
@@ -1587,301 +2209,629 @@ window.$ === undefined && (window.$ = Zepto)
 }).call(global, undefined, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/app.js":[function(require,module,exports){
-/** @jsx React.DOM */
-'use strict';
+},{}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/index.js":[function(require,module,exports){
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
 
-var React = require('react');
-var Login = require('./components/login.react');
+module.exports.Dispatcher = require('./lib/Dispatcher')
 
-window.React = React;
+},{"./lib/Dispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/lib/Dispatcher.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/lib/Dispatcher.js":[function(require,module,exports){
+/*
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule Dispatcher
+ * @typechecks
+ */
+
+"use strict";
+
+var invariant = require('./invariant');
+
+var _lastID = 1;
+var _prefix = 'ID_';
+
+/**
+ * Dispatcher is used to broadcast payloads to registered callbacks. This is
+ * different from generic pub-sub systems in two ways:
+ *
+ *   1) Callbacks are not subscribed to particular events. Every payload is
+ *      dispatched to every registered callback.
+ *   2) Callbacks can be deferred in whole or part until other callbacks have
+ *      been executed.
+ *
+ * For example, consider this hypothetical flight destination form, which
+ * selects a default city when a country is selected:
+ *
+ *   var flightDispatcher = new Dispatcher();
+ *
+ *   // Keeps track of which country is selected
+ *   var CountryStore = {country: null};
+ *
+ *   // Keeps track of which city is selected
+ *   var CityStore = {city: null};
+ *
+ *   // Keeps track of the base flight price of the selected city
+ *   var FlightPriceStore = {price: null}
+ *
+ * When a user changes the selected city, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'city-update',
+ *     selectedCity: 'paris'
+ *   });
+ *
+ * This payload is digested by `CityStore`:
+ *
+ *   flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'city-update') {
+ *       CityStore.city = payload.selectedCity;
+ *     }
+ *   });
+ *
+ * When the user selects a country, we dispatch the payload:
+ *
+ *   flightDispatcher.dispatch({
+ *     actionType: 'country-update',
+ *     selectedCountry: 'australia'
+ *   });
+ *
+ * This payload is digested by both stores:
+ *
+ *    CountryStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       CountryStore.country = payload.selectedCountry;
+ *     }
+ *   });
+ *
+ * When the callback to update `CountryStore` is registered, we save a reference
+ * to the returned token. Using this token with `waitFor()`, we can guarantee
+ * that `CountryStore` is updated before the callback that updates `CityStore`
+ * needs to query its data.
+ *
+ *   CityStore.dispatchToken = flightDispatcher.register(function(payload) {
+ *     if (payload.actionType === 'country-update') {
+ *       // `CountryStore.country` may not be updated.
+ *       flightDispatcher.waitFor([CountryStore.dispatchToken]);
+ *       // `CountryStore.country` is now guaranteed to be updated.
+ *
+ *       // Select the default city for the new country
+ *       CityStore.city = getDefaultCityForCountry(CountryStore.country);
+ *     }
+ *   });
+ *
+ * The usage of `waitFor()` can be chained, for example:
+ *
+ *   FlightPriceStore.dispatchToken =
+ *     flightDispatcher.register(function(payload) {
+ *       switch (payload.actionType) {
+ *         case 'country-update':
+ *           flightDispatcher.waitFor([CityStore.dispatchToken]);
+ *           FlightPriceStore.price =
+ *             getFlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *
+ *         case 'city-update':
+ *           FlightPriceStore.price =
+ *             FlightPriceStore(CountryStore.country, CityStore.city);
+ *           break;
+ *     }
+ *   });
+ *
+ * The `country-update` payload will be guaranteed to invoke the stores'
+ * registered callbacks in order: `CountryStore`, `CityStore`, then
+ * `FlightPriceStore`.
+ */
+
+  function Dispatcher() {
+    this.$Dispatcher_callbacks = {};
+    this.$Dispatcher_isPending = {};
+    this.$Dispatcher_isHandled = {};
+    this.$Dispatcher_isDispatching = false;
+    this.$Dispatcher_pendingPayload = null;
+  }
+
+  /**
+   * Registers a callback to be invoked with every dispatched payload. Returns
+   * a token that can be used with `waitFor()`.
+   *
+   * @param {function} callback
+   * @return {string}
+   */
+  Dispatcher.prototype.register=function(callback) {
+    var id = _prefix + _lastID++;
+    this.$Dispatcher_callbacks[id] = callback;
+    return id;
+  };
+
+  /**
+   * Removes a callback based on its token.
+   *
+   * @param {string} id
+   */
+  Dispatcher.prototype.unregister=function(id) {
+    invariant(
+      this.$Dispatcher_callbacks[id],
+      'Dispatcher.unregister(...): `%s` does not map to a registered callback.',
+      id
+    );
+    delete this.$Dispatcher_callbacks[id];
+  };
+
+  /**
+   * Waits for the callbacks specified to be invoked before continuing execution
+   * of the current callback. This method should only be used by a callback in
+   * response to a dispatched payload.
+   *
+   * @param {array<string>} ids
+   */
+  Dispatcher.prototype.waitFor=function(ids) {
+    invariant(
+      this.$Dispatcher_isDispatching,
+      'Dispatcher.waitFor(...): Must be invoked while dispatching.'
+    );
+    for (var ii = 0; ii < ids.length; ii++) {
+      var id = ids[ii];
+      if (this.$Dispatcher_isPending[id]) {
+        invariant(
+          this.$Dispatcher_isHandled[id],
+          'Dispatcher.waitFor(...): Circular dependency detected while ' +
+          'waiting for `%s`.',
+          id
+        );
+        continue;
+      }
+      invariant(
+        this.$Dispatcher_callbacks[id],
+        'Dispatcher.waitFor(...): `%s` does not map to a registered callback.',
+        id
+      );
+      this.$Dispatcher_invokeCallback(id);
+    }
+  };
+
+  /**
+   * Dispatches a payload to all registered callbacks.
+   *
+   * @param {object} payload
+   */
+  Dispatcher.prototype.dispatch=function(payload) {
+    invariant(
+      !this.$Dispatcher_isDispatching,
+      'Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.'
+    );
+    this.$Dispatcher_startDispatching(payload);
+    try {
+      for (var id in this.$Dispatcher_callbacks) {
+        if (this.$Dispatcher_isPending[id]) {
+          continue;
+        }
+        this.$Dispatcher_invokeCallback(id);
+      }
+    } finally {
+      this.$Dispatcher_stopDispatching();
+    }
+  };
+
+  /**
+   * Is this Dispatcher currently dispatching.
+   *
+   * @return {boolean}
+   */
+  Dispatcher.prototype.isDispatching=function() {
+    return this.$Dispatcher_isDispatching;
+  };
+
+  /**
+   * Call the callback stored with the given id. Also do some internal
+   * bookkeeping.
+   *
+   * @param {string} id
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_invokeCallback=function(id) {
+    this.$Dispatcher_isPending[id] = true;
+    this.$Dispatcher_callbacks[id](this.$Dispatcher_pendingPayload);
+    this.$Dispatcher_isHandled[id] = true;
+  };
+
+  /**
+   * Set up bookkeeping needed when dispatching.
+   *
+   * @param {object} payload
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_startDispatching=function(payload) {
+    for (var id in this.$Dispatcher_callbacks) {
+      this.$Dispatcher_isPending[id] = false;
+      this.$Dispatcher_isHandled[id] = false;
+    }
+    this.$Dispatcher_pendingPayload = payload;
+    this.$Dispatcher_isDispatching = true;
+  };
+
+  /**
+   * Clear bookkeeping used for dispatching.
+   *
+   * @internal
+   */
+  Dispatcher.prototype.$Dispatcher_stopDispatching=function() {
+    this.$Dispatcher_pendingPayload = null;
+    this.$Dispatcher_isDispatching = false;
+  };
 
 
-/*jshint ignore:start */
-React.renderComponent(
-	Login(null), 
-	document.body);
-/*jshint ignore:end */
-},{"./components/login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/login.react.js":[function(require,module,exports){
-/** @jsx React.DOM */
-'use strict';
+module.exports = Dispatcher;
 
-var React = require('react');
-var $ = require('zepto');
+},{"./invariant":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/lib/invariant.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/lib/invariant.js":[function(require,module,exports){
+/**
+ * Copyright (c) 2014, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule invariant
+ */
 
-var validateEmail = function(email){
-	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   	return re.test(email);
+"use strict";
+
+/**
+ * Use invariant() to assert state which your program assumes to be true.
+ *
+ * Provide sprintf-style format (only %s is supported) and arguments
+ * to provide information about what broke and what you were
+ * expecting.
+ *
+ * The invariant message will be stripped in production, but the invariant
+ * will remain to ensure logic does not differ in production.
+ */
+
+var invariant = function(condition, format, a, b, c, d, e, f) {
+  if (false) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  }
+
+  if (!condition) {
+    var error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
+        'for the full error message and additional helpful warnings.'
+      );
+    } else {
+      var args = [a, b, c, d, e, f];
+      var argIndex = 0;
+      error = new Error(
+        'Invariant Violation: ' +
+        format.replace(/%s/g, function() { return args[argIndex++]; })
+      );
+    }
+
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
 };
 
-var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
-	onStateChange: function(){
-		this.props.changeFormState({view: 'LOGIN'});
-	},
-	getInitialState: function(){
-		return {
-			email: '',
-			password: '',
-			passwordRepeat: '',
-			status: ''
-		};
-	},
-	handleUserInput: function(newInput){
-		this.setState(newInput);
-	},
-	createAccount: function(){
-		if(this.state.password !== this.state.passwordRepeat){
-			this.setState({
-				status: 'Passwords Do not Match'
-			});
-		} else if ( !validateEmail(this.state.email) ){
-			this.setState({
-				status: 'Invalid Email Address'
-			});
-		} else {
-			
-			$.ajax({
-				type: 'POST',
-				url: '/api/users',
-				data: {
-					email: this.state.email,
-					password: this.state.password
-				},
-				success: function(data){
-					this.props.changeFormState({view: 'WELCOME'});
-				}.bind(this),
-				error: function(xhr, type){
-				    console.error('Create Account failed');
-				    this.setState({
-				    	status: 'Create Account Failed'
-				    });
-				}.bind(this)
-			});
-		}
-	},
-	render: function(){
-		return (
-			/*jshint ignore:start */
-			React.DOM.div(null, 
-				React.DOM.span(null, this.state.status), 
-				EmailInput({
-					email: this.state.email, 
-					onUserInput: this.handleUserInput}
-				), 
-				PasswordInput({
-					password: this.state.password, 
-					onUserInput: this.handleUserInput}
-				), 
-				PasswordRepeatInput({
-					onUserInput: this.handleUserInput}
-				), 
-				React.DOM.button({
-					type: "submit", 
-					onClick: this.createAccount}, 
-					"Create Account"
-				), 
-				React.DOM.button({
-					className: "btn-link", 
-					onClick: this.onStateChange}, 
-					"Cancel"
-				)
-			)
-			/*jshint ignore:end */
-		);
-	}
-}); 
+module.exports = invariant;
 
-var EmailInput = React.createClass({displayName: 'EmailInput',
-	setEmail: function(){
-		this.props.onUserInput({
-			email: this.refs.loginEmail.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			/*jshint ignore:start */
-			React.DOM.div({className: "form-control"}, 
-				React.DOM.label({htmlFor: "loginEmail"}, "Email", 
-					React.DOM.input({
-						name: "email", 
-						id: "loginEmail", 
-						type: "email", 
-						ref: "loginEmail", 
-						value: this.props.email, 
-						onChange: this.setEmail}
-					)
-				)
-			)
-			/*jshint ignore:end */
-		);
-	}
-});
+},{}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/events/events.js":[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var PasswordInput = React.createClass({displayName: 'PasswordInput',
-	setPassword: function(){
-		this.props.onUserInput({
-			password: this.refs.loginPassword.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			/*jshint ignore:start */
-			React.DOM.div({className: "form-control"}, 
-				React.DOM.label({htmlFor: "loginPassword"}, "Password", 
-					React.DOM.input({
-						name: "password", 
-						ref: "loginPassword", 
-						id: "loginPassword", 
-						type: "password", 
-						value: this.props.password, 
-						onChange: this.setPassword}
-					)
-				)
-			)
-			/*jshint ignore:end */
-		);
-	}
-});
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
 
-var PasswordRepeatInput = React.createClass({displayName: 'PasswordRepeatInput',
-	setPassword: function(){
-		this.props.onUserInput({
-			passwordRepeat: this.refs.passwordRepeat.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			/*jshint ignore:start */
-			React.DOM.div({className: "form-control"}, 
-				React.DOM.label({htmlFor: "loginPasswordRepeat"}, "Password Repeat", 
-					React.DOM.input({
-						name: "passwordRepeat", 
-						ref: "passwordRepeat", 
-						id: "loginPasswordRepeat", 
-						type: "password", 
-						onChange: this.setPassword}
-					)
-				)
-			)
-			/*jshint ignore:end */
-		);
-	}
-});
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
 
-var LoginForm = React.createClass({displayName: 'LoginForm',
-	onStateChange: function(){
-		this.props.changeFormState({view: 'CREATE_ACCOUNT'});
-	},
-	getInitialState: function(){
-		return {
-			email: '',
-			password: '',
-			status: ''
-		};
-	},
-	handleUserInput: function(newInput){
-		this.setState(newInput);
-	},
-	login: function(){
-		$.ajax({
-			type: 'POST',
-			url: '/api/session',
-			data: {
-				email: this.state.email,
-				password: this.state.password
-			},
-			success: function(data){
-				//TODO: Display welcome state?
-				this.props.changeFormState({view: 'WELCOME'});
-			}.bind(this),
-			error: function(xhr, type){
-			    console.error('Login failed');
-			    this.setState({
-			    	status: 'Login Failed'
-			    });
-			}.bind(this)
-		});
-	},
-	render: function(){
-		var status;
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
 
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
 
-		return (
-			/*jshint ignore:start */
-			React.DOM.div(null, 
-				React.DOM.span(null, this.state.status), 
-				EmailInput({
-					email: this.state.email, 
-					onUserInput: this.handleUserInput}
-				), 
-				PasswordInput({
-					password: this.state.password, 
-					onUserInput: this.handleUserInput}
-				), 
-				React.DOM.button({
-					type: "submit", 
-					onClick: this.login}, 
-					"Submit"
-				), 
-				React.DOM.button({
-					className: "btn-link", 
-					onClick: this.onStateChange}, 
-					"Create Account"
-				)
-			)
-			/*jshint ignore:end */
-		);
-	}
-});
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
 
-var Login = React.createClass({displayName: 'Login',
-	getInitialState: function(){
-		return {
-			view: 'LOGIN'
-		};
-	},
-	changeFormState: function(state){
-		this.setState(state);
-	},
-	render: function(){
-		var form;
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
 
-		switch (this.state.view) {
-			case 'LOGIN': 
-				/*jshint ignore:start */
-				form = LoginForm({
-						changeFormState: this.changeFormState, 
-						email: this.state.email}
-					);
-				/*jshint ignore:end */
-				break;
-			case 'CREATE_ACCOUNT':
-				/*jshint ignore:start */
-				form = CreateAccountForm({
-						changeFormState: this.changeFormState, 
-						email: this.state.email}
-					);
-				/*jshint ignore:end */
-				break;
-			default:
-				/*jshint ignore:start */
-				form = React.DOM.div(null, "Hello.");
-				/*jshint ignore:end */
-		}
+  if (!this._events)
+    this._events = {};
 
-		return (
-			/*jshint ignore:start */
-			React.DOM.div(null, 
-				form
-			)
-			/*jshint ignore:end */
-		);
-	}
-});
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      }
+      throw TypeError('Uncaught, unspecified "error" event.');
+    }
+  }
 
-module.exports = Login;
+  handler = this._events[type];
 
-},{"react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/bower_components/zepto/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        len = arguments.length;
+        args = new Array(len - 1);
+        for (i = 1; i < len; i++)
+          args[i - 1] = arguments[i];
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    len = arguments.length;
+    args = new Array(len - 1);
+    for (i = 1; i < len; i++)
+      args[i - 1] = arguments[i];
+
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    var m;
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  var ret;
+  if (!emitter._events || !emitter._events[type])
+    ret = 0;
+  else if (isFunction(emitter._events[type]))
+    ret = 1;
+  else
+    ret = emitter._events[type].length;
+  return ret;
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+},{}],"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/process/browser.js":[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};

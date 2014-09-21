@@ -2,13 +2,14 @@
 'use strict';
 
 var React = require('react');
-var Login = require('./components/login.react');
+
+var ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
 
 window.React = React;
 
 
 /*jshint ignore:start */
 React.renderComponent(
-	<Login />, 
+	<ApeShitFuckJackedApp />, 
 	document.body);
 /*jshint ignore:end */
