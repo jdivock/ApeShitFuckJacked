@@ -19,7 +19,6 @@ var AuthActions = {
     AuthAPIUtils.create(email, password);
   },
   logout: function(){
-  	console.log('here disp');
   	AppDispatcher.handleViewAction({
   		actionType: ActionTypes.AUTH_LOGOUT
   	});
@@ -494,7 +493,6 @@ var AuthStore = merge(EventEmitter.prototype, {
 
 
 AppDispatcher.register(function(payload) {
-	console.log('caught msg', payload.action);
 	var action = payload.action;
     var text;
 
@@ -506,7 +504,6 @@ AppDispatcher.register(function(payload) {
             setAuth(action.data);
             break;
         case ActionTypes.AUTH_LOGOUT:
-        	console.log('here');
          	resetAuth();
             break;
         default:

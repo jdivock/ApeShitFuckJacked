@@ -18,7 +18,6 @@ var AuthActions = {
     AuthAPIUtils.create(email, password);
   },
   logout: function(){
-  	console.log('here disp');
   	AppDispatcher.handleViewAction({
   		actionType: ActionTypes.AUTH_LOGOUT
   	});
