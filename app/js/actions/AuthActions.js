@@ -10,7 +10,14 @@ var AuthActions = {
    */
   login: function(email, password) {
     AppDispatcher.dispatch({
-      actionType: AuthConstants.LOGIN,
+      actionType: AuthConstants.AUTH_LOGIN,
+      email: email,
+      password: password
+    });
+  },
+  create: function(email, password) {
+    AppDispatcher.dispatch({
+      actionType: AuthConstants.AUTH_CREATE,
       email: email,
       password: password
     });

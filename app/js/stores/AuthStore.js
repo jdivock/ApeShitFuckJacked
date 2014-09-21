@@ -53,7 +53,7 @@ AppDispatcher.register(function(action) {
     var text;
 
     switch (action.actionType) {
-        case AuthConstants.LOGIN:
+        case AuthConstants.AUTH_LOGIN:
             var jqr = $.ajax({
                 type: 'POST',
                 url: '/api/session',
@@ -61,12 +61,28 @@ AppDispatcher.register(function(action) {
                     email: action.email,
                     password: action.password
                 }
-            }).done(function(data){
-				setLogin(true);
-            }.bind(this)).fail(function(xhr, type){
-            	setAuthError('Login Failed');
-            }.bind(this)).always(function(){
-            	AuthStore.emitChange();
+            }).done(function(data) {
+                setLogin(true);
+            }.bind(this)).fail(function(xhr, type) {
+                setAuthError('Login Failed');
+            }.bind(this)).always(function() {
+                AuthStore.emitChange();
+            });
+            break;
+        case AuthConstants.AUTH_CREATE:
+            $.ajax({
+                type: 'POST',
+                url: '/api/users',
+                data: {
+                    email: action.email,
+                    password: action.password
+                }
+            }).done(function(data) {
+                setLogin(true);
+            }.bind(this)).fail(function(xhr, type) {
+                setAuthError('Create Account Failed');
+            }.bind(this)).always(function() {
+                AuthStore.emitChange();
             });
             break;
 

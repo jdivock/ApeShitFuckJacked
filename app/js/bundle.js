@@ -11,7 +11,14 @@ var AuthActions = {
    */
   login: function(email, password) {
     AppDispatcher.dispatch({
-      actionType: AuthConstants.LOGIN,
+      actionType: AuthConstants.AUTH_LOGIN,
+      email: email,
+      password: password
+    });
+  },
+  create: function(email, password) {
+    AppDispatcher.dispatch({
+      actionType: AuthConstants.AUTH_CREATE,
       email: email,
       password: password
     });
@@ -92,32 +99,17 @@ var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 			this.setState({
 				status: 'Invalid Email Address'
 			});
-		} else {
-			
-			$.ajax({
-				type: 'POST',
-				url: '/api/users',
-				data: {
-					email: this.state.email,
-					password: this.state.password
-				},
-				success: function(data){
-					this.props.changeFormState({view: 'WELCOME'});
-				}.bind(this),
-				error: function(xhr, type){
-				    console.error('Create Account failed');
-				    this.setState({
-				    	status: 'Create Account Failed'
-				    });
-				}.bind(this)
-			});
+		} else {	
+			AuthActions.create(this.state.email, this.state.password);
 		}
 	},
 	render: function(){
+		var error = this.props.error || this.state.status;
+
 		return (
 			/*jshint ignore:start */
 			React.DOM.div(null, 
-				React.DOM.span(null, this.state.status), 
+				React.DOM.span(null, error), 
 				EmailInput({
 					email: this.state.email, 
 					onUserInput: this.handleUserInput}
@@ -413,7 +405,7 @@ AppDispatcher.register(function(action) {
     var text;
 
     switch (action.actionType) {
-        case AuthConstants.LOGIN:
+        case AuthConstants.AUTH_LOGIN:
             var jqr = $.ajax({
                 type: 'POST',
                 url: '/api/session',
@@ -421,12 +413,28 @@ AppDispatcher.register(function(action) {
                     email: action.email,
                     password: action.password
                 }
-            }).done(function(data){
-				setLogin(true);
-            }.bind(this)).fail(function(xhr, type){
-            	setAuthError('Login Failed');
-            }.bind(this)).always(function(){
-            	AuthStore.emitChange();
+            }).done(function(data) {
+                setLogin(true);
+            }.bind(this)).fail(function(xhr, type) {
+                setAuthError('Login Failed');
+            }.bind(this)).always(function() {
+                AuthStore.emitChange();
+            });
+            break;
+        case AuthConstants.AUTH_CREATE:
+            $.ajax({
+                type: 'POST',
+                url: '/api/users',
+                data: {
+                    email: action.email,
+                    password: action.password
+                }
+            }).done(function(data) {
+                setLogin(true);
+            }.bind(this)).fail(function(xhr, type) {
+                setAuthError('Create Account Failed');
+            }.bind(this)).always(function() {
+                AuthStore.emitChange();
             });
             break;
 

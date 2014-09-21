@@ -35,32 +35,17 @@ var CreateAccountForm = React.createClass({
 			this.setState({
 				status: 'Invalid Email Address'
 			});
-		} else {
-			
-			$.ajax({
-				type: 'POST',
-				url: '/api/users',
-				data: {
-					email: this.state.email,
-					password: this.state.password
-				},
-				success: function(data){
-					this.props.changeFormState({view: 'WELCOME'});
-				}.bind(this),
-				error: function(xhr, type){
-				    console.error('Create Account failed');
-				    this.setState({
-				    	status: 'Create Account Failed'
-				    });
-				}.bind(this)
-			});
+		} else {	
+			AuthActions.create(this.state.email, this.state.password);
 		}
 	},
 	render: function(){
+		var error = this.props.error || this.state.status;
+
 		return (
 			/*jshint ignore:start */
 			<div>
-				<span>{this.state.status}</span>
+				<span>{error}</span>
 				<EmailInput 
 					email={this.state.email}
 					onUserInput={this.handleUserInput}
