@@ -1596,18 +1596,77 @@ var $ = require('zepto');
 
 window.React = React;
 
+var validateEmail = function(email){
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   	return re.test(email);
+};
+
 var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 	onStateChange: function(){
 		this.props.changeFormState({view: 'LOGIN'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: '',
+			passwordRepeat: '',
+			status: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
+	},
+	createAccount: function(){
+		if(this.state.password !== this.state.passwordRepeat){
+			this.setState({
+				status: 'Passwords Do not Match'
+			});
+		} else if ( !validateEmail(this.state.email) ){
+			this.setState({
+				status: 'Invalid Email Address'
+			});
+		} else {
+			
+			$.ajax({
+				type: 'POST',
+				url: '/api/users',
+				data: {
+					email: this.state.email,
+					password: this.state.password
+				},
+				success: function(data){
+					this.props.changeFormState({view: 'WELCOME'});
+				}.bind(this),
+				error: function(xhr, type){
+				    console.error('Create Account failed');
+				    this.setState({
+				    	status: 'Create Account Failed'
+				    });
+				}.bind(this)
+			});
+		}
 	},
 	render: function(){
 		return (
 			/*jshint ignore:start */
 			React.DOM.div(null, 
-				EmailInput(null), 
-				PasswordInput(null), 
-				PasswordRepeatInput(null), 
-				React.DOM.button(null, "Create Account"), 
+				React.DOM.span(null, this.state.status), 
+				EmailInput({
+					email: this.state.email, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordInput({
+					password: this.state.password, 
+					onUserInput: this.handleUserInput}
+				), 
+				PasswordRepeatInput({
+					onUserInput: this.handleUserInput}
+				), 
+				React.DOM.button({
+					type: "submit", 
+					onClick: this.createAccount}, 
+					"Create Account"
+				), 
 				React.DOM.button({
 					className: "btn-link", 
 					onClick: this.onStateChange}, 
@@ -1672,12 +1731,23 @@ var PasswordInput = React.createClass({displayName: 'PasswordInput',
 });
 
 var PasswordRepeatInput = React.createClass({displayName: 'PasswordRepeatInput',
+	setPassword: function(){
+		this.props.onUserInput({
+			passwordRepeat: this.refs.passwordRepeat.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
 			/*jshint ignore:start */
 			React.DOM.div({className: "form-control"}, 
 				React.DOM.label({htmlFor: "loginPasswordRepeat"}, "Password Repeat", 
-					React.DOM.input({name: "passwordRepeat", id: "loginPasswordRepeat", type: "password"})
+					React.DOM.input({
+						name: "passwordRepeat", 
+						ref: "passwordRepeat", 
+						id: "loginPasswordRepeat", 
+						type: "password", 
+						onChange: this.setPassword}
+					)
 				)
 			)
 			/*jshint ignore:end */

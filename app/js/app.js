@@ -6,18 +6,77 @@ var $ = require('zepto');
 
 window.React = React;
 
+var validateEmail = function(email){
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+   	return re.test(email);
+};
+
 var CreateAccountForm = React.createClass({
 	onStateChange: function(){
 		this.props.changeFormState({view: 'LOGIN'});
+	},
+	getInitialState: function(){
+		return {
+			email: '',
+			password: '',
+			passwordRepeat: '',
+			status: ''
+		};
+	},
+	handleUserInput: function(newInput){
+		this.setState(newInput);
+	},
+	createAccount: function(){
+		if(this.state.password !== this.state.passwordRepeat){
+			this.setState({
+				status: 'Passwords Do not Match'
+			});
+		} else if ( !validateEmail(this.state.email) ){
+			this.setState({
+				status: 'Invalid Email Address'
+			});
+		} else {
+			
+			$.ajax({
+				type: 'POST',
+				url: '/api/users',
+				data: {
+					email: this.state.email,
+					password: this.state.password
+				},
+				success: function(data){
+					this.props.changeFormState({view: 'WELCOME'});
+				}.bind(this),
+				error: function(xhr, type){
+				    console.error('Create Account failed');
+				    this.setState({
+				    	status: 'Create Account Failed'
+				    });
+				}.bind(this)
+			});
+		}
 	},
 	render: function(){
 		return (
 			/*jshint ignore:start */
 			<div>
-				<EmailInput />
-				<PasswordInput />
-				<PasswordRepeatInput />
-				<button>Create Account</button>
+				<span>{this.state.status}</span>
+				<EmailInput 
+					email={this.state.email}
+					onUserInput={this.handleUserInput}
+				/>
+				<PasswordInput 
+					password={this.state.password}
+					onUserInput={this.handleUserInput}
+				/>
+				<PasswordRepeatInput 
+					onUserInput={this.handleUserInput}
+				/>
+				<button 
+					type="submit"
+					onClick={this.createAccount}>
+					Create Account
+				</button>
 				<button 
 					className="btn-link" 
 					onClick={this.onStateChange}>
@@ -82,12 +141,23 @@ var PasswordInput = React.createClass({
 });
 
 var PasswordRepeatInput = React.createClass({
+	setPassword: function(){
+		this.props.onUserInput({
+			passwordRepeat: this.refs.passwordRepeat.getDOMNode().value
+		});
+	},
 	render: function(){
 		return (
 			/*jshint ignore:start */
 			<div className="form-control">
 				<label htmlFor="loginPasswordRepeat">Password Repeat
-					<input name="passwordRepeat" id="loginPasswordRepeat" type="password" />
+					<input 
+						name="passwordRepeat" 
+						ref="passwordRepeat" 
+						id="loginPasswordRepeat" 
+						type="password" 
+						onChange={this.setPassword}
+					/>
 				</label>
 			</div>
 			/*jshint ignore:end */
