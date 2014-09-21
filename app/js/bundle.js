@@ -3,6 +3,9 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AuthConstants = require('../constants/AuthConstants');
+var AuthAPIUtils = require('../utils/AuthAPIUtils');
+
+var ActionTypes = AuthConstants.ActionTypes;
 
 var AuthActions = {
 
@@ -10,27 +13,49 @@ var AuthActions = {
    * @param  {string} text
    */
   login: function(email, password) {
-    AppDispatcher.dispatch({
-      actionType: AuthConstants.AUTH_LOGIN,
-      email: email,
-      password: password
-    });
+    AuthAPIUtils.login(email, password);
   },
   create: function(email, password) {
-    AppDispatcher.dispatch({
-      actionType: AuthConstants.AUTH_CREATE,
-      email: email,
-      password: password
-    });
+    AuthAPIUtils.create(email, password);
   },
   logout: function(){
-  	AppDispatcher.dispatch({
-  		actionType: AuthConstants.AUTH_LOGOUT
+  	console.log('here disp');
+  	AppDispatcher.handleViewAction({
+  		actionType: ActionTypes.AUTH_LOGOUT
   	});
+  	AuthAPIUtils.logout();
   }
 };
 
 module.exports = AuthActions;
+},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js","../utils/AuthAPIUtils":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/utils/AuthAPIUtils.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthServerActions.js":[function(require,module,exports){
+'use strict';
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AuthConstants = require('../constants/AuthConstants');
+
+var ActionTypes = AuthConstants.ActionTypes;
+
+var AuthServerActions = {
+
+  /**
+   * @param  {string} text
+   */
+ recieveLogin: function(data) {
+    AppDispatcher.handleServerAction({
+      actionType: ActionTypes.AUTH_LOGIN,
+      data: data
+    });
+  },
+  recieveCreate: function(data) {
+    AppDispatcher.handleServerAction({
+      actionType: ActionTypes.AUTH_CREATE,
+      data: data
+    });
+  }
+};
+
+module.exports = AuthServerActions;
 },{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/app.js":[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
@@ -278,7 +303,8 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
 
 function getCurrentView(){
 	return {
-		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN'
+		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
+		error: AuthStore.getError()
 	};
 }
 
@@ -352,20 +378,60 @@ module.exports = Login;
 },{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js":[function(require,module,exports){
 var keyMirror = require('react/lib/keyMirror');
 
-module.exports = keyMirror({
-  AUTH_CREATE: null,
-  AUTH_LOGIN: null,
-  AUTH_LOGOUT: null
-});
+module.exports = {
+
+    ActionTypes: keyMirror({
+        AUTH_CREATE: null,
+        AUTH_LOGIN: null,
+        AUTH_LOGOUT: null
+    }),
+
+    PayloadSources: keyMirror({
+        SERVER_ACTION: null,
+        VIEW_ACTION: null
+    })
+
+};
+
 },{"react/lib/keyMirror":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/keyMirror.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js":[function(require,module,exports){
 'use strict';
 
 var Dispatcher = require('Flux').Dispatcher;
+var copyProperties = require('react/lib/copyProperties');
+var AuthConstants = require('../constants/AuthConstants');
 
-var AppDispatcher = new Dispatcher();
+var PayloadSources = AuthConstants.PayloadSources;
+
+var AppDispatcher = copyProperties(new Dispatcher(), {
+
+    /**
+     * @param {object} action The details of the action, including the action's
+     * type and additional data coming from the server.
+     */
+    handleServerAction: function(action) {
+        var payload = {
+            source: PayloadSources.SERVER_ACTION,
+            action: action
+        };
+        this.dispatch(payload);
+    },
+
+    /**
+     * @param {object} action The details of the action, including the action's
+     * type and additional data coming from the view.
+     */
+    handleViewAction: function(action) {
+        var payload = {
+            source: PayloadSources.VIEW_ACTION,
+            action: action
+        };
+        this.dispatch(payload);
+    }
+});
 
 module.exports = AppDispatcher;
-},{"Flux":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/index.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js":[function(require,module,exports){
+
+},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","Flux":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/Flux/index.js","react/lib/copyProperties":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/copyProperties.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js":[function(require,module,exports){
 'use strict';
 
 
@@ -375,6 +441,8 @@ var AuthConstants = require('../constants/AuthConstants');
 var merge = require('react/lib/merge');
 var $ = require('zepto');
 
+var ActionTypes = AuthConstants.ActionTypes;
+
 var CHANGE_EVENT = 'change';
 
 var _auth = {
@@ -382,18 +450,26 @@ var _auth = {
     error: null
 };
 
-function setLogin(loggedIn) {
-    _auth.loggedIn = loggedIn;
+
+function setAuth(auth){
+	_auth = auth;
 }
 
-function setAuthError(error) {
-    _auth.error = error;
+function resetAuth(){
+	_auth = {
+		loggedIn: false,
+    	error: null
+	};
 }
 
 var AuthStore = merge(EventEmitter.prototype, {
 
     isLoggedIn: function() {
         return _auth.loggedIn;
+    },
+
+    getError: function(){
+    	return _auth.error;
     },
 
     emitChange: function() {
@@ -417,67 +493,93 @@ var AuthStore = merge(EventEmitter.prototype, {
 });
 
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function(payload) {
+	console.log('caught msg', payload.action);
+	var action = payload.action;
     var text;
 
     switch (action.actionType) {
-        case AuthConstants.AUTH_LOGIN:
-            var jqr = $.ajax({
-                type: 'POST',
-                url: '/api/session',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).done(function(data) {
-                setLogin(true);
-            }.bind(this)).fail(function(xhr, type) {
-                setAuthError('Login Failed');
-            }.bind(this)).always(function() {
-                AuthStore.emitChange();
-            });
+        case ActionTypes.AUTH_LOGIN:
+			setAuth(action.data);
             break;
-        case AuthConstants.AUTH_CREATE:
-            $.ajax({
-                type: 'POST',
-                url: '/api/users',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).done(function(data) {
-                setLogin(true);
-            }.bind(this)).fail(function(xhr, type) {
-                setAuthError('Create Account Failed');
-            }.bind(this)).always(function() {
-                AuthStore.emitChange();
-            });
+        case ActionTypes.AUTH_CREATE:
+            setAuth(action.data);
             break;
-         case AuthConstants.AUTH_LOGOUT:
-         	$.ajax({
-                type: 'POST',
-                url: '/api/users',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).always(function(){
-            	setLogin(false);
-            	AuthStore.emitChange();
-            });
-
+        case ActionTypes.AUTH_LOGOUT:
+        	console.log('here');
+         	resetAuth();
             break;
-
         default:
             return true;
     }
 
+    AuthStore.emitChange();
     return true;
 });
 
 module.exports = AuthStore;
 
-},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js","events":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/events/events.js","react/lib/merge":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/merge.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js":[function(require,module,exports){
+},{"../constants/AuthConstants":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js","../dispatcher/AppDispatcher":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/dispatcher/AppDispatcher.js","events":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/browserify/node_modules/events/events.js","react/lib/merge":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/lib/merge.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/utils/AuthAPIUtils.js":[function(require,module,exports){
+'use strict';
+
+var AuthServerActions = require('../actions/AuthServerActions');
+var $ = require('zepto');
+
+
+module.exports = {
+
+    login: function(email, password) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/session',
+            data: {
+                email: email,
+                password: password
+            }
+        }).done(function(resp) {
+            var data = resp;
+            data.loggedIn = true;
+
+            AuthServerActions.recieveLogin(data);
+        }).fail(function(xhr, type, resp) {
+            var data = {
+                loggedIn: false,
+                error: JSON.parse(xhr.response).message
+            };
+            AuthServerActions.recieveLogin(data);
+        });
+    },
+    create: function(email, password) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/users',
+            data: {
+                email: email,
+                password: password
+            }
+        }).done(function(resp) {
+            var data = resp;
+            data.loggedIn = true;
+
+            AuthServerActions.recieveCreate(data);
+        }).fail(function(xhr, type) {
+            var data = {
+                loggedIn: false,
+                error: JSON.parse(xhr.response).message
+            };
+            AuthServerActions.recieveCreate(data);
+        });
+    },
+    logout: function() {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/session'
+        });
+    }
+
+};
+
+},{"../actions/AuthServerActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthServerActions.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js":[function(require,module,exports){
 (function (global){
 ;__browserify_shim_require__=require;(function browserifyShim(module, exports, require, define, browserify_shim__define__module__export__) {
 // Zepto 1.1.4 (generated with Zepto Builder) - zepto ajax deferred callbacks event - zeptojs.com/license 

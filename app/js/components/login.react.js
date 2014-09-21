@@ -209,7 +209,8 @@ var LoginForm = React.createClass({
 
 function getCurrentView(){
 	return {
-		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN'
+		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
+		error: AuthStore.getError()
 	};
 }
 

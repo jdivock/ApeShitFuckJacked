@@ -2,6 +2,9 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AuthConstants = require('../constants/AuthConstants');
+var AuthAPIUtils = require('../utils/AuthAPIUtils');
+
+var ActionTypes = AuthConstants.ActionTypes;
 
 var AuthActions = {
 
@@ -9,23 +12,17 @@ var AuthActions = {
    * @param  {string} text
    */
   login: function(email, password) {
-    AppDispatcher.dispatch({
-      actionType: AuthConstants.AUTH_LOGIN,
-      email: email,
-      password: password
-    });
+    AuthAPIUtils.login(email, password);
   },
   create: function(email, password) {
-    AppDispatcher.dispatch({
-      actionType: AuthConstants.AUTH_CREATE,
-      email: email,
-      password: password
-    });
+    AuthAPIUtils.create(email, password);
   },
   logout: function(){
-  	AppDispatcher.dispatch({
-  		actionType: AuthConstants.AUTH_LOGOUT
+  	console.log('here disp');
+  	AppDispatcher.handleViewAction({
+  		actionType: ActionTypes.AUTH_LOGOUT
   	});
+  	AuthAPIUtils.logout();
   }
 };
 

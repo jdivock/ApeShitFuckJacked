@@ -7,6 +7,8 @@ var AuthConstants = require('../constants/AuthConstants');
 var merge = require('react/lib/merge');
 var $ = require('zepto');
 
+var ActionTypes = AuthConstants.ActionTypes;
+
 var CHANGE_EVENT = 'change';
 
 var _auth = {
@@ -14,18 +16,26 @@ var _auth = {
     error: null
 };
 
-function setLogin(loggedIn) {
-    _auth.loggedIn = loggedIn;
+
+function setAuth(auth){
+	_auth = auth;
 }
 
-function setAuthError(error) {
-    _auth.error = error;
+function resetAuth(){
+	_auth = {
+		loggedIn: false,
+    	error: null
+	};
 }
 
 var AuthStore = merge(EventEmitter.prototype, {
 
     isLoggedIn: function() {
         return _auth.loggedIn;
+    },
+
+    getError: function(){
+    	return _auth.error;
     },
 
     emitChange: function() {
@@ -49,61 +59,27 @@ var AuthStore = merge(EventEmitter.prototype, {
 });
 
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function(payload) {
+	console.log('caught msg', payload.action);
+	var action = payload.action;
     var text;
 
     switch (action.actionType) {
-        case AuthConstants.AUTH_LOGIN:
-            var jqr = $.ajax({
-                type: 'POST',
-                url: '/api/session',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).done(function(data) {
-                setLogin(true);
-            }.bind(this)).fail(function(xhr, type) {
-                setAuthError('Login Failed');
-            }.bind(this)).always(function() {
-                AuthStore.emitChange();
-            });
+        case ActionTypes.AUTH_LOGIN:
+			setAuth(action.data);
             break;
-        case AuthConstants.AUTH_CREATE:
-            $.ajax({
-                type: 'POST',
-                url: '/api/users',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).done(function(data) {
-                setLogin(true);
-            }.bind(this)).fail(function(xhr, type) {
-                setAuthError('Create Account Failed');
-            }.bind(this)).always(function() {
-                AuthStore.emitChange();
-            });
+        case ActionTypes.AUTH_CREATE:
+            setAuth(action.data);
             break;
-         case AuthConstants.AUTH_LOGOUT:
-         	$.ajax({
-                type: 'POST',
-                url: '/api/users',
-                data: {
-                    email: action.email,
-                    password: action.password
-                }
-            }).always(function(){
-            	setLogin(false);
-            	AuthStore.emitChange();
-            });
-
+        case ActionTypes.AUTH_LOGOUT:
+        	console.log('here');
+         	resetAuth();
             break;
-
         default:
             return true;
     }
 
+    AuthStore.emitChange();
     return true;
 });
 
