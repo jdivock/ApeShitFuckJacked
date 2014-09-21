@@ -85,6 +85,20 @@ AppDispatcher.register(function(action) {
                 AuthStore.emitChange();
             });
             break;
+         case AuthConstants.AUTH_LOGOUT:
+         	$.ajax({
+                type: 'POST',
+                url: '/api/users',
+                data: {
+                    email: action.email,
+                    password: action.password
+                }
+            }).always(function(){
+            	setLogin(false);
+            	AuthStore.emitChange();
+            });
+
+            break;
 
         default:
             return true;

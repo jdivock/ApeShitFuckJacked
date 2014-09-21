@@ -22,6 +22,11 @@ var AuthActions = {
       email: email,
       password: password
     });
+  },
+  logout: function(){
+  	AppDispatcher.dispatch({
+  		actionType: AuthConstants.AUTH_LOGOUT
+  	});
   }
 };
 
@@ -66,10 +71,11 @@ module.exports = ApeShitFuckJackedApp;
 'use strict';
 
 var React = require('react');
-var $ = require('zepto');
 var AuthStore = require('../stores/AuthStore');
 var AuthActions = require('../actions/AuthActions');
 
+
+//TODO: put me in a utility class
 var validateEmail = function(email){
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
    	return re.test(email);
@@ -293,6 +299,9 @@ var Login = React.createClass({displayName: 'Login',
 	_onChange: function() {
 	    this.setState(getCurrentView());
 	},
+	logout: function(){
+		AuthActions.logout();
+	},
 	render: function(){
 		var form;
 
@@ -317,7 +326,14 @@ var Login = React.createClass({displayName: 'Login',
 				break;
 			default:
 				/*jshint ignore:start */
-				form = React.DOM.div(null, "Hello ", this.state.email, ".");
+				form = React.DOM.div(null, 
+							"Hello ", this.state.email, ".",  
+							React.DOM.button({
+								className: "btn-link", 
+								onClick: this.logout}, 
+								"Logout"
+							)
+						);
 				/*jshint ignore:end */
 		}
 
@@ -333,7 +349,7 @@ var Login = React.createClass({displayName: 'Login',
 
 module.exports = Login;
 
-},{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js","zepto":"/Users/jdivock/Projects/ApeShitFuckJacked/app/vendor/zepto.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js":[function(require,module,exports){
+},{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js":[function(require,module,exports){
 var keyMirror = require('react/lib/keyMirror');
 
 module.exports = keyMirror({
@@ -436,6 +452,20 @@ AppDispatcher.register(function(action) {
             }.bind(this)).always(function() {
                 AuthStore.emitChange();
             });
+            break;
+         case AuthConstants.AUTH_LOGOUT:
+         	$.ajax({
+                type: 'POST',
+                url: '/api/users',
+                data: {
+                    email: action.email,
+                    password: action.password
+                }
+            }).always(function(){
+            	setLogin(false);
+            	AuthStore.emitChange();
+            });
+
             break;
 
         default:

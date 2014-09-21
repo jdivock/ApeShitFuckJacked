@@ -2,10 +2,11 @@
 'use strict';
 
 var React = require('react');
-var $ = require('zepto');
 var AuthStore = require('../stores/AuthStore');
 var AuthActions = require('../actions/AuthActions');
 
+
+//TODO: put me in a utility class
 var validateEmail = function(email){
 	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
    	return re.test(email);
@@ -229,6 +230,9 @@ var Login = React.createClass({
 	_onChange: function() {
 	    this.setState(getCurrentView());
 	},
+	logout: function(){
+		AuthActions.logout();
+	},
 	render: function(){
 		var form;
 
@@ -253,7 +257,14 @@ var Login = React.createClass({
 				break;
 			default:
 				/*jshint ignore:start */
-				form = <div>Hello {this.state.email}.</div>;
+				form = <div>
+							Hello {this.state.email}. 
+							<button 
+								className="btn-link" 
+								onClick={this.logout}>
+								Logout
+							</button>
+						</div>;
 				/*jshint ignore:end */
 		}
 

@@ -21,6 +21,11 @@ var AuthActions = {
       email: email,
       password: password
     });
+  },
+  logout: function(){
+  	AppDispatcher.dispatch({
+  		actionType: AuthConstants.AUTH_LOGOUT
+  	});
   }
 };
 
