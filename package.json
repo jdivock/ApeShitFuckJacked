@@ -2,19 +2,19 @@
   "name": "lifterly",
   "version": "0.0.0",
   "dependencies": {
-    "flux": "^2.0.0",
-    "react": "~0.11.0",
+    "connect-mongo": "~0.4.0",
+    "ejs": "~0.8.4",
+    "evernote": "^1.25.3",
     "express": "~3.4.3",
+    "flux": "^2.0.0",
     "lodash": "~2.4.1",
     "mongoose": "~3.5.5",
     "mongoose-unique-validator": "~0.3.0",
-    "connect-mongo": "~0.4.0",
     "passport": "latest",
     "passport-local": "latest",
-    "ejs": "~0.8.4",
     "passport-twitter": "^1.0.2",
-    "evernote": "^1.25.3",
-    "q": "^1.0.1"
+    "q": "^1.0.1",
+    "react": "~0.11.0"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -28,14 +28,22 @@
     "build-r": "NODE_ENV=production browserify . | uglifyjs -cm > js/bundle.min.js",
     "test-r": "jest"
   },
+  "browser": {
+    "zepto": "./app/bower_components/zepto/zepto.js"
+  },
+  "browserify-shim": {
+    "zepto": "$"
+  },
   "browserify": {
     "transform": [
       "reactify",
-      "envify"
+      "envify",
+      "browserify-shim"
     ]
   },
   "devDependencies": {
     "browserify": "^5.12.0",
+    "browserify-shim": "^3.7.0",
     "connect-livereload": "^0.4.0",
     "envify": "^3.0.0",
     "grunt": "^0.4.5",
