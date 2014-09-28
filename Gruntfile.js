@@ -49,7 +49,8 @@ module.exports = function(grunt) {
         watch: {
             sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['sass:server', 'autoprefixer']
+                tasks: ['compass:server', 'autoprefixer']
+                // tasks: ['sass:server', 'autoprefixer']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -234,7 +235,7 @@ module.exports = function(grunt) {
 
         grunt.task.run([
             'clean:server',
-            // 'concurrent:server',
+            'concurrent:server',
             'autoprefixer',
             'express:dev',
             'open',

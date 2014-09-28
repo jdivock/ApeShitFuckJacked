@@ -45,7 +45,7 @@ var CreateAccountForm = React.createClass({
 
 		return (
 			/*jshint ignore:start */
-			<div>
+			<fieldset>
 				<span>{error}</span>
 				<EmailInput 
 					email={this.state.email}
@@ -59,16 +59,17 @@ var CreateAccountForm = React.createClass({
 					onUserInput={this.handleUserInput}
 				/>
 				<button 
+					className="pure-button"
 					type="submit"
 					onClick={this.createAccount}>
 					Create Account
 				</button>
 				<button 
-					className="btn-link" 
+					className="btn-link pure-button" 
 					onClick={this.onStateChange}>
 					Cancel
 				</button>
-			</div>
+			</fieldset>
 			/*jshint ignore:end */
 		);
 	}
@@ -171,6 +172,7 @@ var LoginForm = React.createClass({
 
 		return (
 			/*jshint ignore:start */
+			<fieldset>
 			<div>
 				<span>{this.props.error}</span>
 				<EmailInput 
@@ -182,16 +184,18 @@ var LoginForm = React.createClass({
 					onUserInput={this.handleUserInput}
 				/>
 				<button 
+					className="pure-button pure-button-primary"
 					type="submit"
 					onClick={this.login}>
 					Submit
 				</button>
 				<button 
-					className="btn-link" 
+					className="pure-button" 
 					onClick={this.onStateChange}>
 					Create Account
 				</button>
 			</div>
+			</fieldset>
 			/*jshint ignore:end */
 		);
 	}
@@ -265,7 +269,7 @@ var Login = React.createClass({
 				form = <div>
 							Hello {this.props.user.name}. 
 							<button 
-								className="btn-link" 
+								className="pure-button" 
 								onClick={this.logout}>
 								Logout
 							</button>
@@ -275,9 +279,9 @@ var Login = React.createClass({
 
 		return (
 			/*jshint ignore:start */
-			<div>
+			<form className="pure-form pure-form-stacked">
 				{form}
-			</div>
+			</form>
 			/*jshint ignore:end */
 		);
 	}

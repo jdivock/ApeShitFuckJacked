@@ -78,6 +78,7 @@ React.renderComponent(
 var React = require('react');
 var Login = require('./Login.react');
 var Workouts = require('./Workouts.react');
+var LiftEntryForm = require('./LiftEntryForm.react');
 
 var AuthStore = require('../stores/AuthStore');
 
@@ -108,6 +109,7 @@ var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp
 			/*jshint ignore:start */
 			React.DOM.div(null, 
 				Login({user: this.state}), 
+				LiftEntryForm(null), 
 				Workouts({workouts: this.state.workouts})
 			)
 			/*jshint ignore:end */
@@ -116,7 +118,27 @@ var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp
 });
 
 module.exports = ApeShitFuckJackedApp;
-},{"../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","./Workouts.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Workouts.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
+},{"../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","./LiftEntryForm.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/LiftEntryForm.react.js","./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","./Workouts.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Workouts.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/LiftEntryForm.react.js":[function(require,module,exports){
+/**
+ * @jsx React.DOM
+ */
+
+ 'use strict';
+
+ var React = require('react');
+
+ var LiftEntryForm = React.createClass({displayName: 'LiftEntryForm',
+ 	render: function() {
+ 		return (
+ 			/*jshint ignore:start */
+ 			React.DOM.div({className: "lift-entry-form"})
+ 			/*jshint ignore:end */
+ 		);
+ 	}
+ });
+
+ module.exports = LiftEntryForm;
+},{"react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -164,7 +186,7 @@ var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 
 		return (
 			/*jshint ignore:start */
-			React.DOM.div(null, 
+			React.DOM.fieldset(null, 
 				React.DOM.span(null, error), 
 				EmailInput({
 					email: this.state.email, 
@@ -178,12 +200,13 @@ var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 					onUserInput: this.handleUserInput}
 				), 
 				React.DOM.button({
+					className: "pure-button", 
 					type: "submit", 
 					onClick: this.createAccount}, 
 					"Create Account"
 				), 
 				React.DOM.button({
-					className: "btn-link", 
+					className: "btn-link pure-button", 
 					onClick: this.onStateChange}, 
 					"Cancel"
 				)
@@ -290,6 +313,7 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
 
 		return (
 			/*jshint ignore:start */
+			React.DOM.fieldset(null, 
 			React.DOM.div(null, 
 				React.DOM.span(null, this.props.error), 
 				EmailInput({
@@ -301,15 +325,17 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
 					onUserInput: this.handleUserInput}
 				), 
 				React.DOM.button({
+					className: "pure-button pure-button-primary", 
 					type: "submit", 
 					onClick: this.login}, 
 					"Submit"
 				), 
 				React.DOM.button({
-					className: "btn-link", 
+					className: "pure-button", 
 					onClick: this.onStateChange}, 
 					"Create Account"
 				)
+			)
 			)
 			/*jshint ignore:end */
 		);
@@ -384,7 +410,7 @@ var Login = React.createClass({displayName: 'Login',
 				form = React.DOM.div(null, 
 							"Hello ", this.props.user.name, ".",  
 							React.DOM.button({
-								className: "btn-link", 
+								className: "pure-button", 
 								onClick: this.logout}, 
 								"Logout"
 							)
@@ -394,7 +420,7 @@ var Login = React.createClass({displayName: 'Login',
 
 		return (
 			/*jshint ignore:start */
-			React.DOM.div(null, 
+			React.DOM.form({className: "pure-form pure-form-stacked"}, 
 				form
 			)
 			/*jshint ignore:end */
@@ -417,10 +443,11 @@ var AuthActions = require('../actions/AuthActions');
  	render: function() {
  		return (
  			/*jshint ignore:start */
- 			React.DOM.div({className: "Lift"}, 
+ 			React.DOM.div({className: "lift"}, 
+ 				React.DOM.h4(null, this.props.lift.name), 
+ 				React.DOM.div(null, "Weight: ", this.props.lift.weight), 
  				React.DOM.div(null, "Reps: ", this.props.lift.reps), 
- 				React.DOM.div(null, "Sets: ", this.props.lift.sets), 
- 				React.DOM.div(null, "Weight: ", this.props.lift.weight)
+ 				React.DOM.div(null, "Sets: ", this.props.lift.sets)
  			)
  			/*jshint ignore:end */
  		);
@@ -437,8 +464,8 @@ var AuthActions = require('../actions/AuthActions');
 
  		return (
  			/*jshint ignore:start */
- 			React.DOM.div({className: "Workout"}, 
- 			React.DOM.span(null, this.props.workout.date), 
+ 			React.DOM.div({className: "workout"}, 
+ 				React.DOM.h3(null, this.props.workout.date), 
  				lifts
  			)
  			/*jshint ignore:end */
@@ -458,7 +485,7 @@ var Workouts = React.createClass({displayName: 'Workouts',
 
 		return (
 			/*jshint ignore:start */
-			React.DOM.div(null, 
+			React.DOM.div({className: "workouts"}, 
 				workouts
 			)
 			/*jshint ignore:end */
