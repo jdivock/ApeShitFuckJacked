@@ -208,9 +208,11 @@ var LoginForm = React.createClass({
  */
 
 function getCurrentView(){
+	console.log(AuthStore.getUser());
 	return {
 		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
-		error: AuthStore.getError()
+		error: AuthStore.getError(),
+		user: AuthStore.getUser()
 	};
 }
 
@@ -259,7 +261,7 @@ var Login = React.createClass({
 			default:
 				/*jshint ignore:start */
 				form = <div>
-							Hello {this.state.email}. 
+							Hello {this.state.user.name}. 
 							<button 
 								className="btn-link" 
 								onClick={this.logout}>

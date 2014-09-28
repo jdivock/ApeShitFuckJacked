@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
+var React = window.React = require('react');
 
 var ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
+var AuthAPIUtil = require('./utils/AuthAPIUtils');
 
-window.React = React;
-
+AuthAPIUtil.getUser();
 
 /*jshint ignore:start */
 React.renderComponent(

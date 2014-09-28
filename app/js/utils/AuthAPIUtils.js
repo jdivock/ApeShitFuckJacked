@@ -5,7 +5,24 @@ var $ = require('zepto');
 
 
 module.exports = {
-
+    getUser: function() {
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me'
+        }).done(function(resp) {
+            var data = resp;
+            if (data._id) {
+                data.loggedIn = true;
+            }
+            AuthServerActions.recieveLogin(data);
+        }).fail(function(xhr, type, resp) {
+            var data = {
+                loggedIn: false,
+                error: JSON.parse(xhr.response).message
+            };
+            AuthServerActions.recieveLogin(data);
+        });
+    },
     login: function(email, password) {
         $.ajax({
             type: 'POST',

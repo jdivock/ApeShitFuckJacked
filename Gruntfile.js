@@ -72,6 +72,9 @@ module.exports = function(grunt) {
                 files: {
                     'app/js/bundle.js': ['app/js/app.js']
                 },
+                browserifyOptions: {
+                    debug: true
+                },
                 options: {
                     watch: true
                 }

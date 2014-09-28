@@ -34,6 +34,10 @@ var AuthStore = merge(EventEmitter.prototype, {
         return _auth.loggedIn;
     },
 
+    getUser: function(){
+        return _auth;
+    },
+
     getError: function(){
     	return _auth.error;
     },

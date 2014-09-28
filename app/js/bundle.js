@@ -59,19 +59,19 @@ module.exports = AuthServerActions;
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
+var React = window.React = require('react');
 
 var ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
+var AuthAPIUtil = require('./utils/AuthAPIUtils');
 
-window.React = React;
-
+AuthAPIUtil.getUser();
 
 /*jshint ignore:start */
 React.renderComponent(
 	ApeShitFuckJackedApp(null), 
 	document.body);
 /*jshint ignore:end */
-},{"./components/ApeShitFuckJackedApp.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js":[function(require,module,exports){
+},{"./components/ApeShitFuckJackedApp.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js","./utils/AuthAPIUtils":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/utils/AuthAPIUtils.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/ApeShitFuckJackedApp.react.js":[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -301,9 +301,11 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
  */
 
 function getCurrentView(){
+	console.log(AuthStore.getUser());
 	return {
 		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
-		error: AuthStore.getError()
+		error: AuthStore.getError(),
+		user: AuthStore.getUser()
 	};
 }
 
@@ -352,7 +354,7 @@ var Login = React.createClass({displayName: 'Login',
 			default:
 				/*jshint ignore:start */
 				form = React.DOM.div(null, 
-							"Hello ", this.state.email, ".",  
+							"Hello ", this.state.user.name, ".",  
 							React.DOM.button({
 								className: "btn-link", 
 								onClick: this.logout}, 
@@ -467,6 +469,10 @@ var AuthStore = merge(EventEmitter.prototype, {
         return _auth.loggedIn;
     },
 
+    getUser: function(){
+        return _auth;
+    },
+
     getError: function(){
     	return _auth.error;
     },
@@ -524,7 +530,24 @@ var $ = require('zepto');
 
 
 module.exports = {
-
+    getUser: function() {
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/me'
+        }).done(function(resp) {
+            var data = resp;
+            if (data._id) {
+                data.loggedIn = true;
+            }
+            AuthServerActions.recieveLogin(data);
+        }).fail(function(xhr, type, resp) {
+            var data = {
+                loggedIn: false,
+                error: JSON.parse(xhr.response).message
+            };
+            AuthServerActions.recieveLogin(data);
+        });
+    },
     login: function(email, password) {
         $.ajax({
             type: 'POST',
