@@ -78,19 +78,37 @@ React.renderComponent(
 var React = require('react');
 var Login = require('./Login.react');
 
+var AuthStore = require('../stores/AuthStore');
+
+
+function getUser(){
+	return AuthStore.getUser();
+}
 
 var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp',
+	getInitialState: function(){
+		return {};
+	},
+	componentDidMount: function() {
+		AuthStore.addChangeListener(this._onChange);
+	},
+	componentWillUnmount: function() {
+		AuthStore.removeChangeListener(this._onChange);
+	},
+	_onChange: function(){
+		this.setState(getUser());
+	},
 	render: function(){
 		return (
 			/*jshint ignore:start */
-			Login(null)
+			Login({user: this.state})
 			/*jshint ignore:end */
 		);
 	}
 });
 
 module.exports = ApeShitFuckJackedApp;
-},{"./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
+},{"../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -301,7 +319,7 @@ var LoginForm = React.createClass({displayName: 'LoginForm',
  */
 
 function getCurrentView(){
-	console.log(AuthStore.getUser());
+
 	return {
 		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
 		error: AuthStore.getError(),
@@ -312,27 +330,22 @@ function getCurrentView(){
 var Login = React.createClass({displayName: 'Login',
 
 	getInitialState: function(){
-		return getCurrentView();
+		return {
+			view: 'LOGIN'
+		};
 	},
-	componentDidMount: function() {
-		AuthStore.addChangeListener(this._onChange);
-	},
-	componentWillUnmount: function() {
-		AuthStore.removeChangeListener(this._onChange);
-	},
+	
 	changeFormState: function(state){
 		this.setState(state);
-	},
-	_onChange: function() {
-	    this.setState(getCurrentView());
 	},
 	logout: function(){
 		AuthActions.logout();
 	},
 	render: function(){
+		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
 		var form;
 
-		switch (this.state.view) {
+		switch (view) {
 			case 'LOGIN': 
 				/*jshint ignore:start */
 				form = LoginForm({
@@ -354,7 +367,7 @@ var Login = React.createClass({displayName: 'Login',
 			default:
 				/*jshint ignore:start */
 				form = React.DOM.div(null, 
-							"Hello ", this.state.user.name, ".",  
+							"Hello ", this.props.user.name, ".",  
 							React.DOM.button({
 								className: "btn-link", 
 								onClick: this.logout}, 

@@ -208,7 +208,7 @@ var LoginForm = React.createClass({
  */
 
 function getCurrentView(){
-	console.log(AuthStore.getUser());
+
 	return {
 		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
 		error: AuthStore.getError(),
@@ -218,28 +218,28 @@ function getCurrentView(){
 
 var Login = React.createClass({
 
+	/* 
+	 * Keeping email in here to hold between login/create forms
+	 */
 	getInitialState: function(){
-		return getCurrentView();
+		return {
+			view: 'LOGIN'
+			email: null,
+			error: null
+		};
 	},
-	componentDidMount: function() {
-		AuthStore.addChangeListener(this._onChange);
-	},
-	componentWillUnmount: function() {
-		AuthStore.removeChangeListener(this._onChange);
-	},
+	
 	changeFormState: function(state){
 		this.setState(state);
-	},
-	_onChange: function() {
-	    this.setState(getCurrentView());
 	},
 	logout: function(){
 		AuthActions.logout();
 	},
 	render: function(){
+		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
 		var form;
 
-		switch (this.state.view) {
+		switch (view) {
 			case 'LOGIN': 
 				/*jshint ignore:start */
 				form = <LoginForm 
@@ -261,7 +261,7 @@ var Login = React.createClass({
 			default:
 				/*jshint ignore:start */
 				form = <div>
-							Hello {this.state.user.name}. 
+							Hello {this.props.user.name}. 
 							<button 
 								className="btn-link" 
 								onClick={this.logout}>
