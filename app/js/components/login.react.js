@@ -223,7 +223,7 @@ var Login = React.createClass({
 	 */
 	getInitialState: function(){
 		return {
-			view: 'LOGIN'
+			view: 'LOGIN',
 			email: null,
 			error: null
 		};
@@ -238,6 +238,8 @@ var Login = React.createClass({
 	render: function(){
 		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
 		var form;
+
+		console.log('LOGIN PROPS', this.props);
 
 		switch (view) {
 			case 'LOGIN': 

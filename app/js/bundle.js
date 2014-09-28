@@ -77,6 +77,7 @@ React.renderComponent(
 
 var React = require('react');
 var Login = require('./Login.react');
+var Workouts = require('./Workouts.react');
 
 var AuthStore = require('../stores/AuthStore');
 
@@ -87,7 +88,10 @@ function getUser(){
 
 var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp',
 	getInitialState: function(){
-		return {};
+		return {
+			user: {},
+			workouts: []
+		};
 	},
 	componentDidMount: function() {
 		AuthStore.addChangeListener(this._onChange);
@@ -99,16 +103,20 @@ var ApeShitFuckJackedApp = React.createClass({displayName: 'ApeShitFuckJackedApp
 		this.setState(getUser());
 	},
 	render: function(){
+		console.log(this.state);
 		return (
 			/*jshint ignore:start */
-			Login({user: this.state})
+			React.DOM.div(null, 
+				Login({user: this.state}), 
+				Workouts({workouts: this.state.workouts})
+			)
 			/*jshint ignore:end */
 		);
 	}
 });
 
 module.exports = ApeShitFuckJackedApp;
-},{"../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
+},{"../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","./Login.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js","./Workouts.react":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Workouts.react.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Login.react.js":[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -329,9 +337,14 @@ function getCurrentView(){
 
 var Login = React.createClass({displayName: 'Login',
 
+	/* 
+	 * Keeping email in here to hold between login/create forms
+	 */
 	getInitialState: function(){
 		return {
-			view: 'LOGIN'
+			view: 'LOGIN',
+			email: null,
+			error: null
 		};
 	},
 	
@@ -344,6 +357,8 @@ var Login = React.createClass({displayName: 'Login',
 	render: function(){
 		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
 		var form;
+
+		console.log('LOGIN PROPS', this.props);
 
 		switch (view) {
 			case 'LOGIN': 
@@ -389,6 +404,69 @@ var Login = React.createClass({displayName: 'Login',
 
 module.exports = Login;
 
+},{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/components/Workouts.react.js":[function(require,module,exports){
+/** @jsx React.DOM */
+
+'use strict';
+
+var React = require('react');
+var AuthStore = require('../stores/AuthStore');
+var AuthActions = require('../actions/AuthActions');
+
+ var Lift = React.createClass({displayName: 'Lift',
+ 	render: function() {
+ 		return (
+ 			/*jshint ignore:start */
+ 			React.DOM.div({className: "Lift"}, 
+ 				React.DOM.div(null, "Reps: ", this.props.lift.reps), 
+ 				React.DOM.div(null, "Sets: ", this.props.lift.sets), 
+ 				React.DOM.div(null, "Weight: ", this.props.lift.weight)
+ 			)
+ 			/*jshint ignore:end */
+ 		);
+ 	}
+ });
+
+ var Workout = React.createClass({displayName: 'Workout',
+ 	render: function() {
+ 		var lifts = this.props.workout.lifts.map(function(lift, idx){
+ 			/*jshint ignore:start */
+ 			return Lift({key: idx, lift: lift})
+ 			/*jshint ignore:end */
+ 		});
+
+ 		return (
+ 			/*jshint ignore:start */
+ 			React.DOM.div({className: "Workout"}, 
+ 			React.DOM.span(null, this.props.workout.date), 
+ 				lifts
+ 			)
+ 			/*jshint ignore:end */
+ 		);
+ 	}
+ });
+
+
+var Workouts = React.createClass({displayName: 'Workouts',
+	render: function() {
+
+		var workouts = this.props.workouts.map(function(workout, idx){
+			/*jshint ignore:start */
+			return Workout({key: idx, workout: workout})
+			/*jshint ignore:end */
+		});
+
+		return (
+			/*jshint ignore:start */
+			React.DOM.div(null, 
+				workouts
+			)
+			/*jshint ignore:end */
+		);
+	}
+});
+
+ module.exports = Workouts;
 },{"../actions/AuthActions":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/actions/AuthActions.js","../stores/AuthStore":"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/stores/AuthStore.js","react":"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/react/react.js"}],"/Users/jdivock/Projects/ApeShitFuckJacked/app/js/constants/AuthConstants.js":[function(require,module,exports){
 var keyMirror = require('react/lib/keyMirror');
 

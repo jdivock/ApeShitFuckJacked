@@ -3,6 +3,7 @@
 
 var React = require('react');
 var Login = require('./Login.react');
+var Workouts = require('./Workouts.react');
 
 var AuthStore = require('../stores/AuthStore');
 
@@ -13,7 +14,10 @@ function getUser(){
 
 var ApeShitFuckJackedApp = React.createClass({
 	getInitialState: function(){
-		return {};
+		return {
+			user: {},
+			workouts: []
+		};
 	},
 	componentDidMount: function() {
 		AuthStore.addChangeListener(this._onChange);
@@ -25,9 +29,13 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.setState(getUser());
 	},
 	render: function(){
+		console.log(this.state);
 		return (
 			/*jshint ignore:start */
-			<Login user={this.state}/>
+			<div>
+				<Login user={this.state}/>
+				<Workouts workouts={this.state.workouts} />
+			</div>
 			/*jshint ignore:end */
 		);
 	}
