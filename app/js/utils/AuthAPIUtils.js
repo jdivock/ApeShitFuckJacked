@@ -5,6 +5,22 @@ var $ = require('zepto');
 
 
 module.exports = {
+    saveWorkout: function(workout){
+        console.log(workout);
+
+        $.ajax({
+            type: 'POST',
+            url: '/api/users/me/workout',
+            data: JSON.stringify(workout),
+            headers: {'Accept': 'application/json'},
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
+        }).done(function(resp) {
+            AuthServerActions.workoutAdded('success', resp);
+        }).fail(function(xhr, type, resp) {
+            AuthServerActions.workoutAdded('fail', resp);
+        });
+    },
     getUser: function() {
         $.ajax({
             type: 'GET',

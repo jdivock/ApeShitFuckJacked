@@ -165,7 +165,8 @@ var LoginForm = React.createClass({
 	handleUserInput: function(newInput){
 		this.setState(newInput);
 	},
-	login: function(){
+	login: function(e){
+		e.preventDefault();
 		AuthActions.login(this.state.email, this.state.password);
 	},
 	render: function(){
@@ -185,7 +186,6 @@ var LoginForm = React.createClass({
 				/>
 				<button 
 					className="pure-button pure-button-primary"
-					type="submit"
 					onClick={this.login}>
 					Submit
 				</button>
@@ -243,8 +243,6 @@ var Login = React.createClass({
 		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
 		var form;
 
-		console.log('LOGIN PROPS', this.props);
-
 		switch (view) {
 			case 'LOGIN': 
 				/*jshint ignore:start */
@@ -266,7 +264,7 @@ var Login = React.createClass({
 				break;
 			default:
 				/*jshint ignore:start */
-				form = <div>
+				form = <div className="login-greeting">
 							Hello {this.props.user.name}. 
 							<button 
 								className="pure-button" 
@@ -279,7 +277,7 @@ var Login = React.createClass({
 
 		return (
 			/*jshint ignore:start */
-			<form className="pure-form pure-form-stacked">
+			<form className="login-form pure-form pure-form-stacked">
 				{form}
 			</form>
 			/*jshint ignore:end */

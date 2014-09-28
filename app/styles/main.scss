@@ -1,16 +1,39 @@
 body {
-	padding: 0 2rem 2rem 2rem;
+    padding: 0 2rem 2rem 2rem;
 }
+
+/* LOGIN FORM */
+
+.login-form {
+    padding-bottom: 1rem;
+}
+.login-greeting {
+    button {
+        margin-left: 1rem;
+    }
+}
+/* WORKOUT VIEW */
 
 .workout {
-	overflow: hidden;
+    overflow: hidden;
 }
-
 .lift {
-	h4 {
-		margin-top: 0;
+    h4 {
+        margin-top: 0;
+    }
+    float:left;
+    padding:0 1rem;
+}
+/* WORKOUT ENTRY FORM */
+.workout-input {
+	button {
+		margin-right: .5rem;
 	}
-
-	float: left;
-	padding: 0 1rem;
+}
+.lift-inputs {
+    overflow: hidden;
+}
+.lift-input {
+    float: left;
+    padding-right: 1rem;
 }

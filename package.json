@@ -61,6 +61,7 @@
     "grunt-sass": "^0.14.1",
     "jest-cli": "^0.1.18",
     "load-grunt-tasks": "^0.6.0",
+    "lodash": "^2.4.1",
     "reactify": "^0.14.0",
     "time-grunt": "^1.0.0",
     "uglify-js": "^2.4.15",

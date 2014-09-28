@@ -4,7 +4,7 @@
 var React = require('react');
 var Login = require('./Login.react');
 var Workouts = require('./Workouts.react');
-var LiftEntryForm = require('./LiftEntryForm.react');
+var WorkoutEntryForm = require('./WorkoutEntryForm.react');
 
 var AuthStore = require('../stores/AuthStore');
 
@@ -35,7 +35,7 @@ var ApeShitFuckJackedApp = React.createClass({
 			/*jshint ignore:start */
 			<div>
 				<Login user={this.state}/>
-				<LiftEntryForm />
+				<WorkoutEntryForm />
 				<Workouts workouts={this.state.workouts} />
 			</div>
 			/*jshint ignore:end */

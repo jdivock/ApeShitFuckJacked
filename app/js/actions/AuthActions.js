@@ -22,6 +22,14 @@ var AuthActions = {
   		actionType: ActionTypes.AUTH_LOGOUT
   	});
   	AuthAPIUtils.logout();
+  },
+
+  /*
+   * Fire off save here, will update application state when server
+   * returns success
+   */
+  saveWorkout: function(workout){
+    AuthAPIUtils.saveWorkout(workout);
   }
 };
 
