@@ -2,13 +2,18 @@
 
 'use strict';
 
-var React = window.React = require('react');
+var React = window.React = require('react'),
+	Context = require('./lib/Context'),
+	AuthStore = require('./stores/AuthStore');
 
 var ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
 var AuthAPIUtil = require('./utils/AuthAPIUtils');
 
-AuthAPIUtil.getUser();
+Context.registerStore(AuthStore);
+
+var context = new Context({});
+
 
 React.renderComponent(
-	<ApeShitFuckJackedApp />, 
+	<ApeShitFuckJackedApp context={context.getComponentContext()}/>, 
 	document.body);

@@ -1,87 +1,47 @@
 'use strict';
 
 
-var EventEmitter = require('events').EventEmitter;
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var AuthConstants = require('../constants/AuthConstants');
-var merge = require('react/lib/merge');
+var EventEmitter = require('events').EventEmitter,
+    BaseStore = require('dispatchr/utils/BaseStore'),
+    debug = require('debug')('App:AuthStore'),
+    util = require('util');
 
-var ActionTypes = AuthConstants.ActionTypes;
 
-var CHANGE_EVENT = 'change';
+function AuthStore(dispatcher) {
+    this.dispatcher = dispatcher;
+    this.auth = {
+        loggedIn: false,
+        error: null
+    };
+}
 
-var _auth = {
-    loggedIn: false,
-    error: null
+AuthStore.storeName = 'AuthStore';
+AuthStore.handlers = {
+    'AUTH_CREATE': 'setAuth',
+    'AUTH_LOGIN': 'setAuth',
+    'AUTH_LOGOUT': 'resetAuth'
 };
 
+util.inherits(AuthStore, BaseStore);
 
-function setAuth(auth){
-	_auth = auth;
-}
+AuthStore.prototype.setAuth = function(auth){
+    debug('setting auth', auth);
 
-function resetAuth(){
-	_auth = {
-		loggedIn: false,
-    	error: null
-	};
-}
+    this.auth = auth;
+    this.emitChange();
+};
 
-var AuthStore = merge(EventEmitter.prototype, {
+AuthStore.prototype.resetAuth = function(){
+    this.auth.loggedIn = false;
+    this.emitChange();
+};
 
-    isLoggedIn: function() {
-        return _auth.loggedIn;
-    },
+AuthStore.prototype.getUser = function(){
+    return this.auth;
+};
 
-    getUser: function(){
-        return _auth;
-    },
-
-    getError: function(){
-    	return _auth.error;
-    },
-
-    emitChange: function() {
-        this.emit(CHANGE_EVENT);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    addChangeListener: function(callback) {
-        this.on(CHANGE_EVENT, callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    removeChangeListener: function(callback) {
-        this.removeListener(CHANGE_EVENT, callback);
-    }
-
-});
-
-
-AppDispatcher.register(function(payload) {
-	var action = payload.action;
-    var text;
-
-    switch (action.actionType) {
-        case ActionTypes.AUTH_LOGIN:
-			setAuth(action.data);
-            break;
-        case ActionTypes.AUTH_CREATE:
-            setAuth(action.data);
-            break;
-        case ActionTypes.AUTH_LOGOUT:
-         	resetAuth();
-            break;
-        default:
-            return true;
-    }
-
-    AuthStore.emitChange();
-    return true;
-});
+AuthStore.prototype.getError = function(){
+    return this.auth.error;
+};
 
 module.exports = AuthStore;

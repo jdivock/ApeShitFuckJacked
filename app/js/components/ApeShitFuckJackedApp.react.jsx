@@ -1,44 +1,46 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
-var Login = require('./Login.react');
-var Workouts = require('./Workouts.react');
-var WorkoutEntryForm = require('./WorkoutEntryForm.react');
+var React = require('react'),
+	Login = require('./Login.react'),
+	Workouts = require('./Workouts.react'),
+	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
+	AuthStore = require('../stores/AuthStore'),
+	AuthActions = require('../actions/AuthActions');
 
-var AuthStore = require('../stores/AuthStore');
-
-
-function getUser(){
-	return AuthStore.getUser();
-}
 
 var ApeShitFuckJackedApp = React.createClass({
 	getInitialState: function(){
+		var context = this.props.context;
+
+		context.executeAction(AuthActions.getUser);
+
+
+		this.AuthStore = context.getStore(AuthStore);
 		return {
 			user: {},
 			workouts: []
 		};
 	},
 	componentDidMount: function() {
-		AuthStore.addChangeListener(this._onChange);
+		this.AuthStore.addChangeListener(this._onChange);
 	},
 	componentWillUnmount: function() {
-		AuthStore.removeChangeListener(this._onChange);
+		this.AuthStore.removeChangeListener(this._onChange);
+	},
+	_getUser: function(){
+		return this.AuthStore.getUser();
 	},
 	_onChange: function(){
-		this.setState(getUser());
+		this.setState(this._getUser());
 	},
 	render: function(){
-		// console.log(this.state);
 		return (
-			/*jshint ignore:start */
 			<div>
-				<Login user={this.state}/>
+				<Login user={this.state} context={this.props.context}/>
 				<WorkoutEntryForm />
 				<Workouts workouts={this.state.workouts} />
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });

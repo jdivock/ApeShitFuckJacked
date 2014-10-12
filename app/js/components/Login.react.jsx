@@ -2,7 +2,6 @@
 'use strict';
 
 var React = require('react');
-var AuthStore = require('../stores/AuthStore');
 var AuthActions = require('../actions/AuthActions');
 
 
@@ -157,6 +156,7 @@ var LoginForm = React.createClass({
 		this.props.changeFormState({view: 'CREATE_ACCOUNT'});
 	},
 	getInitialState: function(){
+
 		return {
 			email: '',
 			password: ''
@@ -167,7 +167,10 @@ var LoginForm = React.createClass({
 	},
 	login: function(e){
 		e.preventDefault();
-		AuthActions.login(this.state.email, this.state.password);
+		this.props.context.executeAction(AuthActions.login, {
+			email: this.state.email,
+			password: this.state.password
+		});
 	},
 	render: function(){
 
@@ -211,14 +214,14 @@ var LoginForm = React.createClass({
  * in the first place
  */
 
-function getCurrentView(){
+// function getCurrentView(){
 
-	return {
-		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
-		error: AuthStore.getError(),
-		user: AuthStore.getUser()
-	};
-}
+// 	return {
+// 		view: AuthStore.isLoggedIn() ? 'DEFAULT' : 'LOGIN',
+// 		error: AuthStore.getError(),
+// 		user: AuthStore.getUser()
+// 	};
+// }
 
 var Login = React.createClass({
 
@@ -236,8 +239,10 @@ var Login = React.createClass({
 	changeFormState: function(state){
 		this.setState(state);
 	},
-	logout: function(){
-		AuthActions.logout();
+	logout: function(e){
+		e.preventDefault();
+		console.log('logging out');
+		this.props.context.executeAction(AuthActions.logout);
 	},
 	render: function(){
 		var view = this.props.user.loggedIn ? 'DEFAULT' : this.state.view;
@@ -250,6 +255,7 @@ var Login = React.createClass({
 						changeFormState={this.changeFormState}
 						email={this.state.email}
 						error={this.state.error}
+						context={this.props.context}
 					/>;
 				/*jshint ignore:end */
 				break;
@@ -259,6 +265,7 @@ var Login = React.createClass({
 						changeFormState={this.changeFormState}
 						email={this.state.email}
 						error={this.state.error}
+						context={this.props.context}
 					/>;
 				/*jshint ignore:end */
 				break;
