@@ -24,6 +24,11 @@ var liftTypes = [
 ];
 
 var LiftSelect = React.createClass({
+	getInitialState: function(){
+		this.props.updateLiftInput('name', liftTypes[0]);
+
+		return {};
+	},
 	changeLiftType: function(){
 		this.props.updateLiftInput('name', this.refs.liftTypeOption.getDOMNode().value);
 	},
@@ -37,7 +42,11 @@ var LiftSelect = React.createClass({
 
 		return (
 			/*jshint ignore:start */
-			<select className="lift-select" ref="liftTypeOption" onChange={this.changeLiftType}>
+			<select 
+				className="lift-select" 
+				ref="liftTypeOption" 
+				onChange={this.changeLiftType}
+			>
 				{liftOptions}
 			</select>
 			/*jshint ignore:end */
@@ -87,6 +96,27 @@ var SetInput = React.createClass({
 	}
 });
 
+var WeightInput = React.createClass({
+	changeWeight: function(){
+		this.props.updateLiftInput('weight', this.refs.weight.getDOMNode().value);
+	},
+	render: function() {
+		return (
+			/*jshint ignore:start */
+			<div className="form-control">
+				<label className="weight-input" htmlFor={'weight-input' + this.props.idx}>Weight</label>
+				<input 
+					type="number" 
+					ref="weight" 
+					id={'weight-input' + this.props.idx} 
+					onChange={this.changeWeight}
+				/>
+			</div>
+			/*jshint ignore:end */
+		);
+	}
+});
+
 
 var LiftInput = React.createClass({
 	updateLiftInput: function(key, value){
@@ -103,6 +133,7 @@ var LiftInput = React.createClass({
 			/*jshint ignore:start */
 			<div className="lift-input">
 				<LiftSelect idx={this.props.key} updateLiftInput={this.updateLiftInput}/>
+				<WeightInput idx={this.props.key} updateLiftInput={this.updateLiftInput}/>
  				<RepInput idx={this.props.key} updateLiftInput={this.updateLiftInput}/>
  				<SetInput idx={this.props.key} updateLiftInput={this.updateLiftInput}/>
 			</div>
