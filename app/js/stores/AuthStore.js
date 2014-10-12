@@ -11,7 +11,8 @@ function AuthStore(dispatcher) {
     this.dispatcher = dispatcher;
     this.auth = {
         loggedIn: false,
-        error: null
+        error: null,
+        workouts: []
     };
 }
 
@@ -19,10 +20,17 @@ AuthStore.storeName = 'AuthStore';
 AuthStore.handlers = {
     'AUTH_CREATE': 'setAuth',
     'AUTH_LOGIN': 'setAuth',
-    'AUTH_LOGOUT': 'resetAuth'
+    'AUTH_LOGOUT': 'resetAuth',
+    'WORKOUT_ADDED': 'updateWorkout'
 };
 
 util.inherits(AuthStore, BaseStore);
+
+AuthStore.prototype.updateWorkout = function(workout){
+    debug('updating workouts', workout);
+    this.auth.workouts.unshift(workout);
+    this.emitChange();
+};
 
 AuthStore.prototype.setAuth = function(auth){
     debug('setting auth', auth);
@@ -32,15 +40,21 @@ AuthStore.prototype.setAuth = function(auth){
 };
 
 AuthStore.prototype.resetAuth = function(){
-    this.auth.loggedIn = false;
+    debug('resetting auth');
+    this.auth = {
+        loggedIn: false,
+        workouts: []
+    };
     this.emitChange();
 };
 
 AuthStore.prototype.getUser = function(){
+    debug('getting user', this.auth);
     return this.auth;
 };
 
 AuthStore.prototype.getError = function(){
+    debug('getting error');
     return this.auth.error;
 };
 

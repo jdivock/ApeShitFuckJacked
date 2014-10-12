@@ -4,10 +4,10 @@
 
  'use strict';
 
-var React = require('react/addons');
-var _ = require('lodash');
-
-var AuthAPIUtils = require('../utils/AuthAPIUtils');
+var React = require('react/addons'),
+	_ = require('lodash'),
+	AuthStore = require('../stores/AuthStore'),
+	AuthActions = require('../actions/AuthActions');
 
 /* 
  * TODO: Configure lifts form user's profile or config
@@ -162,15 +162,12 @@ function Lift(){
  			return lift;
  		});
 
- 		// console.log({
- 		// 	date: this.state.date,
- 		// 	lifts: lifts
- 		// });
+ 		console.log(lifts);
 
- 		AuthAPIUtils.saveWorkout({
- 			date: this.state.date,
- 			lifts: lifts
- 		});
+		this.props.context.executeAction(AuthActions.saveWorkout, {
+			date: this.state.date,
+			lifts: lifts
+		});
  	},
  	/*
  	 * TODO: Oof, there has to be a better way here, I fixed the 
@@ -240,17 +237,27 @@ function Lift(){
  		});
  	},
  	render: function() {
- 		var form; 
+ 		var form,
+ 			formView;
 
- 		switch (this.state.view) {
+ 		if(!this.props.user.loggedIn){
+ 			formView = null;
+ 		} else {
+ 			formView = this.state.view;
+ 		}
+
+ 		console.log('render', this.props.user, formView);
+
+ 		switch (formView) {
  			case 'FORM':
  				/*jshint ignore:start */
  				form = <WorkoutInput 
  						setFormState={this.setFormState}
+ 						context={this.props.context}
  						/>;
  				/*jshint ignore:end */
  				break;
- 			default:
+ 			case 'INITIAL':
  				/*jshint ignore:start */
  				form = <button 
  						className="pure-button" 
@@ -258,6 +265,10 @@ function Lift(){
  						Add Workout
  						</button>;
  				/*jshint ignore:end */
+ 				break;
+
+ 			default:
+ 				form = '';
  		}
 
  		return (

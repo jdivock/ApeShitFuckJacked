@@ -6,6 +6,7 @@ var React = require('react'),
 	Workouts = require('./Workouts.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
 	AuthStore = require('../stores/AuthStore'),
+	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
 	AuthActions = require('../actions/AuthActions');
 
 
@@ -15,11 +16,12 @@ var ApeShitFuckJackedApp = React.createClass({
 
 		context.executeAction(AuthActions.getUser);
 
-
 		this.AuthStore = context.getStore(AuthStore);
+
 		return {
-			user: {},
-			workouts: []
+			user: {
+				workouts: []
+			}
 		};
 	},
 	componentDidMount: function() {
@@ -32,15 +34,22 @@ var ApeShitFuckJackedApp = React.createClass({
 		return this.AuthStore.getUser();
 	},
 	_onChange: function(){
-		this.setState(this._getUser());
+		debug('authstore change', this._getUser());
+		this.setState({user: this._getUser()});
 	},
 	render: function(){
 		return (
+			/*jshint ignore:start */
 			<div>
-				<Login user={this.state} context={this.props.context}/>
-				<WorkoutEntryForm />
-				<Workouts workouts={this.state.workouts} />
+				<Login 
+					user={this.state.user} 
+					context={this.props.context}/>
+				<WorkoutEntryForm 
+					context={this.props.context}
+					user={this.state.user}/>
+				<Workouts workouts={this.state.user.workouts} />
 			</div>
+			/*jshint ignore:end */
 		);
 	}
 });

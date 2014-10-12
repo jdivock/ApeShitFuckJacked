@@ -241,7 +241,6 @@ var Login = React.createClass({
 	},
 	logout: function(e){
 		e.preventDefault();
-		console.log('logging out');
 		this.props.context.executeAction(AuthActions.logout);
 	},
 	render: function(){
