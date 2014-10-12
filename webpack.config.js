@@ -9,14 +9,21 @@ var webpack = require('webpack');
 module.exports = {
     entry: './app/js/app.jsx',
     output: {
-        path: __dirname+'/app/js/',
+        path: __dirname + '/app/js/',
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
-            { test: /\.css$/, loader: 'style!css' },
-            { test: /\.jsx$/, loader: 'jsx-loader' }
-        ]
+        loaders: [{
+            test: /\.css$/,
+            loader: 'style!css'
+        }, {
+            test: /\.jsx$/,
+            loader: 'jsx-loader'
+        }, {
+            test: /\.scss$/,
+            loader: 'style!css!sass?outputStyle=expanded'
+        }]
+
     },
     plugins: [
         //new webpack.optimize.UglifyJsPlugin()
