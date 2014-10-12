@@ -55,8 +55,19 @@ var AuthActions = {
                     error: res.error.message
                 };
             }
-            context.dispatch('AUTH_LOGIN', data);
+            debug('create user success', data);
+
+
+            try { 
+              context.dispatch('AUTH_LOGIN', data);
             done();
+          } catch (e) {
+            console.trace();
+          }
+            
+
+
+
         });
     },
     logout: function(context, payload, done) {

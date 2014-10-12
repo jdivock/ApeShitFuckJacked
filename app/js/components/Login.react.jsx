@@ -26,7 +26,8 @@ var CreateAccountForm = React.createClass({
 	handleUserInput: function(newInput){
 		this.setState(newInput);
 	},
-	createAccount: function(){
+	createAccount: function(e){
+		e.preventDefault();
 		if(this.state.password !== this.state.passwordRepeat){
 			this.setState({
 				status: 'Passwords Do not Match'
@@ -36,7 +37,10 @@ var CreateAccountForm = React.createClass({
 				status: 'Invalid Email Address'
 			});
 		} else {	
-			AuthActions.create(this.state.email, this.state.password);
+			this.props.context.executeAction(AuthActions.create, {
+				email: this.state.email, 
+				password: this.state.password
+			});
 		}
 	},
 	render: function(){
