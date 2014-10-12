@@ -30,8 +30,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "build": "webpack",
-    "postinstall": "npm run build"
+    "build": "webpack"
   },
   "devDependencies": {
     "connect-livereload": "^0.4.0",
