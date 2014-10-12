@@ -1,1 +1,1 @@
-web: node dist/server.js
+web: webpack -p && npm start
