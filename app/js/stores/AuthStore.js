@@ -26,9 +26,10 @@ AuthStore.handlers = {
 
 util.inherits(AuthStore, BaseStore);
 
-AuthStore.prototype.updateWorkout = function(workout){
-    debug('updating workouts', workout);
-    this.auth.workouts.unshift(workout);
+AuthStore.prototype.updateWorkout = function(workouts){
+    debug('updating workouts', workouts);
+    // this.auth.workouts.unshift(workout);
+    this.auth.workouts = workouts;
     this.emitChange();
 };
 

@@ -277,8 +277,6 @@ function Lift(){
  			formView = this.state.view;
  		}
 
- 		console.log('render', this.props.user, formView);
-
  		switch (formView) {
  			case 'FORM':
  				/*jshint ignore:start */

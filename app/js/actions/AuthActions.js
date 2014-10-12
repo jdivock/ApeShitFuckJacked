@@ -71,9 +71,8 @@ var AuthActions = {
      * returns success
      */
     saveWorkout: function(context, payload, done) {
-        console.log(this);
-
         debug('saving workout', payload);
+
         request
             .post('/api/users/me/workout')
             .accept('application/json')
@@ -81,7 +80,7 @@ var AuthActions = {
             .send(JSON.stringify(payload))
             .end(function(res) {
                 debug('workout saved');
-                context.dispatch('WORKOUT_ADDED', payload);
+                context.dispatch('WORKOUT_ADDED', res.body);
 
                 done();
             });
