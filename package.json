@@ -6,44 +6,32 @@
     "ejs": "~0.8.4",
     "evernote": "^1.25.3",
     "express": "~3.4.3",
+    "express-state": "1.x",
+    "fetchr": "^0.3.x",
     "flux": "^2.0.0",
+    "flux-router-component": "^0.2.x",
+    "jade": "^1.3.1",
     "lodash": "~2.4.1",
     "mongoose": "~3.5.5",
     "mongoose-unique-validator": "~0.3.0",
+    "node-jsx": "^0.11.0",
     "passport": "latest",
     "passport-local": "latest",
     "passport-twitter": "^1.0.2",
     "q": "^1.0.1",
-    "react": "~0.11.0"
+    "react": "0.11.x",
+    "routr": "^0.0.x",
+    "superagent": "^0.20.0"
   },
   "engines": {
     "node": ">=0.10.0"
   },
-  "main": "app/js/app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "grunt test",
-    "start": "node dist/server.js",
-    "dev": "node server.js",
-    "start-r": "watchify -o .tmp/js/bundle.js -v -d .",
-    "build-r": "NODE_ENV=production browserify app/js/app.js | uglifyjs -cm > app/js/bundle.min.js",
-    "test-r": "jest"
-  },
-  "browser": {
-    "zepto": "./app/vendor/zepto.js"
-  },
-  "browserify-shim": {
-    "zepto": "$"
-  },
-  "browserify": {
-    "transform": [
-      "reactify",
-      "envify",
-      "browserify-shim"
-    ]
+    "build": "webpack",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
-    "browserify": "^5.12.0",
-    "browserify-shim": "^3.7.0",
     "connect-livereload": "^0.4.0",
     "envify": "^3.0.0",
     "grunt": "^0.4.5",
@@ -60,11 +48,11 @@
     "grunt-open": "^0.2.3",
     "grunt-sass": "^0.14.1",
     "jest-cli": "^0.1.18",
+    "jsx-loader": "^0.11.2",
     "load-grunt-tasks": "^0.6.0",
     "lodash": "^2.4.1",
-    "reactify": "^0.14.0",
     "time-grunt": "^1.0.0",
     "uglify-js": "^2.4.15",
-    "watchify": "^1.0.2"
+    "webpack": "^1.2.0-beta6"
   }
 }

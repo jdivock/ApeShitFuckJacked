@@ -5,7 +5,6 @@ var EventEmitter = require('events').EventEmitter;
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AuthConstants = require('../constants/AuthConstants');
 var merge = require('react/lib/merge');
-var $ = require('zepto');
 
 var ActionTypes = AuthConstants.ActionTypes;
 

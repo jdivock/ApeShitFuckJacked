@@ -30,7 +30,7 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.setState(getUser());
 	},
 	render: function(){
-		console.log(this.state);
+		// console.log(this.state);
 		return (
 			/*jshint ignore:start */
 			<div>
