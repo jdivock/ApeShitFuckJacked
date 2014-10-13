@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "connect-livereload": "^0.4.0",
+    "css-loader": "^0.9.0",
     "envify": "^3.0.0",
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^1.0.1",
@@ -52,6 +53,7 @@
     "jsx-loader": "^0.11.2",
     "load-grunt-tasks": "^0.6.0",
     "sass-loader": "^0.2.0",
+    "style-loader": "^0.8.1",
     "time-grunt": "^1.0.0",
     "uglify-js": "^2.4.15",
     "webpack": "^1.2.0-beta6"

@@ -7,6 +7,8 @@ var React = window.React = require('react'),
 	AuthStore = require('./stores/AuthStore'),
 	ApeShitFuckJackedApp = require('./components/ApeShitFuckJackedApp.react');
 
+require('../styles/main.scss');
+
 Context.registerStore(AuthStore);
 
 var context = new Context({});

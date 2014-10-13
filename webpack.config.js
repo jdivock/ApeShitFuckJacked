@@ -13,10 +13,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [{
-            test: /\.css$/,
-            loader: 'style!css'
-        }, {
+        loaders: [ {
             test: /\.jsx$/,
             loader: 'jsx-loader'
         }, {
@@ -29,6 +26,6 @@ module.exports = {
         //new webpack.optimize.UglifyJsPlugin()
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx', '.scss']
     }
 };
