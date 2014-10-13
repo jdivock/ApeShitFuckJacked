@@ -17,7 +17,7 @@ function App(options) {
         initialState = options.initialState;
     debug('Creating context');
     this.context = new Context({
-        // fetcher: fetcher
+        fetcher: fetcher
     });
     if (initialState) {
         bootstrapDebug('rehydrating context');

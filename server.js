@@ -8,7 +8,8 @@ var express = require('express'),
     React = require('react'),
     AuthActions = require('./actions/AuthActions'),
     Application = require('./app'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    Fetcher = require('fetchr');
 
 /**
  * Main application file
@@ -42,15 +43,15 @@ expressState.extend(app);
 
 require('./lib/config/express')(app);
 
-// Fetcher.registerFetcher(require('./fetchers/message'));
-// app.use(Application.config.xhrPath, Fetcher.middleware());
+Fetcher.registerFetcher(require('./lib/fetchers/users'));
+app.use(Application.config.xhrPath, Fetcher.middleware());
 
 app.use(function (req, res, next) {
-    // var fetcher = new Fetcher({
-    //     req: req
-    // });
+    var fetcher = new Fetcher({
+        req: req
+    });
     var application = new Application({
-        // fetcher: fetcher
+        fetcher: fetcher
     });
 
     debug('Executing getUser action');

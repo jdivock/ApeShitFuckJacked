@@ -8,11 +8,11 @@ var React = require('react'),
     debug = require('debug'),
     bootstrapDebug = debug('Example'),
     AuthActions = require('./actions/AuthActions'),
-    // Fetcher = require('fetchr'),
+    Fetcher = require('fetchr'),
     Application = require('./app'),
-    // fetcher = new Fetcher({
-    //     xhrPath: Application.config.xhrPath
-    // }),
+    fetcher = new Fetcher({
+        xhrPath: Application.config.xhrPath
+    }),
     dehydratedState = App && App.Context; // Sent from the server
 
 require('./styles/main.scss');
@@ -23,7 +23,7 @@ debug.enable('*');
 
 bootstrapDebug('rehydrating app');
 var application = new Application({
-    // fetcher: fetcher,
+    fetcher: fetcher,
     initialState: dehydratedState
 });
 window.context = application.context;

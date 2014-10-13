@@ -2,6 +2,7 @@
 
 var AuthConstants = require('../constants/AuthConstants'),
     debug = require('debug')('App:authActions'),
+    _ = require('lodash'),
     request = require('superagent');
 
 // var ActionTypes = AuthConstants.ActionTypes;
@@ -95,23 +96,26 @@ var AuthActions = {
     getUser: function(context, payload, done) {
         debug('getting user', context);
 
-        request.get('/api/users/me').end(function(res) {
+        context.fetcher.read('users', 'me', null, function(err, data) {
 
-            var data = res.body;
+            var user = {};
 
-            if (!res.error) {
-                if (data && data._id) {
-                    data.loggedIn = true;
-                }
+            //TODO: This makes me feel bad, need to find a better way
+            // to handle immutable request object
+            if (data && data._id) {
+                user.loggedIn = true;
+                user.name = data.name;
+                user.email = data.email;
+                user.workouts = data.workouts;
             } else {
-                data = {
+                user = {
                     loggedIn: false,
-                    error: res.error.message,
                     workouts: []
                 };
             }
 
-            context.dispatch('AUTH_LOGIN', data);
+            context.dispatch('AUTH_LOGIN', user);
+
             done();
         });
     }
