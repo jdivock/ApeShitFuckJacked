@@ -1625,6 +1625,7 @@
 	                context.dispatch('AUTH_LOGIN', data);
 	                done();
 	            });
+
 	    },
 	    create: function(context, payload, done) {
 	        debug('creating account');
@@ -1684,7 +1685,9 @@
 	    getUser: function(context, payload, done) {
 	        debug('getting user', context);
 
-	        context.fetcher.read('users', 'me', null, function(err, data) {
+	        context.fetcher.read('users', {
+	            action: 'ME'
+	        }, null, function(err, data) {
 
 	            var user = {};
 
