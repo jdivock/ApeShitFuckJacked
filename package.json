@@ -2,6 +2,7 @@
   "name": "lifterly",
   "version": "0.0.0",
   "dependencies": {
+    "body-parser": "^1.9.0",
     "connect-mongo": "~0.4.0",
     "debug": "^2.0.0",
     "dispatchr": "^0.2.7",
