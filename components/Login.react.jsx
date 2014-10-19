@@ -285,7 +285,9 @@ var Login = React.createClass({
 		return (
 			/*jshint ignore:start */
 			<form className="login-form pure-form pure-form-stacked">
-				{form}
+				<div className="container">
+					{form}
+				</div>
 			</form>
 			/*jshint ignore:end */
 		);

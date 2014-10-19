@@ -314,7 +314,7 @@ function generateCleanWorkoutState(){
  			case 'INITIAL':
  				/*jshint ignore:start */
  				form = <button 
- 						className="pure-button" 
+ 						className="pure-button pure-button-primary" 
  						onClick={this.setFormStateAdd}>
  						Add Workout
  						</button>;

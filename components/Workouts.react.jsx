@@ -32,7 +32,14 @@ var AuthActions = require('../actions/AuthActions');
  		return (
  			/*jshint ignore:start */
  			<div className="workout">
- 				<h3>{this.props.workout.date}</h3>
+ 				<h3>
+ 					{this.props.workout.date}
+ 					<span className="actions">
+	 					<button className="button-secondary pure-button button-xsmall" onClick="editWorkout">edit</button>
+	 					<button className="button-error pure-button button-xsmall" onClick="deleteWorkout">X</button>
+ 					</span>
+ 				</h3>
+ 				
  				<div className="lifts">
  				{lifts}
  				</div>

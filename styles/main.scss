@@ -1,20 +1,40 @@
 body {
-  padding: 0 2rem 2rem;
+  .container {
+    padding: 0 2rem;
+  }
 }
 
 // LOGIN FORM 
 
 .login-form {
-  padding-bottom: 1rem;
+  background: rgb(208, 208, 208);
+  padding: .3rem;
+  margin-bottom: 1rem;
 }
 
 .login-greeting {
+  
+
   button {
     margin-left: 1rem;
   }
 }
 
 // WORKOUT VIEW
+.actions {
+  font-size: 1rem;
+  font-weight: normal;
+  padding-left: .5rem;
+  button {
+    margin: 0 .2rem;
+
+    &.button-xsmall {
+      font-size: .3rem;
+      vertical-align: bottom;
+    }
+  }
+}
+
 
 .workout {
   overflow: hidden;
@@ -52,4 +72,49 @@ body {
 .lift-input {
   float: left;
   padding-right: 1rem;
+}
+
+
+// Pure extensions
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+}
+
+.button-success {
+  background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+  background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+  background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+  background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+
+.button-xsmall {
+  font-size: 70%;
+}
+
+.button-small {
+  font-size: 85%;
+}
+
+.button-large {
+  font-size: 110%;
+}
+
+.button-xlarge {
+  font-size: 125%;
 }

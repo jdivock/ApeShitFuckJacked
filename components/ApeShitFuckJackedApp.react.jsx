@@ -40,10 +40,12 @@ var ApeShitFuckJackedApp = React.createClass({
 				<Login 
 					user={this.state.user} 
 					context={this.props.context}/>
-				<WorkoutEntryForm 
-					context={this.props.context}
-					user={this.state.user}/>
-				<Workouts workouts={this.state.user.workouts} />
+				<div className="container">
+					<WorkoutEntryForm 
+						context={this.props.context}
+						user={this.state.user}/>
+					<Workouts workouts={this.state.user.workouts} />
+				</div>
 			</div>
 			/*jshint ignore:end */
 		);
