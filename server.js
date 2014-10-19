@@ -86,9 +86,6 @@ app.use(function (req, res, next) {
     });
 });
 
-// Express settings
-// require('./lib/config/express')(app);
-
 // Routing
 require('./lib/routes')(app);
 

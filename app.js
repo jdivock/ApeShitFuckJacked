@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
  */
 'use strict';
-var Context = require('./lib/Context'),
+var Context = require('./util/Context'),
     AuthStore = require('./stores/AuthStore'),
     application = require('./components/ApeShitFuckJackedApp.react.jsx'),
     debug = require('debug'),
