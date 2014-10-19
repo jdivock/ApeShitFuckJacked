@@ -344,26 +344,50 @@
 	"buffers":
 	[
 		{
+			"file": "lib/fetchers/users.js",
+			"settings":
+			{
+				"buffer_size": 434,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "components/ApeShitFuckJackedApp.react.jsx",
+			"settings":
+			{
+				"buffer_size": 1295,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app.js",
+			"settings":
+			{
+				"buffer_size": 1087,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/config/passport.js",
+			"settings":
+			{
+				"buffer_size": 2362,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "lib/controllers/session.js",
+			"settings":
+			{
+				"buffer_size": 519,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "actions/AuthActions.js",
 			"settings":
 			{
-				"buffer_size": 3126,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "stores/AuthStore.js",
-			"settings":
-			{
-				"buffer_size": 1506,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "components/Workouts.react.jsx",
-			"settings":
-			{
-				"buffer_size": 1324,
+				"buffer_size": 3341,
 				"line_ending": "Unix"
 			}
 		},
@@ -376,34 +400,26 @@
 			}
 		},
 		{
-			"file": "lib/routes.js",
-			"settings":
-			{
-				"buffer_size": 1291,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app.js",
-			"settings":
-			{
-				"buffer_size": 1090,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "server.js",
 			"settings":
 			{
-				"buffer_size": 2557,
+				"buffer_size": 2574,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "components/ApeShitFuckJackedApp.react.jsx",
+			"file": "client.js",
 			"settings":
 			{
-				"buffer_size": 1295,
+				"buffer_size": 1023,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Volumes/EchoPark.Website",
+			"settings":
+			{
+				"buffer_size": 0,
 				"line_ending": "Unix"
 			}
 		}
@@ -579,15 +595,32 @@
 		"/Users/jdivock/Projects/ApeShitFuckJacked",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/actions",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/components",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/config",
-		"/Users/jdivock/Projects/ApeShitFuckJacked/templates"
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/controllers",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/fetchers",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/models"
 	],
 	"file_history":
 	[
+		"/Users/jdivock/Projects/ApeShitFuckJacked/.gitignore",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/fetchers/users.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/app.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/fetchers/users.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/controllers/session.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/controllers/users.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/.jshintrc",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/actions/AuthActions.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/stores/AuthStore.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/components/Workouts.react.jsx",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/routes.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/server.js",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/components/ApeShitFuckJackedApp.react.jsx",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/ApeShitFuckJacked.sublime-project",
+		"/Users/jdivock/Projects/ApeShitFuckJacked/.bowerrc",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/webpack.config.js",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/templates/layout.jade",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/client.js",
-		"/Users/jdivock/Projects/ApeShitFuckJacked/server.js",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/lib/config/express.js",
 		"/Users/jdivock/Projects/ApeShitFuckJacked/node_modules/webpack/lib/AbstractPlugin.js",
 		"/Users/jdivock/Projects/React/flux-examples/node_modules/webpack/node_modules/node-libs-browser/node_modules/crypto-browserify/create-hash.js",
@@ -697,25 +730,11 @@
 		"/Volumes/EchoPark.Website/js/common/input-first-name/input-first-name.template.html",
 		"/Volumes/EchoPark.Website/Gruntfile.js",
 		"/Volumes/EchoPark.Website/node_modules/karma/node_modules/log4js/examples/example-connect-logger.js",
-		"/Volumes/EchoPark.Website/js/common/input-phone/input-phone.template.html",
-		"/Volumes/EchoPark.Website/docs/index.html",
-		"/Volumes/EchoPark.Website/js/account/login.ctrl.js",
-		"/Volumes/EchoPark.Website/node_modules/connect-assetmanager/LICENSE",
-		"/Volumes/EchoPark.Website/bin/openstacknet.xml",
-		"/Volumes/EchoPark.Website/js/vehicle/vehicleDetails/appointment.ctrl.spec.js",
-		"/Volumes/EchoPark.Website/EchoPark/Sublayouts/Globals/Footer.ascx",
-		"/Users/jdivock/Library/Application Support/Sublime Text 3/Packages/SassBeautify/SassBeautify.sublime-settings",
-		"/Users/jdivock/Library/Application Support/Sublime Text 3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
-		"/Volumes/EchoPark.Website/flo-server.js",
-		"/Volumes/EchoPark.Website/node_modules/karma/config.tpl.coffee",
-		"/Volumes/EchoPark.Website/Extensions/ConfigurableComponent.cs",
-		"/Volumes/EchoPark.Website/e2e/conf.js",
-		"/Volumes/EchoPark.Website/EchoPark/Sublayouts/Globals/Footer.ascx.designer.cs",
-		"/Volumes/EchoPark.Website/.sass-cache/ece531f66d0c0b795ceb2573ce1fa41e2ccae785/_footer.scssc"
+		"/Volumes/EchoPark.Website/js/common/input-phone/input-phone.template.html"
 	],
 	"find":
 	{
-		"height": 25.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -778,6 +797,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"login",
 			"render",
 			"RECEIVE_MESSAGES_SUCCESS",
 			"getComponentContext",
@@ -904,8 +924,7 @@
 			"compares",
 			"vehicle_st",
 			"edit-cont",
-			"isfav",
-			"isfave"
+			"isfav"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -939,24 +958,24 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 9,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "actions/AuthActions.js",
+					"file": "lib/fetchers/users.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3126,
+						"buffer_size": 434,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2969,
-								2969
+								314,
+								314
 							]
 						],
 						"settings":
@@ -964,31 +983,46 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
 								"bh_double_quote",
 								"bh_double_quote_center",
 								"bh_double_quote_open",
 								"bh_double_quote_close",
 								"bh_double_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
@@ -999,53 +1033,213 @@
 								"bh_single_quote_open",
 								"bh_single_quote_close",
 								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "components/ApeShitFuckJackedApp.react.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1295,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
 								"bh_regex",
 								"bh_regex_center",
 								"bh_regex_open",
 								"bh_regex_close",
 								"bh_regex_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_c_define",
 								"bh_c_define_center",
 								"bh_c_define_open",
 								"bh_c_define_close",
 								"bh_c_define_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
 							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JSX/JSX-real.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1338.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "stores/AuthStore.js",
-					"semi_transient": false,
+					"buffer": 2,
+					"file": "app.js",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 1506,
+						"buffer_size": 1087,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								892,
-								892
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "lib/config/passport.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2362,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1678,
+								2358
 							]
 						],
 						"settings":
@@ -1114,27 +1308,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 189.0,
+						"translation.y": 320.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "components/Workouts.react.jsx",
+					"buffer": 4,
+					"file": "lib/controllers/session.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1324,
+						"buffer_size": 519,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								580,
-								580
+								225,
+								228
 							]
 						],
 						"settings":
@@ -1198,18 +1392,108 @@
 								"bh_square_close",
 								"bh_square_content"
 							],
-							"syntax": "Packages/JSX/JSX-real.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 280.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "actions/AuthActions.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3341,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1016,
+								1016
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"bh_regions":
+							[
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content"
+							],
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 165.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 6,
 					"file": "lib/controllers/users.js",
 					"semi_transient": false,
 					"settings":
@@ -1221,8 +1505,8 @@
 						"selection":
 						[
 							[
-								9514,
-								9514
+								9457,
+								9457
 							]
 						],
 						"settings":
@@ -1291,27 +1575,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5355.0,
+						"translation.y": 466.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "lib/routes.js",
+					"buffer": 7,
+					"file": "server.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1291,
+						"buffer_size": 2574,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1239,
-								1239
+								1330,
+								1330
 							]
 						],
 						"settings":
@@ -1380,27 +1664,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 63.0,
+						"translation.y": 614.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "app.js",
+					"buffer": 8,
+					"file": "client.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1090,
+						"buffer_size": 1023,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								772,
-								772
+								579,
+								549
 							]
 						],
 						"settings":
@@ -1408,6 +1692,21 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
@@ -1418,46 +1717,31 @@
 								"bh_double_quote_open",
 								"bh_double_quote_close",
 								"bh_double_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
 								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
 								"bh_unmatched_close",
 								"bh_unmatched_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
@@ -1476,12 +1760,12 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "server.js",
-					"semi_transient": true,
+					"buffer": 9,
+					"file": "/Volumes/EchoPark.Website",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2557,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
@@ -1497,6 +1781,21 @@
 							"BracketHighlighterBusy": false,
 							"bh_regions":
 							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
 								"bh_curly",
 								"bh_curly_center",
 								"bh_curly_open",
@@ -1507,149 +1806,44 @@
 								"bh_double_quote_open",
 								"bh_double_quote_close",
 								"bh_double_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
 								"bh_tag",
 								"bh_tag_center",
 								"bh_tag_open",
 								"bh_tag_close",
 								"bh_tag_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
 								"bh_round",
 								"bh_round_center",
 								"bh_round_open",
 								"bh_round_close",
 								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
 								"bh_unmatched",
 								"bh_unmatched_center",
 								"bh_unmatched_open",
 								"bh_unmatched_close",
 								"bh_unmatched_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
 								"bh_square",
 								"bh_square_center",
 								"bh_square_open",
 								"bh_square_close",
 								"bh_square_content"
 							],
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 359.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "components/ApeShitFuckJackedApp.react.jsx",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1295,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								875,
-								875
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"syntax": "Packages/JSX/JSX-real.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1709,6 +1903,26 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"ape",
+				"components/ApeShitFuckJackedApp.react.jsx"
+			],
+			[
+				"session",
+				"lib/controllers/session.js"
+			],
+			[
+				"server",
+				"server.js"
+			],
+			[
+				"users.",
+				"lib/controllers/users.js"
+			],
+			[
+				"user",
+				"lib/controllers/users.js"
+			],
 			[
 				"users",
 				"lib/controllers/users.js"
@@ -2086,10 +2300,6 @@
 				"app/js/dispatcher/AppDispatcher.js"
 			],
 			[
-				"users.",
-				"lib/controllers/users.js"
-			],
-			[
 				"passpo",
 				"lib/config/passport.js"
 			],
@@ -2204,22 +2414,6 @@
 			[
 				"auth.ser",
 				"js/account/auth.service.js"
-			],
-			[
-				"step3.tem",
-				"js/sell/wizard/step3.template.html"
-			],
-			[
-				"step3",
-				"js/sell/wizard/step3.ctrl.js"
-			],
-			[
-				"step1",
-				"js/sell/wizard/step1.ctrl.js"
-			],
-			[
-				"sellwiz",
-				"js/sell/wizard/sellWiz.ctrl.js"
 			]
 		],
 		"width": 0.0

@@ -4,6 +4,7 @@
 var EventEmitter = require('events').EventEmitter,
     BaseStore = require('dispatchr/utils/BaseStore'),
     debug = require('debug')('App:AuthStore'),
+    CHANGE_EVENT = 'change',
     util = require('util');
 
 
@@ -51,11 +52,13 @@ AuthStore.prototype.resetAuth = function(){
 
 AuthStore.prototype.getUser = function(){
     debug('getting user', this.auth);
+
     return this.auth;
 };
 
 AuthStore.prototype.getError = function(){
     debug('getting error');
+
     return this.auth.error;
 };
 
@@ -67,6 +70,20 @@ AuthStore.prototype.dehydrate = function () {
 
 AuthStore.prototype.rehydrate = function (state) {
     this.auth = state.auth;
+};
+
+/**
+ * Rolling my own here as without it I lose react errors which is wildly 
+ * painful
+ *
+ * https://github.com/yahoo/dispatchr/issues/33
+ */
+AuthStore.prototype.emitChange = function() {
+    try {
+        this.emit(CHANGE_EVENT, this.constructor);
+    } catch (e) {
+        console.error(e.stack);
+    }
 };
 
 module.exports = AuthStore;

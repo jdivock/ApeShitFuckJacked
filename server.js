@@ -1,5 +1,6 @@
 'use strict';
 require('node-jsx').install({ extension: '.jsx' });
+
 var express = require('express'),
 	expressState = require('express-state'),
     path = require('path'),
@@ -9,6 +10,7 @@ var express = require('express'),
     AuthActions = require('./actions/AuthActions'),
     Application = require('./app'),
     mongoose = require('mongoose'),
+    os = require('os'),
     Fetcher = require('fetchr');
 
 /**
@@ -90,7 +92,7 @@ require('./lib/routes')(app);
 
 // Start server
 app.listen(config.port, function() {
-    console.log('Express server listening on port %d in %s mode', config.port, app.get('env'));
+    console.log('Apeshitfuckjack started at %s:%d in %s mode', config.url, config.port, app.get('env'));
 });
 
 // Expose app
