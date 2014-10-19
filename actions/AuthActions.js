@@ -5,9 +5,41 @@ var AuthConstants = require('../constants/AuthConstants'),
     _ = require('lodash'),
     request = require('superagent');
 
-// var ActionTypes = AuthConstants.ActionTypes;
+function fetchUser(context, payload, done) {
+    context.fetcher.read('users', {
+        action: 'ME'
+    }, null, function(err, data) {
+
+        var user = {};
+
+        //TODO: This makes me feel bad, need to find a better way
+        // to handle immutable request object
+        if (data && data._id) {
+            user.loggedIn = true;
+            user.name = data.name;
+            user.email = data.email;
+            user.workouts = data.workouts;
+        } else {
+            user = {
+                loggedIn: false,
+                workouts: []
+            };
+        }
+
+        context.dispatch('AUTH_LOGIN', user);
+
+        done();
+    });
+}
+
 
 var AuthActions = {
+    init: function(context, payload, done){
+        fetchUser(context, payload, done);
+    },
+    getUser: function(context, payload, done){
+        fetchUser(context, payload, done);
+    },
     /**
      * @param  {string} text
      */
@@ -93,34 +125,6 @@ var AuthActions = {
 
                 done();
             });
-    },
-    getUser: function(context, payload, done) {
-        debug('getting user', context);
-
-        context.fetcher.read('users', {
-            action: 'ME'
-        }, null, function(err, data) {
-
-            var user = {};
-
-            //TODO: This makes me feel bad, need to find a better way
-            // to handle immutable request object
-            if (data && data._id) {
-                user.loggedIn = true;
-                user.name = data.name;
-                user.email = data.email;
-                user.workouts = data.workouts;
-            } else {
-                user = {
-                    loggedIn: false,
-                    workouts: []
-                };
-            }
-
-            context.dispatch('AUTH_LOGIN', user);
-
-            done();
-        });
     }
 };
 

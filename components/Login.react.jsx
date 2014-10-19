@@ -3,7 +3,7 @@
 
 var React = require('react');
 var AuthActions = require('../actions/AuthActions');
-var formValidators = require('../util/formValidators');
+var formUtils = require('../util/formUtils');
 
 
 
@@ -29,7 +29,7 @@ var CreateAccountForm = React.createClass({
 			this.setState({
 				status: 'Passwords Do not Match'
 			});
-		} else if ( !formValidators.validateEmail(this.state.email) ){
+		} else if ( !formUtils.validateEmail(this.state.email) ){
 			this.setState({
 				status: 'Invalid Email Address'
 			});

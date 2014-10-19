@@ -57,7 +57,7 @@ app.use(function (req, res, next) {
     });
 
     debug('Executing getUser action to init app');
-    application.context.getActionContext().executeAction(AuthActions.getUser, {}, function (err) {
+    application.context.getActionContext().executeAction(AuthActions.init, {}, function (err) {
         if (err) {
             if (err.status && err.status === 404) {
                 next();

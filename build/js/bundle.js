@@ -142,9 +142,41 @@
 	    _ = __webpack_require__(14),
 	    request = __webpack_require__(19);
 
-	// var ActionTypes = AuthConstants.ActionTypes;
+	function fetchUser(context, payload, done) {
+	    context.fetcher.read('users', {
+	        action: 'ME'
+	    }, null, function(err, data) {
+
+	        var user = {};
+
+	        //TODO: This makes me feel bad, need to find a better way
+	        // to handle immutable request object
+	        if (data && data._id) {
+	            user.loggedIn = true;
+	            user.name = data.name;
+	            user.email = data.email;
+	            user.workouts = data.workouts;
+	        } else {
+	            user = {
+	                loggedIn: false,
+	                workouts: []
+	            };
+	        }
+
+	        context.dispatch('AUTH_LOGIN', user);
+
+	        done();
+	    });
+	}
+
 
 	var AuthActions = {
+	    init: function(context, payload, done){
+	        fetchUser(context, payload, done);
+	    },
+	    getUser: function(context, payload, done){
+	        fetchUser(context, payload, done);
+	    },
 	    /**
 	     * @param  {string} text
 	     */
@@ -230,34 +262,6 @@
 
 	                done();
 	            });
-	    },
-	    getUser: function(context, payload, done) {
-	        debug('getting user', context);
-
-	        context.fetcher.read('users', {
-	            action: 'ME'
-	        }, null, function(err, data) {
-
-	            var user = {};
-
-	            //TODO: This makes me feel bad, need to find a better way
-	            // to handle immutable request object
-	            if (data && data._id) {
-	                user.loggedIn = true;
-	                user.name = data.name;
-	                user.email = data.email;
-	                user.workouts = data.workouts;
-	            } else {
-	                user = {
-	                    loggedIn: false,
-	                    workouts: []
-	                };
-	            }
-
-	            context.dispatch('AUTH_LOGIN', user);
-
-	            done();
-	        });
 	    }
 	};
 
@@ -11994,7 +11998,7 @@
 
 	var React = __webpack_require__(6);
 	var AuthActions = __webpack_require__(2);
-	var formValidators = __webpack_require__(377);
+	var formUtils = __webpack_require__(378);
 
 
 
@@ -12020,7 +12024,7 @@
 				this.setState({
 					status: 'Passwords Do not Match'
 				});
-			} else if ( !formValidators.validateEmail(this.state.email) ){
+			} else if ( !formUtils.validateEmail(this.state.email) ){
 				this.setState({
 					status: 'Invalid Email Address'
 				});
@@ -12385,8 +12389,6 @@
 
 	var LiftSelect = React.createClass({displayName: 'LiftSelect',
 		getInitialState: function(){
-			this.props.updateLiftInput('name', liftTypes[0]);
-
 			return {};
 		},
 		changeLiftType: function(){
@@ -12486,6 +12488,8 @@
 
 			var liftObj = {};
 			liftObj[this.props.key] = newLift;
+
+
 			this.props.updateLift(liftObj);
 		},
 		render: function() {
@@ -12502,17 +12506,17 @@
 		}
 	});
 
-	/* TODO: Move me to a util library */
-	Date.prototype.toDateInputValue = function() {
-	    var local = new Date(this);
-	    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-	    return local.toJSON().slice(0,10);
-	};
-
+	/** 
+	 * Lift object since I'll be creating these as the users
+	 * generates more forms on the fly
+	 *
+	 * Defaulting name to 0 index lift type (squat);
+	 */
 	function Lift(){
-		this.name = null;
+		this.name = liftTypes[0];
 		this.sets = 0;
 		this.reps = 0;
+		this.weight = 0;
 	}
 
 	 var WorkoutInput = React.createClass({displayName: 'WorkoutInput',
@@ -12520,6 +12524,7 @@
 	 		var timestamp = Date.now();
 	 		var lifts = {};
 	 		lifts[timestamp] = new Lift();
+
 	 		return {
 	 			date: new Date().toDateInputValue(),	
 	 			lifts : lifts
@@ -12552,8 +12557,6 @@
 	 		var lifts = _.map(this.state.lifts, function(lift){
 	 			return lift;
 	 		});
-
-	 		console.log(lifts);
 
 			this.props.context.executeAction(AuthActions.saveWorkout, {
 				date: this.state.date,
@@ -44287,10 +44290,18 @@
 
 
 /***/ },
-/* 377 */
+/* 377 */,
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+
+
+	Date.prototype.toDateInputValue = function() {
+	    var local = new Date(this);
+	    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	    return local.toJSON().slice(0,10);
+	};
 
 	module.exports = {
 	    validateEmail: function(email) {

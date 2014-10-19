@@ -25,8 +25,6 @@ var liftTypes = [
 
 var LiftSelect = React.createClass({
 	getInitialState: function(){
-		this.props.updateLiftInput('name', liftTypes[0]);
-
 		return {};
 	},
 	changeLiftType: function(){
@@ -126,6 +124,8 @@ var LiftInput = React.createClass({
 
 		var liftObj = {};
 		liftObj[this.props.key] = newLift;
+
+
 		this.props.updateLift(liftObj);
 	},
 	render: function() {
@@ -142,17 +142,17 @@ var LiftInput = React.createClass({
 	}
 });
 
-/* TODO: Move me to a util library */
-Date.prototype.toDateInputValue = function() {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0,10);
-};
-
+/** 
+ * Lift object since I'll be creating these as the users
+ * generates more forms on the fly
+ *
+ * Defaulting name to 0 index lift type (squat);
+ */
 function Lift(){
-	this.name = null;
+	this.name = liftTypes[0];
 	this.sets = 0;
 	this.reps = 0;
+	this.weight = 0;
 }
 
  var WorkoutInput = React.createClass({
@@ -160,6 +160,7 @@ function Lift(){
  		var timestamp = Date.now();
  		var lifts = {};
  		lifts[timestamp] = new Lift();
+
  		return {
  			date: new Date().toDateInputValue(),	
  			lifts : lifts
@@ -192,8 +193,6 @@ function Lift(){
  		var lifts = _.map(this.state.lifts, function(lift){
  			return lift;
  		});
-
- 		console.log(lifts);
 
 		this.props.context.executeAction(AuthActions.saveWorkout, {
 			date: this.state.date,
