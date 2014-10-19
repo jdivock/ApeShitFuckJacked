@@ -35,8 +35,16 @@ var AuthActions = require('../actions/AuthActions');
  				<h3>
  					{this.props.workout.date}
  					<span className="actions">
-	 					<button className="pure-button button-xsmall" onClick="editWorkout">edit</button>
-	 					<button className="button-error pure-button button-xsmall" onClick="deleteWorkout">X</button>
+	 					<button 
+	 						className="pure-button button-xsmall" 
+	 						onClick={this.props.editWorkout}>
+	 						edit
+	 					</button>
+	 					<button 
+	 						className="button-error pure-button button-xsmall" 
+	 						onClick={this.props.deleteWorkout}>
+	 						X
+	 					</button>
  					</span>
  				</h3>
  				

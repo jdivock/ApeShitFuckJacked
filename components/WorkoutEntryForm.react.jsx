@@ -250,6 +250,7 @@ function generateCleanWorkoutState(){
  						{liftInputs}
  					</div>
 
+ 					<label>Comments:</label>
  					<textarea
  						value={this.state.comments}
  						ref="comments"
@@ -257,18 +258,20 @@ function generateCleanWorkoutState(){
  					>
  					</textarea>
 
- 					<button className="pure-button pure-button-primary"
- 						onClick={this.submitWorkout}>
- 						Submit
- 					</button>
- 					<button className="pure-button pure-button-secondary"
- 						onClick={this.addLift}>
- 						Add Lift
- 					</button>
- 					<button className="pure-button"
- 						onClick={this.clearFormState}>
- 						Cancel
- 					</button>
+ 					<div className="form-controls">
+	 					<button className="pure-button pure-button-primary"
+	 						onClick={this.submitWorkout}>
+	 						Submit
+	 					</button>
+	 					<button className="pure-button pure-button-secondary"
+	 						onClick={this.addLift}>
+	 						Add Lift
+	 					</button>
+	 					<button className="pure-button"
+	 						onClick={this.clearFormState}>
+	 						Cancel
+	 					</button>
+ 					</div>
  				</fieldset>
  			</form>
  			/*jshint ignore:end */

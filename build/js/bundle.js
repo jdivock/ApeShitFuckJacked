@@ -553,7 +553,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(15)();
-	exports.push([module.id, "body .container {\n  padding: 0 2rem; }\n\n.login-form {\n  background: #d0d0d0;\n  padding: 0.3rem;\n  margin-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.actions {\n  font-size: 1rem;\n  font-weight: normal;\n  padding-left: 0.5rem; }\n  .actions button {\n    margin: 0 0.2rem; }\n    .actions button.button-xsmall {\n      font-size: 0.3rem;\n      vertical-align: bottom; }\n\n.workout {\n  margin: 0.3rem 0;\n  overflow: hidden;\n  padding: 0.5rem 0; }\n  .workout h3 {\n    margin: 0 0 1em; }\n  .workout p {\n    margin: 0.5rem 0 0; }\n\n.lifts {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift:first-child {\n    padding-left: 0; }\n  .lift h4 {\n    margin-top: 0; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n\n.button-success, .button-error, .button-warning, .button-secondary {\n  color: white;\n  border-radius: 4px;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }\n\n.button-success {\n  background: #1cb841;\n  /* this is a green */ }\n\n.button-error {\n  background: #ca3c3c;\n  /* this is a maroon */ }\n\n.button-warning {\n  background: #df7514;\n  /* this is an orange */ }\n\n.button-secondary {\n  background: #42b8dd;\n  /* this is a light blue */ }\n\n.button-xsmall {\n  font-size: 70%; }\n\n.button-small {\n  font-size: 85%; }\n\n.button-large {\n  font-size: 110%; }\n\n.button-xlarge {\n  font-size: 125%; }\n", ""]);
+	exports.push([module.id, "body .container {\n  padding: 0 2rem; }\n\n.login-form {\n  background: #d0d0d0;\n  padding: 0.3rem;\n  margin-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.actions {\n  font-size: 1rem;\n  font-weight: normal;\n  padding-left: 0.5rem; }\n  .actions button {\n    margin: 0 0.2rem; }\n    .actions button.button-xsmall {\n      font-size: 0.3rem;\n      vertical-align: bottom; }\n\n.workout {\n  margin: 0.3rem 0;\n  overflow: hidden;\n  padding: 0.5rem 0; }\n  .workout h3 {\n    margin: 0 0 1em; }\n  .workout p {\n    margin: 0.5rem 0 0; }\n\n.lifts {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift:first-child {\n    padding-left: 0; }\n  .lift h4 {\n    margin-top: 0; }\n\n.form-controls {\n  padding-top: 0.3rem; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n\n.button-success, .button-error, .button-warning, .button-secondary {\n  color: white;\n  border-radius: 4px;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }\n\n.button-success {\n  background: #1cb841;\n  /* this is a green */ }\n\n.button-error {\n  background: #ca3c3c;\n  /* this is a maroon */ }\n\n.button-warning {\n  background: #df7514;\n  /* this is an orange */ }\n\n.button-secondary {\n  background: #42b8dd;\n  /* this is a light blue */ }\n\n.button-xsmall {\n  font-size: 70%; }\n\n.button-small {\n  font-size: 85%; }\n\n.button-large {\n  font-size: 110%; }\n\n.button-xlarge {\n  font-size: 125%; }\n", ""]);
 
 /***/ },
 /* 9 */
@@ -12276,8 +12276,16 @@
 	 				React.DOM.h3(null, 
 	 					this.props.workout.date, 
 	 					React.DOM.span({className: "actions"}, 
-		 					React.DOM.button({className: "pure-button button-xsmall", onClick: "editWorkout"}, "edit"), 
-		 					React.DOM.button({className: "button-error pure-button button-xsmall", onClick: "deleteWorkout"}, "X")
+		 					React.DOM.button({
+		 						className: "pure-button button-xsmall", 
+		 						onClick: this.props.editWorkout}, 
+		 						"edit"
+		 					), 
+		 					React.DOM.button({
+		 						className: "button-error pure-button button-xsmall", 
+		 						onClick: this.props.deleteWorkout}, 
+		 						"X"
+		 					)
 	 					)
 	 				), 
 	 				
@@ -12569,6 +12577,7 @@
 	 						liftInputs
 	 					), 
 
+	 					React.DOM.label(null, "Comments:"), 
 	 					React.DOM.textarea({
 	 						value: this.state.comments, 
 	 						ref: "comments", 
@@ -12576,17 +12585,19 @@
 	 					}
 	 					), 
 
-	 					React.DOM.button({className: "pure-button pure-button-primary", 
-	 						onClick: this.submitWorkout}, 
-	 						"Submit"
-	 					), 
-	 					React.DOM.button({className: "pure-button pure-button-secondary", 
-	 						onClick: this.addLift}, 
-	 						"Add Lift"
-	 					), 
-	 					React.DOM.button({className: "pure-button", 
-	 						onClick: this.clearFormState}, 
-	 						"Cancel"
+	 					React.DOM.div({className: "form-controls"}, 
+		 					React.DOM.button({className: "pure-button pure-button-primary", 
+		 						onClick: this.submitWorkout}, 
+		 						"Submit"
+		 					), 
+		 					React.DOM.button({className: "pure-button pure-button-secondary", 
+		 						onClick: this.addLift}, 
+		 						"Add Lift"
+		 					), 
+		 					React.DOM.button({className: "pure-button", 
+		 						onClick: this.clearFormState}, 
+		 						"Cancel"
+		 					)
 	 					)
 	 				)
 	 			)
