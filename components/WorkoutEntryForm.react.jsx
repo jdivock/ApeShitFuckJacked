@@ -155,19 +155,24 @@ function Lift(){
 	this.sets = 0;
 	this.reps = 0;
 	this.weight = 0;
+	this.comments = null;
+}
+
+function generateCleanWorkoutState(){
+	var timestamp = Date.now();
+	var lifts = {};
+	lifts[timestamp] = new Lift();
+
+	return {
+		date: new Date().toDateInputValue(),	
+		lifts : lifts,
+		comments: null
+	};
 }
 
  var WorkoutInput = React.createClass({
  	getInitialState: function(){
- 		var timestamp = Date.now();
- 		var lifts = {};
- 		lifts[timestamp] = new Lift();
-
- 		return {
- 			date: new Date().toDateInputValue(),	
- 			lifts : lifts,
- 			comments: null
- 		};
+ 		return generateCleanWorkoutState();
  	},
  	addLift: function(e){
  		e.preventDefault();
@@ -208,6 +213,9 @@ function Lift(){
 			lifts: lifts,
 			comments: this.state.comments
 		});
+
+		this.setState(generateCleanWorkoutState());
+		this.props.setFormState('INITIAL');
  	},
  	/*
  	 * TODO: Oof, there has to be a better way here, I fixed the 
@@ -234,6 +242,7 @@ function Lift(){
  		return (
  			/*jshint ignore:start */
  			<form className="workout-input pure-form pure-form-stacked">
+
  				<fieldset>
  					<input type="date" value={this.state.date} ref="workoutDate" onChange={this.setDate}/>
 

@@ -459,6 +459,7 @@
 	    debug('updating workouts', workouts);
 	    // this.auth.workouts.unshift(workout);
 	    this.auth.workouts = workouts;
+	    this.auth.workouts.status = 'SUCCESS';
 	    this.emitChange();
 	};
 
@@ -12462,19 +12463,24 @@
 		this.sets = 0;
 		this.reps = 0;
 		this.weight = 0;
+		this.comments = null;
+	}
+
+	function generateCleanWorkoutState(){
+		var timestamp = Date.now();
+		var lifts = {};
+		lifts[timestamp] = new Lift();
+
+		return {
+			date: new Date().toDateInputValue(),	
+			lifts : lifts,
+			comments: null
+		};
 	}
 
 	 var WorkoutInput = React.createClass({displayName: 'WorkoutInput',
 	 	getInitialState: function(){
-	 		var timestamp = Date.now();
-	 		var lifts = {};
-	 		lifts[timestamp] = new Lift();
-
-	 		return {
-	 			date: new Date().toDateInputValue(),	
-	 			lifts : lifts,
-	 			comments: null
-	 		};
+	 		return generateCleanWorkoutState();
 	 	},
 	 	addLift: function(e){
 	 		e.preventDefault();
@@ -12515,6 +12521,9 @@
 				lifts: lifts,
 				comments: this.state.comments
 			});
+
+			this.setState(generateCleanWorkoutState());
+			this.props.setFormState('INITIAL');
 	 	},
 	 	/*
 	 	 * TODO: Oof, there has to be a better way here, I fixed the 
@@ -12541,6 +12550,7 @@
 	 		return (
 	 			/*jshint ignore:start */
 	 			React.DOM.form({className: "workout-input pure-form pure-form-stacked"}, 
+
 	 				React.DOM.fieldset(null, 
 	 					React.DOM.input({type: "date", value: this.state.date, ref: "workoutDate", onChange: this.setDate}), 
 
