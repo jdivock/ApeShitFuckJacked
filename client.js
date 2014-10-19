@@ -7,7 +7,6 @@
 var React = require('react'),
     debug = require('debug'),
     bootstrapDebug = debug('Example'),
-    AuthActions = require('./actions/AuthActions'),
     Fetcher = require('fetchr'),
     Application = require('./app'),
     fetcher = new Fetcher({
@@ -26,6 +25,8 @@ var application = new Application({
     fetcher: fetcher,
     initialState: dehydratedState
 });
+
+// Guess this is for debugging?
 window.context = application.context;
 
 var app = application.getComponent(),

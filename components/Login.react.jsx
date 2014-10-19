@@ -3,13 +3,10 @@
 
 var React = require('react');
 var AuthActions = require('../actions/AuthActions');
+var formValidators = require('../util/formValidators');
 
 
-//TODO: put me in a utility class
-var validateEmail = function(email){
-	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   	return re.test(email);
-};
+
 
 var CreateAccountForm = React.createClass({
 	onStateChange: function(){
@@ -32,7 +29,7 @@ var CreateAccountForm = React.createClass({
 			this.setState({
 				status: 'Passwords Do not Match'
 			});
-		} else if ( !validateEmail(this.state.email) ){
+		} else if ( !formValidators.validateEmail(this.state.email) ){
 			this.setState({
 				status: 'Invalid Email Address'
 			});

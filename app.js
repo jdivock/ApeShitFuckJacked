@@ -5,7 +5,7 @@
 'use strict';
 var Context = require('./lib/Context'),
     AuthStore = require('./stores/AuthStore'),
-    Application = require('./components/ApeShitFuckJackedApp.react.jsx'),
+    application = require('./components/ApeShitFuckJackedApp.react.jsx'),
     debug = require('debug'),
     bootstrapDebug = debug('Example');
 
@@ -15,10 +15,12 @@ function App(options) {
     options = options || {};
     var fetcher = options.fetcher,
         initialState = options.initialState;
+
     debug('Creating context');
     this.context = new Context({
         fetcher: fetcher
     });
+
     if (initialState) {
         bootstrapDebug('rehydrating context');
         this.context.rehydrate(initialState);
@@ -27,7 +29,8 @@ function App(options) {
 
 App.prototype.getComponent = function () {
     debug('Creating Application component');
-    var appComponent = Application({context: this.context.getComponentContext()});
+    var appComponent = application({context: this.context.getComponentContext()});
+    
     debug('Rendering Application component');
     return appComponent;
 };

@@ -56,7 +56,7 @@ app.use(function (req, res, next) {
         fetcher: fetcher
     });
 
-    debug('Executing getUser action');
+    debug('Executing getUser action to init app');
     application.context.getActionContext().executeAction(AuthActions.getUser, {}, function (err) {
         if (err) {
             if (err.status && err.status === 404) {
@@ -66,11 +66,13 @@ app.use(function (req, res, next) {
             }
             return;
         }
+
         debug('Rendering Application component');
         var html = React.renderComponentToString(application.getComponent());
 
         debug('Exposing context state');
         res.expose(application.context.dehydrate(), 'Context');
+
         debug('Rendering application into layout');
         res.render('layout', {
             html: html

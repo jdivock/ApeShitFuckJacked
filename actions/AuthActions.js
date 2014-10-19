@@ -8,7 +8,6 @@ var AuthConstants = require('../constants/AuthConstants'),
 // var ActionTypes = AuthConstants.ActionTypes;
 
 var AuthActions = {
-
     /**
      * @param  {string} text
      */

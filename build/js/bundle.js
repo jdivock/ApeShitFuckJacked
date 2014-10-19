@@ -53,7 +53,6 @@
 	var React = __webpack_require__(6),
 	    debug = __webpack_require__(3),
 	    bootstrapDebug = debug('Example'),
-	    AuthActions = __webpack_require__(2),
 	    Fetcher = __webpack_require__(9),
 	    Application = __webpack_require__(1),
 	    fetcher = new Fetcher({
@@ -72,6 +71,8 @@
 	    fetcher: fetcher,
 	    initialState: dehydratedState
 	});
+
+	// Guess this is for debugging?
 	window.context = application.context;
 
 	var app = application.getComponent(),
@@ -94,7 +95,7 @@
 	'use strict';
 	var Context = __webpack_require__(4),
 	    AuthStore = __webpack_require__(5),
-	    Application = __webpack_require__(13),
+	    application = __webpack_require__(13),
 	    debug = __webpack_require__(3),
 	    bootstrapDebug = debug('Example');
 
@@ -104,10 +105,12 @@
 	    options = options || {};
 	    var fetcher = options.fetcher,
 	        initialState = options.initialState;
+
 	    debug('Creating context');
 	    this.context = new Context({
 	        fetcher: fetcher
 	    });
+
 	    if (initialState) {
 	        bootstrapDebug('rehydrating context');
 	        this.context.rehydrate(initialState);
@@ -116,7 +119,8 @@
 
 	App.prototype.getComponent = function () {
 	    debug('Creating Application component');
-	    var appComponent = Application({context: this.context.getComponentContext()});
+	    var appComponent = application({context: this.context.getComponentContext()});
+	    
 	    debug('Rendering Application component');
 	    return appComponent;
 	};
@@ -141,7 +145,6 @@
 	// var ActionTypes = AuthConstants.ActionTypes;
 
 	var AuthActions = {
-
 	    /**
 	     * @param  {string} text
 	     */
@@ -11991,13 +11994,10 @@
 
 	var React = __webpack_require__(6);
 	var AuthActions = __webpack_require__(2);
+	var formValidators = __webpack_require__(377);
 
 
-	//TODO: put me in a utility class
-	var validateEmail = function(email){
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	   	return re.test(email);
-	};
+
 
 	var CreateAccountForm = React.createClass({displayName: 'CreateAccountForm',
 		onStateChange: function(){
@@ -12020,7 +12020,7 @@
 				this.setState({
 					status: 'Passwords Do not Match'
 				});
-			} else if ( !validateEmail(this.state.email) ){
+			} else if ( !formValidators.validateEmail(this.state.email) ){
 				this.setState({
 					status: 'Invalid Email Address'
 				});
@@ -44284,6 +44284,20 @@
 	}
 
 	module.exports = isNative;
+
+
+/***/ },
+/* 377 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = {
+	    validateEmail: function(email) {
+	        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	        return re.test(email);
+	    }
+	};
 
 
 /***/ }
