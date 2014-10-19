@@ -37,8 +37,19 @@ body {
 
 
 .workout {
+  margin: .3rem 0;
   overflow: hidden;
+  padding: .5rem 0;
+
+  h3 {
+    margin: 0 0 1em;
+  }
+
+  p {
+    margin: .5rem 0 0;
+  }
 }
+
 
 .lifts {
   overflow: hidden;
