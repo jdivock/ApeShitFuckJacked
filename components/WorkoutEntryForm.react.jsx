@@ -147,6 +147,8 @@ var LiftInput = React.createClass({
  * generates more forms on the fly
  *
  * Defaulting name to 0 index lift type (squat);
+ *
+ * Also pretty sure I can just build this here since bundler puts this all in an IIFE
  */
 function Lift(){
 	this.name = liftTypes[0];
@@ -163,7 +165,8 @@ function Lift(){
 
  		return {
  			date: new Date().toDateInputValue(),	
- 			lifts : lifts
+ 			lifts : lifts,
+ 			comments: null
  		};
  	},
  	addLift: function(e){
@@ -186,6 +189,11 @@ function Lift(){
  			date: this.refs.workoutDate.getDOMNode().value
  		});
  	},
+ 	setComments: function(){
+ 		this.setState({
+ 			comments: this.refs.comments.getDOMNode().value
+ 		});
+ 	},
  	submitWorkout: function(e){
  		e.preventDefault();
 
@@ -194,9 +202,11 @@ function Lift(){
  			return lift;
  		});
 
+ 		// Firing workout save action
 		this.props.context.executeAction(AuthActions.saveWorkout, {
 			date: this.state.date,
-			lifts: lifts
+			lifts: lifts,
+			comments: this.state.comments
 		});
  	},
  	/*
@@ -230,6 +240,13 @@ function Lift(){
  					<div className="lift-inputs">
  						{liftInputs}
  					</div>
+
+ 					<textarea
+ 						value={this.state.comments}
+ 						ref="comments"
+ 						onChange={this.setComments}
+ 					>
+ 					</textarea>
 
  					<button className="pure-button pure-button-primary"
  						onClick={this.submitWorkout}>

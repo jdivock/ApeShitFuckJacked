@@ -33,7 +33,10 @@ var AuthActions = require('../actions/AuthActions');
  			/*jshint ignore:start */
  			<div className="workout">
  				<h3>{this.props.workout.date}</h3>
+ 				<div className="lifts">
  				{lifts}
+ 				</div>
+ 				<p>{this.props.workout.comments}</p>
  			</div>
  			/*jshint ignore:end */
  		);

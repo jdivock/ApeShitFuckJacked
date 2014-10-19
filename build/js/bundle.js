@@ -612,7 +612,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(15)();
-	exports.push([module.id, "body {\n  padding: 0 2rem 2rem; }\n\n.login-form {\n  padding-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.workout {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift h4 {\n    margin-top: 0; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n", ""]);
+	exports.push([module.id, "body {\n  padding: 0 2rem 2rem; }\n\n.login-form {\n  padding-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.workout {\n  overflow: hidden; }\n\n.lifts {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift:first-child {\n    padding-left: 0; }\n  .lift h4 {\n    margin-top: 0; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n", ""]);
 
 /***/ },
 /* 9 */
@@ -12329,7 +12329,10 @@
 	 			/*jshint ignore:start */
 	 			React.DOM.div({className: "workout"}, 
 	 				React.DOM.h3(null, this.props.workout.date), 
+	 				React.DOM.div({className: "lifts"}, 
 	 				lifts
+	 				), 
+	 				React.DOM.p(null, this.props.workout.comments)
 	 			)
 	 			/*jshint ignore:end */
 	 		);
@@ -12511,6 +12514,8 @@
 	 * generates more forms on the fly
 	 *
 	 * Defaulting name to 0 index lift type (squat);
+	 *
+	 * Also pretty sure I can just build this here since bundler puts this all in an IIFE
 	 */
 	function Lift(){
 		this.name = liftTypes[0];
@@ -12527,7 +12532,8 @@
 
 	 		return {
 	 			date: new Date().toDateInputValue(),	
-	 			lifts : lifts
+	 			lifts : lifts,
+	 			comments: null
 	 		};
 	 	},
 	 	addLift: function(e){
@@ -12550,6 +12556,11 @@
 	 			date: this.refs.workoutDate.getDOMNode().value
 	 		});
 	 	},
+	 	setComments: function(){
+	 		this.setState({
+	 			comments: this.refs.comments.getDOMNode().value
+	 		});
+	 	},
 	 	submitWorkout: function(e){
 	 		e.preventDefault();
 
@@ -12558,9 +12569,11 @@
 	 			return lift;
 	 		});
 
+	 		// Firing workout save action
 			this.props.context.executeAction(AuthActions.saveWorkout, {
 				date: this.state.date,
-				lifts: lifts
+				lifts: lifts,
+				comments: this.state.comments
 			});
 	 	},
 	 	/*
@@ -12593,6 +12606,13 @@
 
 	 					React.DOM.div({className: "lift-inputs"}, 
 	 						liftInputs
+	 					), 
+
+	 					React.DOM.textarea({
+	 						value: this.state.comments, 
+	 						ref: "comments", 
+	 						onChange: this.setComments
+	 					}
 	 					), 
 
 	 					React.DOM.button({className: "pure-button pure-button-primary", 

@@ -20,9 +20,17 @@ body {
   overflow: hidden;
 }
 
+.lifts {
+  overflow: hidden;
+}
+
 .lift {
   float: left;
   padding: 0 1rem;
+
+  &:first-child {
+    padding-left: 0;
+  }
 
   h4 {
     margin-top: 0;
