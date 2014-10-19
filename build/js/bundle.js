@@ -159,11 +159,6 @@
 
 	                if (!res.error) {
 	                    data = res.body;
-	                    
-	                    // FORCING ERROR HERE
-	                    data = {};
-
-
 	                    data.loggedIn = true;
 	                } else {
 	                    data = {
