@@ -3597,7 +3597,7 @@
 
 	function fetchUser(context, payload, done) {
 	    context.fetcher.read('users', {
-	        action: 'ME'
+	        id: 'me'
 	    }, null, function(err, data) {
 
 	        var user = {};
