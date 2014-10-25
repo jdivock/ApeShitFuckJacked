@@ -33,7 +33,7 @@ fs.readdirSync(modelsPath).forEach(function(file) {
 });
 
 if (process.env.NODE_ENV !== 'production') {
-    require('./lib/config/dummydata');
+    // require('./lib/config/dummydata');
 }
 
 // Passport Configuration
@@ -46,6 +46,7 @@ expressState.extend(app);
 require('./lib/config/express')(app);
 
 Fetcher.registerFetcher(require('./lib/fetchers/users'));
+// Fetcher.registerFetcher(require('./lib/fetchers/workouts'));
 app.use(Application.config.xhrPath, Fetcher.middleware());
 
 app.use(function (req, res, next) {
