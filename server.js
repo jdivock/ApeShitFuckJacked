@@ -46,7 +46,8 @@ expressState.extend(app);
 require('./lib/config/express')(app);
 
 Fetcher.registerFetcher(require('./lib/fetchers/users'));
-// Fetcher.registerFetcher(require('./lib/fetchers/workouts'));
+Fetcher.registerFetcher(require('./lib/fetchers/workouts'));
+Fetcher.registerFetcher(require('./lib/fetchers/lifts'));
 app.use(Application.config.xhrPath, Fetcher.middleware());
 
 app.use(function (req, res, next) {
