@@ -35,7 +35,6 @@ var ApeShitFuckJackedApp = React.createClass({
 	},
 	render: function(){
 		return (
-			/*jshint ignore:start */
 			<div>
 				<Login 
 					user={this.state.user} 
@@ -51,7 +50,6 @@ var ApeShitFuckJackedApp = React.createClass({
 					/>
 				</div>
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });

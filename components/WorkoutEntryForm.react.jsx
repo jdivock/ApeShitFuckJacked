@@ -50,22 +50,18 @@ var React = require('react/addons'),
 
  		switch (formView) {
  			case 'FORM':
- 				/*jshint ignore:start */
  				form = <WorkoutInput 
  						submitWorkout={this.submitWorkout}
  						cancel={this.clear}
  						type='CREATE'
  						/>;
- 				/*jshint ignore:end */
  				break;
  			case 'INITIAL':
- 				/*jshint ignore:start */
  				form = <button 
  						className="pure-button pure-button-primary" 
  						onClick={this.setFormStateAdd}>
  						Add Workout
  						</button>;
- 				/*jshint ignore:end */
  				break;
 
  			default:
@@ -73,11 +69,9 @@ var React = require('react/addons'),
  		}
 
  		return (
- 			/*jshint ignore:start */
  			<div className="lift-entry-form">
  				{form}
  			</div>
- 			/*jshint ignore:end */
  		);
  	}
  });

@@ -31,16 +31,13 @@ var LiftSelect = React.createClass({
 	render: function() {
 
 		var liftOptions = liftTypes.map(function(lift, idx){
-			/*jshint ignore:start */
 			return (
 				<option key={'lift-type-' + idx}>
 					{lift}
 				</option>);
-			/*jshint ignore:end */
 		});
 
 		return (
-			/*jshint ignore:start */
 			<select 
 				className="lift-select" 
 				ref="liftTypeOption" 
@@ -49,7 +46,6 @@ var LiftSelect = React.createClass({
 			>
 				{liftOptions}
 			</select>
-			/*jshint ignore:end */
 		);
 	}
 });
@@ -60,7 +56,6 @@ var RepInput = React.createClass({
 	},
 	render: function() {
 		return (
-			/*jshint ignore:start */
 			<div className="form-control">
 				<label className="rep-input" htmlFor={'rep-input' + this.props.idx}>Reps</label>
 				<input 
@@ -71,7 +66,6 @@ var RepInput = React.createClass({
 					onChange={this.changeReps}
 				/>
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });
@@ -82,7 +76,6 @@ var SetInput = React.createClass({
 	},
 	render: function() {
 		return (
-			/*jshint ignore:start */
 			<div className="form-control">
 				<label className="set-input" htmlFor={'set-input' + this.props.idx}>Sets</label>
 				<input 
@@ -93,7 +86,6 @@ var SetInput = React.createClass({
 					onChange={this.changeSets}
 				/>
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });
@@ -104,7 +96,6 @@ var WeightInput = React.createClass({
 	},
 	render: function() {
 		return (
-			/*jshint ignore:start */
 			<div className="form-control">
 				<label className="weight-input" htmlFor={'weight-input' + this.props.idx}>Weight</label>
 				<input 
@@ -115,7 +106,6 @@ var WeightInput = React.createClass({
 					onChange={this.changeWeight}
 				/>
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });
@@ -140,7 +130,6 @@ var LiftInput = React.createClass({
 	},
 	render: function() {
 		return (
-			/*jshint ignore:start */
 			<div className="lift-input">
 				<LiftSelect 
 					idx={this.props.key} 
@@ -168,7 +157,6 @@ var LiftInput = React.createClass({
  					value={this.props.lift.reps}
  				/>
 			</div>
-			/*jshint ignore:end */
 		);
 	}
 });
@@ -290,17 +278,16 @@ function transformLifts(lifts){
  	},
  	render: function() {
 		var liftInputs = _.map(this.state.lifts, function(lift, idx){
- 			/*jshint ignore:start */
+ 	
  			return <LiftInput 
  					key={idx} 
  					lift={lift}
  					removeLift={this.removeLift}
- 					updateLift={this.updateLift}/>
- 			/*jshint ignore:end */
+ 					updateLift={this.updateLift}/>;
+ 
  		}.bind(this));
 
  		return (
- 			/*jshint ignore:start */
  			<form className="workout-input pure-form pure-form-stacked">
 
  				<fieldset>
@@ -334,9 +321,9 @@ function transformLifts(lifts){
  					</div>
  				</fieldset>
  			</form>
- 			/*jshint ignore:end */
+
  		);
  	}
  });
 
- module.exports = WorkoutInput;
+module.exports = WorkoutInput;

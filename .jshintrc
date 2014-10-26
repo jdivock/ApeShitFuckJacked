@@ -9,16 +9,13 @@
   "immed": true,
   "indent": 4,
   "latedef": true,
-  "newcap": true,
+  "newcap": false,
   "noarg": true,
-  "quotmark": "single",
+  "quotmark": false,
   "regexp": true,
   "undef": true,
   "unused": false,
   "strict": true,
   "trailing": true,
-  "smarttabs": true,
-  "globals": {
-    "angular": false
-  }
+  "smarttabs": true
 }
