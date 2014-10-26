@@ -176,20 +176,31 @@ function Lift(){
 	this.sets = 0;
 	this.reps = 0;
 	this.weight = 0;
-	this.comments = null;
+	this.id = 'l_id_' + Date.now();
 }
 
 function generateCleanWorkoutState(){
 	var timestamp = Date.now();
 	var lifts = {};
-	lifts[timestamp] = new Lift();
+	var lift = new Lift();
+	lifts[lift.id] = lift;
 
 	return {
-		id: 'lift_id_' + timestamp,
+		id: 'w_id_' + timestamp,
 		date: new Date().toDateInputValue(),	
 		lifts : lifts,
 		comments: null
 	};
+}
+
+// Take array of lifts given to us and transform it into an object
+// we can do key lookups off of
+function transformLifts(lifts){
+	return _.reduce(lifts, function(accum, lift){
+		accum[lift.id] = lift;
+
+		return accum;
+	}, {});
 }
 
  var WorkoutInput = React.createClass({
@@ -199,8 +210,9 @@ function generateCleanWorkoutState(){
  		if(this.props.type === 'CREATE'){
  			return generateCleanWorkoutState();
  		} else {
+ 			var lifts = transformLifts(this.props.workout.lifts);
  			var formattedDate = new Date(this.props.workout.date).toDateInputValue();
- 			return React.addons.update(this.props.workout, {date: {$set: formattedDate}});
+ 			return React.addons.update(this.props.workout, {date: {$set: formattedDate}, lifts: {$set: lifts}});
  		}
  		
  	},
