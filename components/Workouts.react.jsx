@@ -5,6 +5,7 @@
 var React = require('react'),
  AuthStore = require('../stores/AuthStore'),
  WorkoutInput = require('./WorkoutInput.react'),
+ moment = require('moment'),
  WorkoutActions = require('../actions/WorkoutActions');
 
 var Lift = React.createClass({
@@ -38,7 +39,7 @@ var WorkoutView = React.createClass({
 		return (
 			<div className="workout">
 				<h3>
-					{this.props.workout.date}
+					{moment(this.props.workout.date).format('L')}
 					<span className="actions">
  					<button 
  						className="pure-button button-xsmall" 
