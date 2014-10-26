@@ -43,8 +43,12 @@ var ApeShitFuckJackedApp = React.createClass({
 				<div className="container">
 					<WorkoutEntryForm 
 						context={this.props.context}
-						user={this.state.user}/>
-					<Workouts workouts={this.state.user.workouts} />
+						user={this.state.user}
+					/>
+					<Workouts 
+						workouts={this.state.user.workouts} 
+						context={this.props.context}
+					/>
 				</div>
 			</div>
 			/*jshint ignore:end */

@@ -22,7 +22,10 @@ AuthStore.handlers = {
     'AUTH_CREATE': 'setAuth',
     'AUTH_LOGIN': 'setAuth',
     'AUTH_LOGOUT': 'resetAuth',
-    'WORKOUT_ADDED': 'updateWorkout'
+    'WORKOUT_ADDED': 'updateWorkout',
+    'WORKOUT_DELETED': 'updateWorkout',
+    'WORKOUT_CREATED': 'updateWorkout',
+    'WORKOUT_UPDATED': 'updateWorkout'
 };
 
 util.inherits(AuthStore, BaseStore);

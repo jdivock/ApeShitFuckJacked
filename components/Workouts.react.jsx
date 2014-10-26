@@ -2,9 +2,11 @@
 
 'use strict';
 
-var React = require('react');
-var AuthStore = require('../stores/AuthStore');
-var AuthActions = require('../actions/AuthActions');
+var React = require('react'),
+ AuthStore = require('../stores/AuthStore'),
+ AuthActions = require('../actions/AuthActions'),
+ WorkoutInput = require('./WorkoutInput.react'),
+ WorkoutActions = require('../actions/WorkoutActions');
 
  var Lift = React.createClass({
  	render: function() {
@@ -22,6 +24,67 @@ var AuthActions = require('../actions/AuthActions');
  });
 
  var Workout = React.createClass({
+ 	getInitialState: function(){
+ 		return {
+ 			edit: false
+ 		};
+ 	},
+ 	setEdit: function(){
+ 		this.setState({
+ 			edit: true
+ 		});
+ 	},
+ 	setRead: function(){
+ 		this.setState({
+ 			edit: false
+ 		});
+ 	},
+ 	submitWorkout: function(workout){
+ 		this.props.context.executeAction(WorkoutActions.updateWorkout, workout);
+
+		this.setRead();
+ 	},
+ 	render: function(){
+ 		var workout;
+
+ 		if(this.state.edit){
+ 			/*jshint ignore:start */
+ 			return (
+ 				<WorkoutInput 
+ 					workout={this.props.workout}
+					submitWorkout={this.submitWorkout}
+					cancel={this.setRead}
+					type='EDIT'
+				/>
+ 			);
+			/*jshint ignore:end */
+
+ 		} else {
+ 			/*jshint ignore:start */
+ 			return ( 
+ 				<WorkoutView
+	 				key={this.propsidx} 
+					workout={this.props.workout} 
+					context={this.props.context}
+					setEdit={this.setEdit}
+				/> 
+			);
+ 			/*jshint ignore:end */
+ 		}
+ 	}
+
+ });
+
+ var WorkoutView = React.createClass({
+ 	
+ 	deleteWorkout: function(){
+ 		this.props.context.executeAction(WorkoutActions.deleteWorkout, {
+ 			workoutId: this.props.workout.id
+ 		});
+ 	},
+ 	editWorkout: function(){
+ 		this.props.setEdit();
+ 	},
  	render: function() {
  		var lifts = this.props.workout.lifts.map(function(lift, idx){
  			/*jshint ignore:start */
@@ -37,12 +100,12 @@ var AuthActions = require('../actions/AuthActions');
  					<span className="actions">
 	 					<button 
 	 						className="pure-button button-xsmall" 
-	 						onClick={this.props.editWorkout}>
+	 						onClick={this.editWorkout}>
 	 						edit
 	 					</button>
 	 					<button 
 	 						className="button-error pure-button button-xsmall" 
-	 						onClick={this.props.deleteWorkout}>
+	 						onClick={this.deleteWorkout}>
 	 						X
 	 					</button>
  					</span>
@@ -64,9 +127,13 @@ var Workouts = React.createClass({
 
 		var workouts = this.props.workouts.map(function(workout, idx){
 			/*jshint ignore:start */
-			return <Workout key={idx} workout={workout}/>
+			return <Workout 
+						key={idx} 
+						workout={workout} 
+						context={this.props.context}
+					/>
 			/*jshint ignore:end */
-		});
+		}.bind(this));
 
 		return (
 			/*jshint ignore:start */
