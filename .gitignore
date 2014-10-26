@@ -2,6 +2,7 @@ node_modules
 #public
 .tmp
 .sass-cache
+build
 dist/bower_components
 app/bower_components
 heroku
