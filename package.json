@@ -25,7 +25,13 @@
     "q": "^1.0.1",
     "react": "0.11.x",
     "routr": "^0.0.x",
-    "superagent": "^0.20.0"
+    "superagent": "^0.20.0",
+    "webpack": "^1.2.0-beta6",
+    "css-loader": "^0.9.0",
+    "sass-loader": "^0.2.0",
+    "style-loader": "^0.8.1",
+    "jsx-loader": "^0.11.2",
+    "uglify-js": "^2.4.15"
   },
   "engines": {
     "node": "0.10.x"
@@ -33,7 +39,8 @@
   "main": "server.js",
   "scripts": {
     "build": "webpack",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "postinstall": "webpack -p"
   },
   "devDependencies": {
     "connect-livereload": "^0.4.0",
