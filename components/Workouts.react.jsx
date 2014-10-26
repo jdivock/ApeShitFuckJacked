@@ -35,10 +35,13 @@ var WorkoutView = React.createClass({
 			return <Lift key={idx} lift={lift} />;
 		});
 
+		var printedDate = new Date(this.props.workout.date);
+		var printedDateStr = [printedDate.getMonth() + 1, printedDate.getDate(), printedDate.getFullYear()].join('/');
+
 		return (
 			<div className="workout">
 				<h3>
-					{this.props.workout.date}
+					{printedDateStr}
 					<span className="actions">
  					<button 
  						className="pure-button button-xsmall" 
