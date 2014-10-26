@@ -479,7 +479,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(13)();
-	exports.push([module.id, "body .container {\n  padding: 0 2rem; }\n\n.login-form {\n  background: #d0d0d0;\n  padding: 0.3rem;\n  margin-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.actions {\n  font-size: 1rem;\n  font-weight: normal;\n  padding-left: 0.5rem; }\n  .actions button {\n    margin: 0 0.2rem; }\n    .actions button.button-xsmall {\n      font-size: 0.3rem;\n      vertical-align: bottom; }\n\n.workout {\n  margin: 0.3rem 0;\n  overflow: hidden;\n  padding: 0.5rem 0; }\n  .workout h3 {\n    margin: 0 0 1em; }\n  .workout p {\n    margin: 0.5rem 0 0; }\n\n.lifts {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift:first-child {\n    padding-left: 0; }\n  .lift h4 {\n    margin-top: 0; }\n\n.form-controls {\n  padding-top: 0.3rem; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n\n.button-success, .button-error, .button-warning, .button-secondary {\n  color: white;\n  border-radius: 4px;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }\n\n.button-success {\n  background: #1cb841;\n  /* this is a green */ }\n\n.button-error {\n  background: #ca3c3c;\n  /* this is a maroon */ }\n\n.button-warning {\n  background: #df7514;\n  /* this is an orange */ }\n\n.button-secondary {\n  background: #42b8dd;\n  /* this is a light blue */ }\n\n.button-xsmall {\n  font-size: 70%; }\n\n.button-small {\n  font-size: 85%; }\n\n.button-large {\n  font-size: 110%; }\n\n.button-xlarge {\n  font-size: 125%; }\n", ""]);
+	exports.push([module.id, "body .container {\n  padding: 0 2rem; }\n\n.login-form {\n  background: #d0d0d0;\n  padding: 0.3rem;\n  margin-bottom: 1rem; }\n\n.login-greeting button {\n  margin-left: 1rem; }\n\n.actions {\n  font-size: 1rem;\n  font-weight: normal;\n  padding-left: 0.5rem; }\n  .actions button {\n    margin: 0 0.2rem; }\n    .actions button.button-xsmall {\n      font-size: 0.3rem;\n      vertical-align: bottom; }\n\n.workout {\n  margin: 0.3rem 0;\n  overflow: hidden;\n  padding: 0.5rem 0; }\n  .workout h3 {\n    margin: 0 0 1em; }\n  .workout p {\n    margin: 0.5rem 0 0; }\n\n.lifts {\n  overflow: hidden; }\n\n.lift {\n  float: left;\n  padding: 0 1rem; }\n  .lift:first-child {\n    padding-left: 0; }\n  .lift h4 {\n    margin-top: 0; }\n\n.form-controls {\n  padding-top: 0.3rem; }\n\n.workout-input button {\n  margin-right: 0.5rem; }\n\n.lift-inputs {\n  overflow: hidden; }\n  .lift-inputs .lift-select {\n    display: inline-block;\n    margin-right: 1rem; }\n\n.lift-input {\n  float: left;\n  padding-right: 1rem; }\n\n.button-success, .button-error, .button-warning, .button-secondary {\n  color: white;\n  border-radius: 4px;\n  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }\n\n.button-success {\n  background: #1cb841;\n  /* this is a green */ }\n\n.button-error {\n  background: #ca3c3c;\n  /* this is a maroon */ }\n\n.button-warning {\n  background: #df7514;\n  /* this is an orange */ }\n\n.button-secondary {\n  background: #42b8dd;\n  /* this is a light blue */ }\n\n.button-xsmall {\n  font-size: 70%; }\n\n.button-small {\n  font-size: 85%; }\n\n.button-large {\n  font-size: 110%; }\n\n.button-xlarge {\n  font-size: 125%; }\n", ""]);
 
 /***/ },
 /* 8 */
@@ -18319,6 +18319,11 @@
 
 			this.props.updateLift(liftObj);
 		},
+		deleteLift: function(e){
+			e.preventDefault();
+
+			this.props.removeLift(this.props.lift.id);
+		},
 		render: function() {
 			return (
 				/*jshint ignore:start */
@@ -18327,6 +18332,11 @@
 						idx: this.props.key, 
 						updateLiftInput: this.updateLiftInput, 
 						value: this.props.lift.name}
+					), 
+					React.DOM.button({
+						className: "button-error pure-button button-xsmall", 
+						onClick: this.deleteLift}, 
+						"X"
 					), 
 					WeightInput({
 						idx: this.props.key, 
@@ -18413,6 +18423,13 @@
 	 			lifts: React.addons.update( this.state.lifts, {$merge: liftContainer})
 	 		});
 	 	},
+	 	removeLift: function(id){
+	 		var lifts = _.reject(this.state.lifts, {id: id});
+
+	 		this.setState({
+	 			lifts: lifts
+	 		});
+	 	},
 	 	cancel: function(e){
 	 		e.preventDefault();
 
@@ -18433,21 +18450,13 @@
 	 	submitWorkout: function(e){
 	 		e.preventDefault();
 
-	 		// Flatten this shit out -- NEW ONLY?
+	 		// Converting key lookup object of lifts to array for saving
 	 		var lifts = _.map(this.state.lifts, function(lift){
 	 			return lift;
 	 		});
 
 	 		var workout = this.state;
-
-	 		// Flattening out the bonkers stuff I do on new save
 	 		workout.lifts = lifts;
-
-	 	// 	this.props.submitWorkout({
-			// 	date: this.state.date,
-			// 	lifts: lifts,
-			// 	comments: this.state.comments
-			// });
 
 			this.props.submitWorkout({workout: workout});
 
@@ -18471,6 +18480,7 @@
 	 			return LiftInput({
 	 					key: idx, 
 	 					lift: lift, 
+	 					removeLift: this.removeLift, 
 	 					updateLift: this.updateLift})
 	 			/*jshint ignore:end */
 	 		}.bind(this));

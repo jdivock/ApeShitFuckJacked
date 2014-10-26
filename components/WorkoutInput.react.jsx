@@ -133,6 +133,11 @@ var LiftInput = React.createClass({
 
 		this.props.updateLift(liftObj);
 	},
+	deleteLift: function(e){
+		e.preventDefault();
+
+		this.props.removeLift(this.props.lift.id);
+	},
 	render: function() {
 		return (
 			/*jshint ignore:start */
@@ -142,6 +147,11 @@ var LiftInput = React.createClass({
 					updateLiftInput={this.updateLiftInput}
 					value={this.props.lift.name}
 				/>
+				<button 
+					className="button-error pure-button button-xsmall" 
+					onClick={this.deleteLift}>
+					X
+				</button>
 				<WeightInput 
 					idx={this.props.key} 
 					updateLiftInput={this.updateLiftInput}
@@ -227,6 +237,13 @@ function transformLifts(lifts){
  			lifts: React.addons.update( this.state.lifts, {$merge: liftContainer})
  		});
  	},
+ 	removeLift: function(id){
+ 		var lifts = _.reject(this.state.lifts, {id: id});
+
+ 		this.setState({
+ 			lifts: lifts
+ 		});
+ 	},
  	cancel: function(e){
  		e.preventDefault();
 
@@ -247,21 +264,13 @@ function transformLifts(lifts){
  	submitWorkout: function(e){
  		e.preventDefault();
 
- 		// Flatten this shit out -- NEW ONLY?
+ 		// Converting key lookup object of lifts to array for saving
  		var lifts = _.map(this.state.lifts, function(lift){
  			return lift;
  		});
 
  		var workout = this.state;
-
- 		// Flattening out the bonkers stuff I do on new save
  		workout.lifts = lifts;
-
- 	// 	this.props.submitWorkout({
-		// 	date: this.state.date,
-		// 	lifts: lifts,
-		// 	comments: this.state.comments
-		// });
 
 		this.props.submitWorkout({workout: workout});
 
@@ -285,6 +294,7 @@ function transformLifts(lifts){
  			return <LiftInput 
  					key={idx} 
  					lift={lift}
+ 					removeLift={this.removeLift}
  					updateLift={this.updateLift}/>
  			/*jshint ignore:end */
  		}.bind(this));

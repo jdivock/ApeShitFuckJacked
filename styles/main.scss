@@ -81,8 +81,15 @@ body {
   }
 }
 
+
 .lift-inputs {
   overflow: hidden;
+
+  .lift-select {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+
 }
 
 .lift-input {
