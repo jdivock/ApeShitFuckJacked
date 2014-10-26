@@ -235,10 +235,15 @@ function generateCleanWorkoutState(){
  	submitWorkout: function(e){
  		e.preventDefault();
 
- 		// Flatten this shit out
+ 		// Flatten this shit out -- NEW ONLY?
  		var lifts = _.map(this.state.lifts, function(lift){
  			return lift;
  		});
+
+ 		var workout = this.state;
+
+ 		// Flattening out the bonkers stuff I do on new save
+ 		workout.lifts = lifts;
 
  	// 	this.props.submitWorkout({
 		// 	date: this.state.date,
@@ -246,7 +251,7 @@ function generateCleanWorkoutState(){
 		// 	comments: this.state.comments
 		// });
 
-		this.props.submitWorkout({workout: this.state});
+		this.props.submitWorkout({workout: workout});
 
 		this.setState(generateCleanWorkoutState());
  	},

@@ -8,7 +8,7 @@ var React = require('react/addons'),
 	_ = require('lodash'),
 	WorkoutInput = require('./WorkoutInput.react'),
 	AuthStore = require('../stores/AuthStore'),
-	AuthActions = require('../actions/AuthActions');
+	WorkoutActions = require('../actions/WorkoutActions');
 
 
  var WorkoutEntryForm = React.createClass({
@@ -34,7 +34,7 @@ var React = require('react/addons'),
  	},
  	submitWorkout: function(workout){
  		// Firing workout save action
-		this.props.context.executeAction(AuthActions.saveWorkout, workout);
+		this.props.context.executeAction(WorkoutActions.createWorkout, workout);
 
 		this.clear();
  	},

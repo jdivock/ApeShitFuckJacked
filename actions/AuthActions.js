@@ -105,26 +105,6 @@ var AuthActions = {
         context.dispatch('AUTH_LOGOUT');
         request.del('/api/session').end();
         done();
-    },
-
-    /*
-     * Fire off save here, will update application state when server
-     * returns success
-     */
-    saveWorkout: function(context, payload, done) {
-        debug('saving workout', payload);
-
-        request
-            .post('/api/users/me/workout')
-            .accept('application/json')
-            .type('application/json')
-            .send(JSON.stringify(payload))
-            .end(function(res) {
-                debug('workout saved');
-                context.dispatch('WORKOUT_ADDED', res.body);
-
-                done();
-            });
     }
 };
 
