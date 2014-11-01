@@ -18,7 +18,7 @@ function ApplicationStore(dispatcher) {
             text: 'Workout',
             route: 'workout'
         },
-        about: {
+        profile: {
             text: 'Profile',
             route: 'profile'
         }

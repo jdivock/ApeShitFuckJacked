@@ -4,6 +4,7 @@
 var React = require('react'),
 	Login = require('./Login.react'),
 	Workouts = require('./Workouts.react'),
+	Profile = require('./Profile.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
 	AuthActions = require('../actions/AuthActions');
@@ -41,14 +42,21 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.setState({user: this._getUser()});
 	},
 	render: function(){
+		var view;
 
-
-		return (
-			<div>
-				<Login 
-					user={this.state.user} 
-					context={this.props.context}/>
-				<div className="container">
+		switch (this.state.app.currentPageName) {
+			case 'profile':
+				view = <Profile 
+					context={this.props.context}
+					user={this.state.user}
+					/>;
+				break;
+			case 'workout':
+				// TODO: Single workout view
+				break;
+			default:
+				view = 
+					<div>
 					<WorkoutEntryForm 
 						context={this.props.context}
 						user={this.state.user}
@@ -57,6 +65,16 @@ var ApeShitFuckJackedApp = React.createClass({
 						workouts={this.state.user.workouts} 
 						context={this.props.context}
 					/>
+					</div>;
+		}
+
+		return (
+			<div>
+				<Login 
+					user={this.state.user} 
+					context={this.props.context}/>
+				<div className="container">
+					{view}
 				</div>
 			</div>
 		);

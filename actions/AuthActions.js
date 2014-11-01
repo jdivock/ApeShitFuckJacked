@@ -2,6 +2,7 @@
 
 var AuthConstants = require('../constants/AuthConstants'),
     debug = require('debug')('App:authActions'),
+    navigateAction = require('flux-router-component').navigateAction,
     _ = require('lodash'),
     request = require('superagent');
 
@@ -15,8 +16,12 @@ function fetchUser(context, payload, done) {
         //TODO: This makes me feel bad, need to find a better way
         // to handle immutable request object
         if (data && data._id) {
+            console.log('here', data);
+            // user = _.cloneDeep(data);
             user.loggedIn = true;
-            user.name = data.name;
+            // console.log('again', user);
+            user.firstName = data.firstName;
+            user.lastName = data.lastName;
             user.email = data.email;
             user.workouts = data.workouts;
         } else {
@@ -36,7 +41,17 @@ function fetchUser(context, payload, done) {
 var AuthActions = {
     init: function(context, payload, done){
         debug('initing auth');
-        fetchUser(context, payload, done);
+        fetchUser(context, payload, function(err, user){
+
+            if(!user.loggedIn){
+                // Do some stuff here to override the path if the
+                // user isn't auth'd
+            }
+            
+            context.executeAction(navigateAction, {
+                path: payload.path
+            }, done);
+        });
     },
     getUser: function(context, payload, done){
         fetchUser(context, payload, done);
@@ -70,6 +85,22 @@ var AuthActions = {
                 done();
             });
 
+    },
+    update: function(context, payload, done){
+        context.fetcher.update('users', {
+            id: 'me'
+        }, payload.user, function(err, data){
+            var user ={};
+            user.loggedIn = true;
+            // console.log('again', user);
+            user.firstName = data.firstName;
+            user.lastName = data.lastName;
+            user.email = data.email;
+            user.workouts = data.workouts;
+
+            context.dispatch('AUTH_UPDATE', user);
+            done();
+        });
     },
     create: function(context, payload, done) {
         debug('creating account');

@@ -70,7 +70,9 @@ app.use(function(req, res, next) {
     });
 
     debug('Executing navigateAction to start up app');
-    application.context.getActionContext().executeAction(AuthActions.init, {},
+    application.context.getActionContext().executeAction(AuthActions.init, {
+            path: req.url
+        },
         function(err) {
             if (err) {
                 if (err.status && err.status === 404) {
@@ -81,39 +83,23 @@ app.use(function(req, res, next) {
                 return;
             }
 
-            // Entering callback hell until I can figure out something better
-            application.context.getActionContext().executeAction(navigateAction, {
-                path: req.url
-            }, function(err) {
+
+            debug('Rendering Application component');
+            var html = React.renderComponentToString(application.getComponent());
+
+            debug('Exposing context state');
+            res.expose(application.context.dehydrate(), 'Context');
+
+            debug('Rendering application into layout');
+            res.render('layout', {
+                html: html
+            }, function(err, markup) {
                 if (err) {
-                    if (err.status && err.status === 404) {
-                        next();
-                    } else {
-                        next(err);
-                    }
-                    return;
+                    next(err);
                 }
-
-                debug('Rendering Application component');
-                var html = React.renderComponentToString(application.getComponent());
-
-                debug('Exposing context state');
-                res.expose(application.context.dehydrate(), 'Context');
-
-                debug('Rendering application into layout');
-                res.render('layout', {
-                    html: html
-                }, function(err, markup) {
-                    if (err) {
-                        next(err);
-                    }
-                    debug('Sending markup');
-                    res.send(markup);
-                });
-
-
+                debug('Sending markup');
+                res.send(markup);
             });
-
 
         });
 });
