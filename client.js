@@ -14,6 +14,7 @@ var React = require('react'),
     }),
     dehydratedState = App && App.Context; // Sent from the server
 
+require('./styles/pure.css');
 require('./styles/main.scss');
 
 window.React = React; // For chrome dev tool support
