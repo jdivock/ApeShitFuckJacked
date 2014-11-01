@@ -28,13 +28,14 @@ function fetchUser(context, payload, done) {
 
         context.dispatch('AUTH_LOGIN', user);
 
-        done();
+        done(err, user);
     });
 }
 
 
 var AuthActions = {
     init: function(context, payload, done){
+        debug('initing auth');
         fetchUser(context, payload, done);
     },
     getUser: function(context, payload, done){

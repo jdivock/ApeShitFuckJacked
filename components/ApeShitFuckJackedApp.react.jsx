@@ -5,7 +5,6 @@ var React = require('react'),
 	Login = require('./Login.react'),
 	Workouts = require('./Workouts.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
-	AuthStore = require('../stores/AuthStore'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
 	AuthActions = require('../actions/AuthActions');
 
@@ -14,17 +13,25 @@ var ApeShitFuckJackedApp = React.createClass({
 	getInitialState: function(){
 		var context = this.props.context;
 
-		this.AuthStore = context.getStore(AuthStore);
+		this.AppStore =  context.getStore('ApplicationStore');
+		this.AuthStore = context.getStore('AuthStore');
 
 		return {
+			app: this.AppStore.getState(),
 			user: this._getUser()
 		};
 	},
 	componentDidMount: function() {
 		this.AuthStore.addChangeListener(this._onChange);
+		this.AppStore.addChangeListener(this._onAppChange);
 	},
 	componentWillUnmount: function() {
 		this.AuthStore.removeChangeListener(this._onChange);
+		this.AppStore.removeChangeListener(this._onAppChange);
+	},
+	_onAppChange: function(){
+		var state = this.AppStore.getState();
+		this.setState(state);
 	},
 	_getUser: function(){
 		return this.AuthStore.getUser();
@@ -34,6 +41,8 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.setState({user: this._getUser()});
 	},
 	render: function(){
+
+
 		return (
 			<div>
 				<Login 
