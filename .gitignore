@@ -10,3 +10,4 @@ heroku
 #dist
 .DS_Store
 *.log
+*.sublime-workspace
