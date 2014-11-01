@@ -7,10 +7,12 @@ var React = require('react'),
 	Profile = require('./Profile.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
+	RouterMixin = require('flux-router-component').RouterMixin,
 	AuthActions = require('../actions/AuthActions');
 
 
 var ApeShitFuckJackedApp = React.createClass({
+	mixins: [RouterMixin],
 	getInitialState: function(){
 		var context = this.props.context;
 
@@ -32,7 +34,7 @@ var ApeShitFuckJackedApp = React.createClass({
 	},
 	_onAppChange: function(){
 		var state = this.AppStore.getState();
-		this.setState(state);
+		this.setState({app: state});
 	},
 	_getUser: function(){
 		return this.AuthStore.getUser();

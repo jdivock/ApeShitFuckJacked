@@ -6,7 +6,8 @@ var React = require('react'),
 	formUtils = require('../util/formUtils'),
 	EmailInput = require('./EmailInput.react'),
 	PasswordInput = require('./PasswordInput.react'),
-	PasswordRepeatInput = require('./PasswordRepeatInput.react');
+	PasswordRepeatInput = require('./PasswordRepeatInput.react'),
+	NavLink = require('flux-router-component').NavLink;
 
 
 var CreateAccountForm = React.createClass({
@@ -189,7 +190,7 @@ var Login = React.createClass({
 				form = <div className="login-greeting pure-menu pure-menu-horizontal pure-menu-open">
 							<ul>
 								<li>
-									<a className="logo" href="/">ApeShitFuckJacked</a>
+									<NavLink className="logo" href="/" context={this.props.context}>ApeShitFuckJacked</NavLink>
 								</li>
 								<li>
 									Hello {this.props.user.firstName + ' ' + this.props.user.lastName}. 
@@ -202,9 +203,11 @@ var Login = React.createClass({
 									</button>
 								</li>
 								<li>
-									<a href="/profile">
+									<NavLink 
+										href="/profile"
+										context={this.props.context}>
 										Edit Profile
-									</a>
+									</NavLink>
 								</li>
 							</ul>
 						</div>;

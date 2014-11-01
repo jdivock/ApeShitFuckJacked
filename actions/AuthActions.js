@@ -16,10 +16,7 @@ function fetchUser(context, payload, done) {
         //TODO: This makes me feel bad, need to find a better way
         // to handle immutable request object
         if (data && data._id) {
-            console.log('here', data);
-            // user = _.cloneDeep(data);
             user.loggedIn = true;
-            // console.log('again', user);
             user.firstName = data.firstName;
             user.lastName = data.lastName;
             user.email = data.email;
@@ -44,8 +41,7 @@ var AuthActions = {
         fetchUser(context, payload, function(err, user){
 
             if(!user.loggedIn){
-                // Do some stuff here to override the path if the
-                // user isn't auth'd
+                payload.path = '/';
             }
             
             context.executeAction(navigateAction, {
