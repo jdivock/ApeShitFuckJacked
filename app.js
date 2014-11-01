@@ -5,11 +5,14 @@
 'use strict';
 var Context = require('./util/Context'),
     AuthStore = require('./stores/AuthStore'),
+    ApplicationStore = require('./stores/ApplicationStore'),
     application = require('./components/ApeShitFuckJackedApp.react.jsx'),
     debug = require('debug'),
+    routes = require('./configs/routes'),
     bootstrapDebug = debug('Example');
 
 Context.registerStore(AuthStore);
+Context.registerStore(ApplicationStore);
 
 function App(options) {
     options = options || {};
@@ -18,7 +21,8 @@ function App(options) {
 
     debug('Creating context');
     this.context = new Context({
-        fetcher: fetcher
+        fetcher: fetcher,
+        routes: routes
     });
 
     if (initialState) {

@@ -1,81 +1,13 @@
 /** @jsx React.DOM */
 'use strict';
 
-var React = require('react');
-var AuthActions = require('../actions/AuthActions');
-var formUtils = require('../util/formUtils');
+var React = require('react'),
+	AuthActions = require('../actions/AuthActions'),
+	formUtils = require('../util/formUtils'),
+	EmailInput = require('./EmailInput.react'),
+	PasswordInput = require('./PasswordInput.react'),
+	PasswordRepeatInput = require('./PasswordRepeatInput.react');
 
-
-var EmailInput = React.createClass({
-	setEmail: function(){
-		this.props.onUserInput({
-			email: this.refs.loginEmail.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			<div className="form-control">
-				<label htmlFor="loginEmail">Email
-					<input 
-						name="email" 
-						id="loginEmail" 
-						type="email" 
-						ref="loginEmail" 
-						value={this.props.email} 
-						onChange={this.setEmail}
-					/>
-				</label>
-			</div>
-		);
-	}
-});
-
-var PasswordInput = React.createClass({
-	setPassword: function(){
-		this.props.onUserInput({
-			password: this.refs.loginPassword.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			<div className="form-control">
-				<label htmlFor="loginPassword">Password
-					<input 
-						name="password" 
-						ref="loginPassword" 
-						id="loginPassword" 
-						type="password" 
-						value={this.props.password}
-						onChange={this.setPassword}
-					/>
-				</label>
-			</div>
-		);
-	}
-});
-
-var PasswordRepeatInput = React.createClass({
-	setPassword: function(){
-		this.props.onUserInput({
-			passwordRepeat: this.refs.passwordRepeat.getDOMNode().value
-		});
-	},
-	render: function(){
-		return (
-			<div className="form-control">
-				<label htmlFor="loginPasswordRepeat">Password Repeat
-					<input 
-						name="passwordRepeat" 
-						ref="passwordRepeat" 
-						id="loginPasswordRepeat" 
-						type="password" 
-						onChange={this.setPassword}
-					/>
-				</label>
-			</div>
-		);
-	}
-});
 
 var CreateAccountForm = React.createClass({
 	onStateChange: function(){
@@ -254,13 +186,27 @@ var Login = React.createClass({
 					/>;
 				break;
 			default:
-				form = <div className="login-greeting">
-							Hello {this.props.user.name}. 
-							<button 
-								className="pure-button" 
-								onClick={this.logout}>
-								Logout
-							</button>
+				form = <div className="login-greeting pure-menu pure-menu-horizontal pure-menu-open">
+							<ul>
+								<li>
+									<a className="logo" href="/">ApeShitFuckJacked</a>
+								</li>
+								<li>
+									Hello {this.props.user.firstName + ' ' + this.props.user.lastName}. 
+								</li>
+								<li>
+									<button 
+										className="pure-button" 
+										onClick={this.logout}>
+										Logout
+									</button>
+								</li>
+								<li>
+									<a href="/profile">
+										Edit Profile
+									</a>
+								</li>
+							</ul>
 						</div>;
 		}
 

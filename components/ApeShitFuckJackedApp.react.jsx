@@ -4,8 +4,8 @@
 var React = require('react'),
 	Login = require('./Login.react'),
 	Workouts = require('./Workouts.react'),
+	Profile = require('./Profile.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
-	AuthStore = require('../stores/AuthStore'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
 	AuthActions = require('../actions/AuthActions');
 
@@ -14,17 +14,25 @@ var ApeShitFuckJackedApp = React.createClass({
 	getInitialState: function(){
 		var context = this.props.context;
 
-		this.AuthStore = context.getStore(AuthStore);
+		this.AppStore =  context.getStore('ApplicationStore');
+		this.AuthStore = context.getStore('AuthStore');
 
 		return {
+			app: this.AppStore.getState(),
 			user: this._getUser()
 		};
 	},
 	componentDidMount: function() {
 		this.AuthStore.addChangeListener(this._onChange);
+		this.AppStore.addChangeListener(this._onAppChange);
 	},
 	componentWillUnmount: function() {
 		this.AuthStore.removeChangeListener(this._onChange);
+		this.AppStore.removeChangeListener(this._onAppChange);
+	},
+	_onAppChange: function(){
+		var state = this.AppStore.getState();
+		this.setState(state);
 	},
 	_getUser: function(){
 		return this.AuthStore.getUser();
@@ -34,12 +42,21 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.setState({user: this._getUser()});
 	},
 	render: function(){
-		return (
-			<div>
-				<Login 
-					user={this.state.user} 
-					context={this.props.context}/>
-				<div className="container">
+		var view;
+
+		switch (this.state.app.currentPageName) {
+			case 'profile':
+				view = <Profile 
+					context={this.props.context}
+					user={this.state.user}
+					/>;
+				break;
+			case 'workout':
+				// TODO: Single workout view
+				break;
+			default:
+				view = 
+					<div>
 					<WorkoutEntryForm 
 						context={this.props.context}
 						user={this.state.user}
@@ -48,6 +65,16 @@ var ApeShitFuckJackedApp = React.createClass({
 						workouts={this.state.user.workouts} 
 						context={this.props.context}
 					/>
+					</div>;
+		}
+
+		return (
+			<div>
+				<Login 
+					user={this.state.user} 
+					context={this.props.context}/>
+				<div className="container">
+					{view}
 				</div>
 			</div>
 		);

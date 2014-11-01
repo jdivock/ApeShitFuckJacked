@@ -13,6 +13,17 @@ body {
 }
 
 .login-greeting {
+    
+  &.pure-menu {
+    background: transparent;
+  }
+
+  .logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+    margin-left: -25px;
+  }
   
 
   button {

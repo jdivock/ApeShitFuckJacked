@@ -20,6 +20,7 @@ function AuthStore(dispatcher) {
 AuthStore.storeName = 'AuthStore';
 AuthStore.handlers = {
     'AUTH_CREATE': 'setAuth',
+    'AUTH_UPDATE': 'setAuth',
     'AUTH_LOGIN': 'setAuth',
     'AUTH_LOGOUT': 'resetAuth',
     'WORKOUT_ADDED': 'updateWorkout',
