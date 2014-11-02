@@ -5,6 +5,7 @@
 var React = require('react'),
  WorkoutView = require('./WorkoutView.react'),
  WorkoutInput = require('./WorkoutInput.react'),
+ debug = require('debug')('Workout.react.jsx'),
  WorkoutActions = require('../../actions/WorkoutActions');
 
 
