@@ -171,9 +171,9 @@ var LiftInput = React.createClass({
  */
 function Lift(){
 	this.name = liftTypes[0];
-	this.sets = 0;
-	this.reps = 0;
-	this.weight = 0;
+	this.sets = null;
+	this.reps = null;
+	this.weight = null;
 	this.id = 'l_id_' + Date.now();
 }
 

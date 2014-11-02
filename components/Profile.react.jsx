@@ -5,10 +5,10 @@
 'use strict';
 
 var React = require('react'),
-	EmailInput = require('./EmailInput.react'),
+	EmailInput = require('./user/EmailInput.react'),
 	AuthActions = require('../actions/AuthActions'),
-	PasswordInput = require('./PasswordInput.react'),
-	PasswordRepeatInput = require('./PasswordRepeatInput.react'),
+	PasswordInput = require('./user/PasswordInput.react'),
+	PasswordRepeatInput = require('./user/PasswordRepeatInput.react'),
 	_ = require('lodash');
 
 var FirstName = React.createClass({

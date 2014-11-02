@@ -4,7 +4,7 @@
 
 var React = require('react'),
  NavLink = require('flux-router-component').NavLink,
- WorkoutActions = require('../actions/WorkoutActions');
+ WorkoutActions = require('../../actions/WorkoutActions');
 
 var Lift = React.createClass({
 	render: function() {

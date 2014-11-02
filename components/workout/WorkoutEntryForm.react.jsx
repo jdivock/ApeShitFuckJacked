@@ -7,8 +7,8 @@
 var React = require('react/addons'),
 	_ = require('lodash'),
 	WorkoutInput = require('./WorkoutInput.react'),
-	AuthStore = require('../stores/AuthStore'),
-	WorkoutActions = require('../actions/WorkoutActions');
+	AuthStore = require('../../stores/AuthStore'),
+	WorkoutActions = require('../../actions/WorkoutActions');
 
 
  var WorkoutEntryForm = React.createClass({
