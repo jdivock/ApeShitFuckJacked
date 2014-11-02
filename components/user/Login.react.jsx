@@ -2,8 +2,8 @@
 'use strict';
 
 var React = require('react'),
-	AuthActions = require('../actions/AuthActions'),
-	formUtils = require('../util/formUtils'),
+	AuthActions = require('../../actions/AuthActions'),
+	formUtils = require('../../util/formUtils'),
 	EmailInput = require('./EmailInput.react'),
 	PasswordInput = require('./PasswordInput.react'),
 	PasswordRepeatInput = require('./PasswordRepeatInput.react'),

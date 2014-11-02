@@ -3,8 +3,7 @@
 'use strict';
 
 var React = require('react'),
- WorkoutView = require('./WorkoutView.react'),
- Workout = require('./Workout.react'),
+ Workout = require('./workout/Workout.react'),
  NavLink = require('flux-router-component').NavLink;
 
 

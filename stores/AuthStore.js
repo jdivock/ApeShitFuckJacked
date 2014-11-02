@@ -33,7 +33,6 @@ util.inherits(AuthStore, BaseStore);
 
 AuthStore.prototype.updateWorkout = function(workouts){
     debug('updating workouts', workouts);
-    // this.auth.workouts.unshift(workout);
     this.auth.workouts = workouts;
     this.auth.workouts.status = 'SUCCESS';
     this.emitChange();

@@ -2,16 +2,13 @@
 'use strict';
 
 var React = require('react'),
-	Login = require('./Login.react'),
-	Workouts = require('./Workouts.react'),
+	TopNav = require('./TopNav.react'),
 	Profile = require('./Profile.react'),
-	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
 	SingleWorkoutView = require('./SingleWorkoutView.react'),
+	DefaultWorkoutsView = require('./DefaultWorkoutsView.react'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
 	_ = require('lodash'),
-	RouterMixin = require('flux-router-component').RouterMixin,
-	AuthActions = require('../actions/AuthActions');
-
+	RouterMixin = require('flux-router-component').RouterMixin;
 
 var ApeShitFuckJackedApp = React.createClass({
 	mixins: [RouterMixin],
@@ -58,8 +55,7 @@ var ApeShitFuckJackedApp = React.createClass({
 					);
 				break;
 			case 'workout':
-
-				var workout = _.find(this.state.user.workouts, {id: +this.state.route.params.id});
+				var workout = _.find(this.state.user.workouts, {id: this.state.route.params.id});
 				
 				view = (
 					<SingleWorkoutView
@@ -68,27 +64,22 @@ var ApeShitFuckJackedApp = React.createClass({
 						workout={workout}
 					/>
 				);
-				
 				break;
 			default:
-				view = 
-					<div>
-					<WorkoutEntryForm 
+				view = (
+					<DefaultWorkoutsView
 						context={this.props.context}
 						user={this.state.user}
 					/>
-					<Workouts 
-						workouts={this.state.user.workouts} 
-						context={this.props.context}
-					/>
-					</div>;
+				);
 		}
 
 		return (
 			<div>
-				<Login 
-					user={this.state.user} 
-					context={this.props.context}/>
+				<TopNav
+					context={this.props.context}
+					user={this.state.user}
+				/>
 				<div className="container">
 					{view}
 				</div>

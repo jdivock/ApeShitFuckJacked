@@ -5,7 +5,7 @@
 
 'use strict';
 var webpack = require('webpack'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin');
+ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: './client.js',
@@ -15,15 +15,29 @@ module.exports = {
     },
     module: {
         loaders: [{
-            test: /\.jsx$/,
-            loader: 'jsx-loader'
-        },{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract("style-loader",'css')
-        }, {
-            test: /\.scss$/,
-            loader: ExtractTextPlugin.extract("style-loader",'css!sass?outputStyle=expanded')
-        }]
+                test: /\.jsx$/,
+                loader: 'jsx-loader'
+            }, {
+                test: /\.scss/,
+                loader: 'style-loader!css-loader!sass-loader'
+            }, // use ! to chain loaders
+            // {
+            //     test: /\.css$/,
+            //     loader: 'style-loader!css-loader'
+            // }, {
+            //     test: /\.(png|jpg)$/,
+            //     loader: 'url-loader?limit=8192'
+            // } // inline base64 URLs for <=8k images, direct URLs for the rest
+
+
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract("style-loader",'css-loader')
+            }, {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract("style-loader",'css-loader!sass-loader?outputStyle=expanded')
+            }
+        ]
 
     },
     plugins: [
@@ -33,6 +47,6 @@ module.exports = {
         //new webpack.optimize.UglifyJsPlugin()
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx', '.scss']
+        extensions: ['', '.js', '.jsx']
     }
 };
