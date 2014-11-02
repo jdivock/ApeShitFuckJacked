@@ -4,6 +4,15 @@ body {
   }
 }
 
+a {
+    text-decoration: none;
+    color: rgb(61, 146, 201);
+}
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
 // LOGIN FORM 
 
 .login-form {

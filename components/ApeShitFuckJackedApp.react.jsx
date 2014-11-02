@@ -6,7 +6,9 @@ var React = require('react'),
 	Workouts = require('./Workouts.react'),
 	Profile = require('./Profile.react'),
 	WorkoutEntryForm = require('./WorkoutEntryForm.react'),
+	SingleWorkoutView = require('./SingleWorkoutView.react'),
 	debug = require('debug')('ApeShitFuckJackedApp.jsx'),
+	_ = require('lodash'),
 	RouterMixin = require('flux-router-component').RouterMixin,
 	AuthActions = require('../actions/AuthActions');
 
@@ -19,10 +21,10 @@ var ApeShitFuckJackedApp = React.createClass({
 		this.AppStore =  context.getStore('ApplicationStore');
 		this.AuthStore = context.getStore('AuthStore');
 
-		return {
-			app: this.AppStore.getState(),
-			user: this._getUser()
-		};
+		var initState = this.AppStore.getState();
+		initState.user = this._getUser();
+
+		return initState;
 	},
 	componentDidMount: function() {
 		this.AuthStore.addChangeListener(this._onChange);
@@ -34,7 +36,7 @@ var ApeShitFuckJackedApp = React.createClass({
 	},
 	_onAppChange: function(){
 		var state = this.AppStore.getState();
-		this.setState({app: state});
+		this.setState(state);
 	},
 	_getUser: function(){
 		return this.AuthStore.getUser();
@@ -46,15 +48,27 @@ var ApeShitFuckJackedApp = React.createClass({
 	render: function(){
 		var view;
 
-		switch (this.state.app.currentPageName) {
+		switch (this.state.currentPageName) {
 			case 'profile':
-				view = <Profile 
-					context={this.props.context}
-					user={this.state.user}
-					/>;
+				view = (
+					<Profile 
+						context={this.props.context}
+						user={this.state.user}
+					/>
+					);
 				break;
 			case 'workout':
-				// TODO: Single workout view
+
+				var workout = _.find(this.state.user.workouts, {id: +this.state.route.params.id});
+				
+				view = (
+					<SingleWorkoutView
+						context={this.props.context}
+						key={this.state.route.params.id}
+						workout={workout}
+					/>
+				);
+				
 				break;
 			default:
 				view = 

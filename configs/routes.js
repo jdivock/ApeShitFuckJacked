@@ -5,7 +5,7 @@ module.exports = {
         page: 'home'
     },
     workout: {
-        path: '/workout',
+        path: '/workout/:id',
         method: 'get',
         page: 'workout'
     },

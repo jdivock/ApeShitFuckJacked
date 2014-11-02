@@ -190,7 +190,12 @@ var Login = React.createClass({
 				form = <div className="login-greeting pure-menu pure-menu-horizontal pure-menu-open">
 							<ul>
 								<li>
-									<NavLink className="logo" href="/" context={this.props.context}>ApeShitFuckJacked</NavLink>
+									<NavLink 
+										className="logo" 
+										name="home"
+										context={this.props.context}>
+										ApeShitFuckJacked
+									</NavLink>
 								</li>
 								<li>
 									Hello {this.props.user.firstName + ' ' + this.props.user.lastName}. 
@@ -204,7 +209,7 @@ var Login = React.createClass({
 								</li>
 								<li>
 									<NavLink 
-										href="/profile"
+										name="profile"
 										context={this.props.context}>
 										Edit Profile
 									</NavLink>
