@@ -4,7 +4,7 @@ https://apeshitfuckjacked.herokuapp.com/
 
 *yeah, it's heroku, give it a minute to spin up*
 
-This is more or less my TODOMVC app, in that I just keep rewriting it using different frameworks and technologies to get a sense how they work. The basic flow of the app has capabilities to login, create, and edit workouts. This forces me to solve some problems that expose some strengths and weaknesses of frameworks as I work with them. It gives me a better sense of what's going on than a simple todo list or the author's tutorial, which usually only caters to the frameworks strengths *cough* angular phonecat *cough*.
+This is more or less my TODOMVC app, in that I just keep rewriting it using different frameworks and technologies to get a sense how they work. The basic flow of the app allows you to login, create, and edit workouts. This forces me to solve some problems that expose some strengths and weaknesses of frameworks as I work with them. It gives me a better sense of what's going on than a simple todo list or the author's tutorial, which usually only caters to the frameworks strengths *cough* angular phonecat *cough*.
 
 ## Isomorphic Javascript leveraging Flux / React
 
