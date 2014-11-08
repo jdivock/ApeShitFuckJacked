@@ -5,7 +5,7 @@
 
 'use strict';
 var webpack = require('webpack'),
-ExtractTextPlugin = require('extract-text-webpack-plugin');
+    ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: './client.js',
@@ -17,10 +17,12 @@ module.exports = {
         loaders: [{
                 test: /\.jsx$/,
                 loader: 'jsx-loader'
-            }, {
-                test: /\.scss/,
-                loader: 'style-loader!css-loader!sass-loader'
-            }, // use ! to chain loaders
+            },
+            // {
+            //     test: /\.scss/,
+            //     loader: 'style-loader!css-loader!sass-loader'
+            // }, 
+            // use ! to chain loaders
             // {
             //     test: /\.css$/,
             //     loader: 'style-loader!css-loader'
@@ -32,19 +34,19 @@ module.exports = {
 
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader",'css-loader')
+                loader: ExtractTextPlugin.extract("style-loader", 'css-loader')
             }, {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract("style-loader",'css-loader!sass-loader?outputStyle=expanded')
+                loader: ExtractTextPlugin.extract("style-loader", 'css-loader!sass-loader?outputStyle=expanded')
             }
         ]
 
     },
     plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new ExtractTextPlugin("style.css", {
             allChunks: true
         })
-        //new webpack.optimize.UglifyJsPlugin()
     ],
     resolve: {
         extensions: ['', '.js', '.jsx']
