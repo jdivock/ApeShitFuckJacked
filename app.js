@@ -9,7 +9,7 @@ var Context = require('./util/Context'),
     application = require('./components/ApeShitFuckJackedApp.react.jsx'),
     debug = require('debug'),
     routes = require('./configs/routes'),
-    bootstrapDebug = debug('Example');
+    bootstrapDebug = debug('ApeShitFuckJacked');
 
 Context.registerStore(AuthStore);
 Context.registerStore(ApplicationStore);

@@ -19,6 +19,7 @@ require('./styles/main.scss');
 
 window.React = React; // For chrome dev tool support
 
+// HERP Remove me during prod buildz
 debug.enable('*');
 
 bootstrapDebug('rehydrating app');

@@ -37,7 +37,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "dev": "nodemon ./server.js",
+    "dev": "DEBUG=* nodemon ./server.js",
     "postinstall": "webpack -p"
   },
   "devDependencies": {

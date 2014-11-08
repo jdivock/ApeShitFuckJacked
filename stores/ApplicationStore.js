@@ -33,8 +33,6 @@ ApplicationStore.handlers = {
 util.inherits(ApplicationStore, BaseStore);
 
 ApplicationStore.prototype.handleNavigate = function (route) {
-    console.log('handleNavigate call', route);
-
     var pageName = route.config.page,
         page = this.pages[pageName];
 
