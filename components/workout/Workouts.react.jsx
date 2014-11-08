@@ -11,7 +11,7 @@ var Workouts = React.createClass({
 		var workouts = this.props.workouts.map(function(workout, idx){
 			return (
 				<Workout 
-					key={idx} 
+					key={workout.id} 
 					workout={workout} 
 					context={this.props.context}
 				/>

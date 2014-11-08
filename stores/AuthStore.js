@@ -4,6 +4,7 @@
 var EventEmitter = require('events').EventEmitter,
     BaseStore = require('dispatchr/utils/BaseStore'),
     debug = require('debug')('App:AuthStore'),
+    _ = require('lodash'),
     CHANGE_EVENT = 'change',
     util = require('util');
 
@@ -31,14 +32,20 @@ AuthStore.handlers = {
 
 util.inherits(AuthStore, BaseStore);
 
+function sortWorkouts(workouts){
+    return _.sortBy(workouts, 'date').reverse();
+}
+
+
 AuthStore.prototype.updateWorkout = function(workouts){
     debug('updating workouts', workouts);
-    this.auth.workouts = workouts;
+    this.auth.workouts = sortWorkouts(workouts);
     this.auth.workouts.status = 'SUCCESS';
     this.emitChange();
 };
 
 AuthStore.prototype.setAuth = function(auth){
+    auth.workouts = sortWorkouts(auth.workouts);
     debug('setting auth', auth);
 
     this.auth = auth;
@@ -55,6 +62,7 @@ AuthStore.prototype.resetAuth = function(){
 };
 
 AuthStore.prototype.getUser = function(){
+    this.auth.workouts = sortWorkouts(this.auth.workouts);
     debug('getting user', this.auth);
 
     return this.auth;

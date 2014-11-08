@@ -39,6 +39,7 @@ var WorkoutView = React.createClass({
 		});
 
 		var navParams = { id: this.props.workout.id};
+		var dateStr = moment(this.props.workout.date).format('l');
 
 		return (
 			<div className="workout">
@@ -48,7 +49,7 @@ var WorkoutView = React.createClass({
 						context={this.props.context}
 						navParams={navParams}
 					>
-						<span>{moment(this.props.workout.date).format('l') }</span>
+						<span>{dateStr}</span>
 					</NavLink>
 					<span className="actions">
  					<button 
