@@ -21,6 +21,9 @@ var liftTypes = [
 	'RDLs'
 ];
 
+
+// TODO: This isn't DRY at all, figure out a way to leverage
+// mixins or something here.
 var LiftSelect = React.createClass({
 	getInitialState: function(){
 		return {};
@@ -266,7 +269,7 @@ function transformLifts(lifts){
  	},
  	/*
  	 * TODO: Oof, there has to be a better way here, I fixed the 
- 	 * pre-existing condition before, but it's a real pain in the add
+ 	 * pre-existing condition before, but it's a real pain in the ass
  	 * floating immutables up the change and I have to do a lot of 
  	 * weird object manipulation to make it work
  	 *
