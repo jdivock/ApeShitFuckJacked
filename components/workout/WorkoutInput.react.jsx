@@ -5,6 +5,7 @@
 'use strict';
 
 var React = require('react'),
+	moment = require('moment'),
 	_ = require('lodash');
 
 /* 
@@ -188,7 +189,7 @@ function generateCleanWorkoutState(){
 
 	return {
 		id: 'w_id_' + timestamp,
-		date: new Date().toDateInputValue(),	
+		date: moment().format('YYYY-MM-DD'),
 		lifts : lifts,
 		comments: null
 	};
@@ -211,9 +212,7 @@ function transformLifts(lifts){
  		if(this.props.type === 'CREATE'){
  			return generateCleanWorkoutState();
  		} else {
- 			var lifts = transformLifts(this.props.workout.lifts);
- 			var formattedDate = new Date(this.props.workout.date).toDateInputValue();
- 			return React.addons.update(this.props.workout, {date: {$set: formattedDate}, lifts: {$set: lifts}});
+ 			return this.props.workout;
  		}
  		
  	},

@@ -5,6 +5,7 @@
 var React = require('react'),
  NavLink = require('flux-router-component').NavLink,
  debug = require('debug')('WorkoutView.jsx'),
+ moment = require('moment'),
  WorkoutActions = require('../../actions/WorkoutActions');
 
 var Lift = React.createClass({
@@ -37,9 +38,6 @@ var WorkoutView = React.createClass({
 			return <Lift key={idx} lift={lift} />;
 		});
 
-		var printedDate = new Date(this.props.workout.date);
-		var printedDateStr = [printedDate.getMonth() + 1, printedDate.getDate(), printedDate.getFullYear()].join('/');
-
 		var navParams = { id: this.props.workout.id};
 
 		return (
@@ -50,7 +48,7 @@ var WorkoutView = React.createClass({
 						context={this.props.context}
 						navParams={navParams}
 					>
-						<span>{printedDateStr}</span>
+						<span>{moment(this.props.workout.date).format('l') }</span>
 					</NavLink>
 					<span className="actions">
  					<button 
