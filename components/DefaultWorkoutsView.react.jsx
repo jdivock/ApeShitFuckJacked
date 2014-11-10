@@ -13,12 +13,12 @@ var DefaultWorkoutsView = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<WorkoutEntryForm 
+				<WorkoutEntryForm
 					context={this.props.context}
 					user={this.props.user}
 				/>
-				<Workouts 
-					workouts={this.props.user.workouts} 
+				<Workouts
+					workouts={this.props.user.workouts}
 					context={this.props.context}
 				/>
 			</div>

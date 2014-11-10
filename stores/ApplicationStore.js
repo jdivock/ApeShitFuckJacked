@@ -32,7 +32,7 @@ ApplicationStore.handlers = {
 
 util.inherits(ApplicationStore, BaseStore);
 
-ApplicationStore.prototype.handleNavigate = function (route) {
+ApplicationStore.prototype.handleNavigate = function(route) {
     var pageName = route.config.page,
         page = this.pages[pageName];
 
@@ -46,11 +46,11 @@ ApplicationStore.prototype.handleNavigate = function (route) {
     this.emitChange();
 };
 
-ApplicationStore.prototype.getCurrentPageName = function () {
+ApplicationStore.prototype.getCurrentPageName = function() {
     return this.currentPageName;
 };
 
-ApplicationStore.prototype.getState = function () {
+ApplicationStore.prototype.getState = function() {
     debug('getState');
     return {
         currentPageName: this.currentPageName,
@@ -60,11 +60,11 @@ ApplicationStore.prototype.getState = function () {
     };
 };
 
-ApplicationStore.prototype.dehydrate = function () {
+ApplicationStore.prototype.dehydrate = function() {
     return this.getState();
 };
 
-ApplicationStore.prototype.rehydrate = function (state) {
+ApplicationStore.prototype.rehydrate = function(state) {
     this.currentPageName = state.currentPageName;
     this.currentPage = state.currentPage;
     this.pages = state.pages;

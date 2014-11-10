@@ -32,19 +32,19 @@ AuthStore.handlers = {
 
 util.inherits(AuthStore, BaseStore);
 
-function sortWorkouts(workouts){
+function sortWorkouts(workouts) {
     return _.sortBy(workouts, 'date').reverse();
 }
 
 
-AuthStore.prototype.updateWorkout = function(workouts){
+AuthStore.prototype.updateWorkout = function(workouts) {
     debug('updating workouts', workouts);
     this.auth.workouts = sortWorkouts(workouts);
     this.auth.workouts.status = 'SUCCESS';
     this.emitChange();
 };
 
-AuthStore.prototype.setAuth = function(auth){
+AuthStore.prototype.setAuth = function(auth) {
     auth.workouts = sortWorkouts(auth.workouts);
     debug('setting auth', auth);
 
@@ -52,7 +52,7 @@ AuthStore.prototype.setAuth = function(auth){
     this.emitChange();
 };
 
-AuthStore.prototype.resetAuth = function(){
+AuthStore.prototype.resetAuth = function() {
     debug('resetting auth');
     this.auth = {
         loggedIn: false,
@@ -61,31 +61,31 @@ AuthStore.prototype.resetAuth = function(){
     this.emitChange();
 };
 
-AuthStore.prototype.getUser = function(){
+AuthStore.prototype.getUser = function() {
     this.auth.workouts = sortWorkouts(this.auth.workouts);
     debug('getting user', this.auth);
 
     return this.auth;
 };
 
-AuthStore.prototype.getError = function(){
+AuthStore.prototype.getError = function() {
     debug('getting error');
 
     return this.auth.error;
 };
 
-AuthStore.prototype.dehydrate = function () {
+AuthStore.prototype.dehydrate = function() {
     return {
         auth: this.auth
     };
 };
 
-AuthStore.prototype.rehydrate = function (state) {
+AuthStore.prototype.rehydrate = function(state) {
     this.auth = state.auth;
 };
 
 /**
- * Rolling my own here as without it I lose react errors which is wildly 
+ * Rolling my own here as without it I lose react errors which is wildly
  * painful
  *
  * https://github.com/yahoo/dispatchr/issues/33

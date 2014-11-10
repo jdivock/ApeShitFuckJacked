@@ -31,10 +31,12 @@ function App(options) {
     }
 }
 
-App.prototype.getComponent = function () {
+App.prototype.getComponent = function() {
     debug('Creating Application component');
-    var appComponent = application({context: this.context.getComponentContext()});
-    
+    var appComponent = application({
+        context: this.context.getComponentContext()
+    });
+
     debug('Rendering Application component');
     return appComponent;
 };

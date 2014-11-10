@@ -49,7 +49,7 @@ var ApeShitFuckJackedApp = React.createClass({
 		switch (this.state.currentPageName) {
 			case 'profile':
 				view = (
-					<Profile 
+					<Profile
 						context={this.props.context}
 						user={this.state.user}
 					/>
@@ -57,7 +57,7 @@ var ApeShitFuckJackedApp = React.createClass({
 				break;
 			case 'workout':
 				var workout = _.find(this.state.user.workouts, {id: this.state.route.params.id});
-				
+
 				view = (
 					<SingleWorkoutView
 						context={this.props.context}
