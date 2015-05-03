@@ -1,54 +1,21 @@
-/**
- * Copyright 2014, Yahoo! Inc.
- * Copyrights licensed under the New BSD License. See the accompanying LICENSE file for terms.
- */
-
-'use strict';
-var webpack = require('webpack'),
-    ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 module.exports = {
-    entry: './client.js',
-    output: {
-        path: __dirname + '/build/js',
-        filename: 'bundle.js'
-    },
-    module: {
-        loaders: [{
-                test: /\.jsx$/,
-                loader: 'jsx-loader'
-            },
-            // {
-            //     test: /\.scss/,
-            //     loader: 'style-loader!css-loader!sass-loader'
-            // }, 
-            // use ! to chain loaders
-            // {
-            //     test: /\.css$/,
-            //     loader: 'style-loader!css-loader'
-            // }, {
-            //     test: /\.(png|jpg)$/,
-            //     loader: 'url-loader?limit=8192'
-            // } // inline base64 URLs for <=8k images, direct URLs for the rest
-
-
-            {
-                test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", 'css-loader')
-            }, {
-                test: /\.scss$/,
-                loader: ExtractTextPlugin.extract("style-loader", 'css-loader!sass-loader?outputStyle=expanded')
-            }
-        ]
-
-    },
-    plugins: [
-        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new ExtractTextPlugin("style.css", {
-            allChunks: true
-        })
-    ],
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    }
+	cache: true,
+	entry: './lib/main',
+	output: {
+		filename: 'bundle.js'
+	},
+	module: {
+		loaders: [
+		    {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
+		    {test: /\.jsx$/, loader: 'babel-loader' },
+		    {test: /\.less$/, loader: 'style-loader!css-loader!less-loader'},
+		    {test: /\.css$/, loader: 'style-loader!css-loader'},
+		    {test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+		    {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
+		]
+	},
+	resolve: {
+		modulesDirectories: ['node_modules', 'lib'],
+		extensions: ['', '.js', '.jsx']
+	}
 };

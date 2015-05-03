@@ -11,3 +11,5 @@ heroku
 .DS_Store
 *.log
 *.sublime-workspace
+/bundle.js
+/bundle.js.map

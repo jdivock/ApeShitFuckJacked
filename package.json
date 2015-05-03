@@ -1,56 +1,38 @@
 {
-  "name": "apeshitfuckjacked",
-  "version": "0.0.5",
-  "description": "lifting app",
-  "author": "Jason Divock <jdivock@gmail.com>",
-  "main": "server.js",
+  "name": "Lifterly",
+  "version": "1.0.0",
+  "description": "Lifting app . . . again",
+  "main": "index.js",
   "dependencies": {
-    "body-parser": "^1.9.0",
-    "connect-mongo": "~0.4.0",
-    "debug": "^2.0.0",
-    "dispatchr": "^0.2.7",
-    "ejs": "~0.8.4",
-    "evernote": "^1.25.3",
-    "express": "~3.4.3",
-    "express-state": "1.x",
-    "extract-text-webpack-plugin": "^0.3.3",
-    "fetchr": "^0.3.x",
-    "flux": "^2.0.0",
-    "flux-router-component": "^0.2.x",
-    "jade": "^1.3.1",
-    "lodash": "~2.4.1",
-    "moment": "^2.8.3",
-    "mongoose": "~3.5.5",
-    "mongoose-unique-validator": "~0.3.0",
-    "node-jsx": "^0.11.0",
-    "passport": "latest",
-    "passport-local": "latest",
-    "passport-twitter": "^1.0.2",
-    "q": "^1.0.1",
-    "react": "0.11.x",
-    "routr": "^0.0.x",
-    "superagent": "^0.20.0",
-    "webpack": "^1.2.0-beta6"
+    "babel-core": "^5.2.6",
+    "babel-loader": "^5.0.0",
+    "css-loader": "^0.12.0",
+    "debug": "^2.1.3",
+    "file-loader": "^0.8.1",
+    "less": "^2.5.0",
+    "less-loader": "^2.2.0",
+    "lodash": "^3.8.0",
+    "parse": "^1.4.2",
+    "parse-react": "^0.2.4",
+    "purecss": "^0.6.0",
+    "react": "^0.13.2",
+    "rx": "^2.5.2",
+    "style-loader": "^0.12.1",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.8.11"
   },
-  "engines": {
-    "node": "0.10.x"
-  },
+  "devDependencies": {},
   "scripts": {
-    "build": "webpack",
-    "dev": "DEBUG=* nodemon ./server.js",
-    "postinstall": "webpack -p"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "connect-livereload": "^0.4.0",
-    "css-loader": "^0.9.0",
-    "envify": "^3.0.0",
-    "jest-cli": "^0.1.18",
-    "jsx-loader": "^0.11.2",
-    "load-grunt-tasks": "^0.6.0",
-    "sass-loader": "^0.2.0",
-    "style-loader": "^0.8.1",
-    "time-grunt": "^1.0.0",
-    "uglify-js": "^2.4.15",
-    "webpack": "^1.2.0-beta6"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdivock/Lifterly.git"
+  },
+  "author": "Jason Divock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdivock/Lifterly/issues"
+  },
+  "homepage": "https://github.com/jdivock/Lifterly"
 }
