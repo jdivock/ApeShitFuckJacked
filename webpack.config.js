@@ -1,3 +1,7 @@
+'use strict';
+
+var webpack = require('webpack');
+
 module.exports = {
 	cache: true,
 	entry: './lib/main',
@@ -14,6 +18,9 @@ module.exports = {
 		    {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
 		]
 	},
+    plugins: [
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ],
 	resolve: {
 		modulesDirectories: ['node_modules', 'lib'],
 		extensions: ['', '.js', '.jsx']

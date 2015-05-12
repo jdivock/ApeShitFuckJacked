@@ -3,7 +3,7 @@
 var React = require('react'),
     Parse = require('parse').Parse,
     ParseReact = require('parse-react'),
-    debug = require('debug')('Lifterly.jsx');
+    debug = require('debug')('LiftEntry.jsx');
 
 var LiftEntry = React.createClass({
     mixins: [ParseReact.Mixin],
@@ -21,27 +21,25 @@ var LiftEntry = React.createClass({
         );
 
         return (
-            <section>
-                <div>
+            <form className="pure-form pure-form-stacked">
+                <fieldset>
+
                     <label>Lift</label>
                     <select>
                         {options}
                     </select>
-                </div>
 
-                <div>
                     <label>Sets</label>
                     <input type="number"/>
-                </div>
 
-                <div>
                     <label>Reps</label>
                     <input type="number"/>
-                </div>
-            </section>
+
+                </fieldset>
+            </form>
         );
 
-        }
+    }
 
 });
 
