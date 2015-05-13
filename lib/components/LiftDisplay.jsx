@@ -11,22 +11,22 @@ var LiftDisplay = React.createClass({
     mixins: [ParseReact.Mixin],
 
     observe: function(){
-        /* return {
-           liftEntries: (new Parse.Query('LiftEntries'))
-           } */
-
-
-        /* return {
-           liftEntries: (new Parse.Query('LiftEntries').ascending('weight'))
-           } */
-
-        /* return {
-           liftEntries: (new Parse.Query('LiftEntries').ascending('weight'))
-           } */
-
         return {
-            liftEntries: (new Parse.Query('LiftEntries').equalTo('LiftType', 'Squat'))
+            liftEntries: (new Parse.Query('LiftEntries'))
         }
+
+
+        /* return {
+           liftEntries: (new Parse.Query('LiftEntries').ascending('weight'))
+           } */
+
+        /* return {
+           liftEntries: (new Parse.Query('LiftEntries').ascending('weight'))
+           } */
+
+        /* return {
+           liftEntries: (new Parse.Query('LiftEntries').equalTo('LiftType', 'Squat'))
+           } */
     },
     render: function(){
         debug('lifts', this.data);
@@ -63,7 +63,7 @@ var LiftDisplay = React.createClass({
 
         return (
             <section className="lift-display">
-                <h5>Lift Query</h5>
+                <h3>Lift Query</h3>
                 {liftTable}
             </section>
             );

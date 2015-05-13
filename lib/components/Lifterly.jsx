@@ -12,11 +12,12 @@ var Lifterly = React.createClass({
     render: function(){
         return (
             <div>
-            <LiftDisplay/>
+                <LiftDisplay/>
+                <LiftEntry/>
             </div>
-            );
+        );
 
-        }
+    }
 
 });
 
