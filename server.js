@@ -1,116 +1,50 @@
-'use strict';
+import Hapi from 'hapi';
+import {graphql} from 'graphql';
+import {promisify} from 'bluebird';
+import {HOST, PORT} from './config';
+import SqlitePlugin from './SqlitePlugin';
+import Schema from './Schema';
 
-require('node-jsx').install({
-    extension: '.jsx'
-});
-var express = require('express'),
-    expressState = require('express-state'),
-    path = require('path'),
-    fs = require('fs'),
-    debug = require('debug')('Example'),
-    React = require('react'),
-    AuthActions = require('./actions/AuthActions'),
-    navigateAction = require('flux-router-component').navigateAction,
-    Application = require('./app'),
-    mongoose = require('mongoose'),
-    os = require('os'),
-    Fetcher = require('fetchr');
-
-/**
- * Main application file
- */
-
-// Default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-// Application Config
-var config = require('./lib/config/config');
-
-// Connect to database
-var db = mongoose.connect(config.mongo.uri, config.mongo.options);
-
-// Bootstrap models
-var modelsPath = path.join(__dirname, 'lib/models');
-fs.readdirSync(modelsPath).forEach(function(file) {
-    require(modelsPath + '/' + file);
-});
-
-
-// Clear out dummy user and rebuilt it's profile
-// when not in prod
-if (process.env.NODE_ENV !== 'production') {
-    // require('./lib/config/dummydata');
+async function graphQLHandler(request, reply) {
+  const {query, variables = {}} = request.payload;
+  const result = await graphql(
+    Schema,
+    query,
+    {
+      db: request.db,
+      userId: 1
+    },
+    variables
+  );
+  return reply(result);
 }
 
-// Passport Configuration
-require('./lib/config/passport')();
+export default async function runServer() {
+  try {
+    const server = new Hapi.Server();
 
-var app = express();
-expressState.extend(app);
+    // Make server methods promise friendly
+    for (const method of ['register', 'start']) {
+      server[method] = promisify(server[method], server);
+    }
 
-
-require('./lib/config/express')(app);
-
-// Registering fetchers for various api calls
-Fetcher.registerFetcher(require('./lib/fetchers/users'));
-Fetcher.registerFetcher(require('./lib/fetchers/workouts'));
-Fetcher.registerFetcher(require('./lib/fetchers/lifts'));
-
-app.use(Application.config.xhrPath, Fetcher.middleware());
-
-app.use(function(req, res, next) {
-    // Passing request object into fetcher
-    var fetcher = new Fetcher({
-        req: req
+    server.connection({
+      host: HOST,
+      port: PORT
     });
 
-    // Building application with fetchers
-    var application = new Application({
-        fetcher: fetcher
+    await server.register(SqlitePlugin);
+
+    server.route({
+      method: 'POST',
+      path: '/',
+      handler: graphQLHandler
     });
 
-    debug('Executing navigateAction to start up app');
-    application.context.getActionContext().executeAction(AuthActions.init, {
-            path: req.url
-        },
-        function(err) {
-            if (err) {
-                if (err.status && err.status === 404) {
-                    next();
-                } else {
-                    next(err);
-                }
-                return;
-            }
+    await server.start();
 
-
-            debug('Rendering Application component');
-            var html = React.renderComponentToString(application.getComponent());
-
-            debug('Exposing context state');
-            res.expose(application.context.dehydrate(), 'Context');
-
-            debug('Rendering application into layout');
-            res.render('layout', {
-                html: html
-            }, function(err, markup) {
-                if (err) {
-                    next(err);
-                }
-                debug('Sending markup');
-                res.send(markup);
-            });
-
-        });
-});
-
-// Routing
-require('./lib/routes')(app);
-
-// Start server
-app.listen(config.port, function() {
-    console.log('Apeshitfuckjack started at %s:%d in %s mode', config.url, config.port, app.get('env'));
-});
-
-// Expose app
-exports = module.exports = app;
+    console.log('Server started at ' + server.info.uri);
+  } catch(e) {
+    console.log(e);
+  }
+}
