@@ -1,4 +1,4 @@
-# Lifterly
+# ApeShitFuckJacked
 
 https://apeshitfuckjacked.herokuapp.com/
 
