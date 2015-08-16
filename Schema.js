@@ -3,11 +3,40 @@ import {
 	GraphQLObjectType,
 	GraphQLID,
 	GraphQLInt,
+	GraphQLFloat,
 	GraphQLString,
 	GraphQLNonNull,
 	GraphQLList
 } from 'graphql';
 
+const Lift = new GraphQLObjectType({
+  name: 'Lift',
+  fields: () => ({
+    id: {
+      type: GraphQLID
+    },
+    reps: {
+      type: GraphQLInt
+    },
+    sets: {
+      type: GraphQLInt
+    },
+    weight: {
+      type: GraphQLFloat
+    },
+    name: {
+      type: GraphQLString
+    },
+    workout: {
+      type: User,
+      resolve(parent, args, {db}) {
+        return db.get(`
+          SELECT * FROM Workout WHERE id = $id
+        `, {$id: parent.workoutId});
+      }
+    }
+  })
+});
 
 const Workout = new GraphQLObjectType({
   name: 'Workout',
@@ -28,7 +57,15 @@ const Workout = new GraphQLObjectType({
           SELECT * FROM User WHERE id = $id
         `, {$id: parent.userId});
       }
-    }
+    },
+		lifts: {
+			  type: new GraphQLList(Lift),
+			  resolve(parent, args, {db}) {
+			    return db.all(`
+			      SELECT * FROM Lift WHERE workoutId = $workout
+			    `, {$workout: parent.id});
+			  }
+		}
   })
 });
 
@@ -44,17 +81,15 @@ const User = new GraphQLObjectType({
 		},
 		email: {
 			type: GraphQLString
+		},
+		workouts: {
+			  type: new GraphQLList(Workout),
+			  resolve(parent, args, {db}) {
+			    return db.all(`
+			      SELECT * FROM Workout WHERE userId = $user
+			    `, {$user: parent.id});
+			  }
 		}
-		//workouts:
-			//,
-			// stories: {
-			//   type: new GraphQLList(Story),
-			//   resolve(parent, args, {db}) {
-			//     return db.all(`
-			//       SELECT * FROM Story WHERE author = $user
-			//     `, {$user: parent.id});
-			//   }
-			// }
 	})
 });
 
@@ -92,6 +127,19 @@ const Query = new GraphQLObjectType({
 		  resolve(parent, {id}, {db}) {
 		    return db.get(`
 		      SELECT * FROM Workout WHERE id = $id
+		      `, {$id: id});
+		  }
+		},
+		lift: {
+		  type: Lift,
+		  args: {
+		    id: {
+		      type: new GraphQLNonNull(GraphQLID)
+		    }
+		  },
+		  resolve(parent, {id}, {db}) {
+		    return db.get(`
+		      SELECT * FROM Lift WHERE id = $id
 		      `, {$id: id});
 		  }
 		}
