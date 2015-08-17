@@ -7,5 +7,5 @@ It'd make a crapton more sense to just get this going with react native and pars
 ## To load db
 
 ```
-$ cat scripts/createdb.sql | sqlite3 ./db.sqlite3
+$ psql -f scriopts/createdb.sql apeshitfuckjacked
 ```
