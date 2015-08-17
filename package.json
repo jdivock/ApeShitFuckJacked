@@ -22,7 +22,7 @@
     "bluebird": "^2.9.34",
     "graphql": "^0.1.12",
     "hapi": "^8.8.0",
-    "sqlite3": "^3.0.9"
+    "pg-promise": "^1.8.5"
   },
   "devDependencies": {
     "babel-eslint": "^4.0.5",

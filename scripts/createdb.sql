@@ -1,10 +1,14 @@
-DROP TABLE User;
-DROP TABLE Workout;
+/* drop database apeshitfuckjacked;
+
+create database apeshitfuckjacked;
+\c apeshitfuckjacked
+*/
+DROP TABLE Account CASCADE;
+DROP TABLE Workout CASCADE;
 DROP TABLE Lift;
 
-CREATE TABLE User
-(
-	id INTEGER PRIMARY KEY,
+CREATE TABLE Account (
+	id serial primary key,
 	name VARCHAR(255),
 	email VARCHAR(100),
 	password VARCHAR(40)
@@ -12,16 +16,16 @@ CREATE TABLE User
 
 CREATE TABLE Workout
 (
-	id INTEGER PRIMARY KEY,
-	date INTEGER,
+	id serial primary key,
+	date timestamp default current_timestamp,
 	name VARCHAR(100),
 	userId INTEGER,
-	FOREIGN KEY(userId) REFERENCES User(id)
+	FOREIGN KEY(userId) REFERENCES Account(id)
 );
 
 CREATE TABLE Lift
 (
-	id INTEGER PRIMARY KEY,
+	id serial PRIMARY KEY,
 	workoutId INTEGER,
 	name VARCHAR(100),
 	reps INTEGER,
@@ -30,23 +34,23 @@ CREATE TABLE Lift
 	FOREIGN KEY(workoutId) REFERENCES Workout(id)
 );
 
-INSERT INTO User('name', 'email', 'password')
+INSERT INTO Account(name, email, password)
 VALUES
 ('jdivock', 'jdivock@jdivock.com', 'asdf'),
 ('tpip', 'tpip@jdivock.com', 'asdf');
 
-INSERT INTO Workout('date', 'name', 'userId')
+INSERT INTO Workout(date, name, userId)
 VALUES
-(1439702488, 'Squat day', 1),
-(1439602488, 'Deadlift day', 1),
-(1439502488, 'Bench day', 1),
-(1439402488, 'Front Squat day', 1),
-(1439302488, 'Upper Acc. day', 1),
-(1439502488, 'Bench day', 2),
-(1439402488, 'Front Squat day', 2),
-(1439302488, 'Upper Acc. day', 2);
+('2015-01-08 04:05:06', 'Squat day', 1),
+('2015-01-18 04:05:06', 'Deadlift day', 1),
+('2015-01-28 04:05:06', 'Bench day', 1),
+('2015-02-08 04:05:06', 'Front Squat day', 1),
+('2015-03-18 04:05:06', 'Upper Acc. day', 1),
+('2015-03-08 04:05:06', 'Bench day', 2),
+('2015-04-08 04:05:06', 'Front Squat day', 2),
+('2015-06-08 04:05:06', 'Upper Acc. day', 2);
 
-INSERT INTO Lift('workoutId', 'name', 'reps', 'sets', 'weight')
+INSERT INTO Lift(workoutId, name, reps, sets, weight)
 VALUES
 (1, 'Squat', 5, 3, 315),
 (1, 'Paused HB Squat', 8, 3, 225),

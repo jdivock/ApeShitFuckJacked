@@ -10,68 +10,63 @@ import {
 } from 'graphql';
 
 const Lift = new GraphQLObjectType({
-  name: 'Lift',
-  fields: () => ({
-    id: {
-      type: GraphQLID
-    },
-    reps: {
-      type: GraphQLInt
-    },
-    sets: {
-      type: GraphQLInt
-    },
-    weight: {
-      type: GraphQLFloat
-    },
-    name: {
-      type: GraphQLString
-    },
-    workout: {
-      type: User,
-      resolve(parent, args, {db}) {
-        return db.get(`
-          SELECT * FROM Workout WHERE id = $id
-        `, {$id: parent.workoutId});
-      }
-    }
-  })
+	name: 'Lift',
+	fields: () => ({
+		id: {
+			type: GraphQLID
+		},
+		reps: {
+			type: GraphQLInt
+		},
+		sets: {
+			type: GraphQLInt
+		},
+		weight: {
+			type: GraphQLFloat
+		},
+		name: {
+			type: GraphQLString
+		},
+		workout: {
+			type: Account,
+			resolve(parent, args, {db}) {
+				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: workoutId});
+			}
+		}
+	})
 });
 
 const Workout = new GraphQLObjectType({
-  name: 'Workout',
-  fields: () => ({
-    id: {
-      type: GraphQLID
-    },
-    date: {
-      type: GraphQLInt
-    },
-    name: {
-      type: GraphQLString
-    },
-    user: {
-      type: User,
-      resolve(parent, args, {db}) {
-        return db.get(`
-          SELECT * FROM User WHERE id = $id
-        `, {$id: parent.userId});
-      }
-    },
+	name: 'Workout',
+	fields: () => ({
+		id: {
+			type: GraphQLID
+		},
+		date: {
+			type: GraphQLInt
+		},
+		name: {
+			type: GraphQLString
+		},
+		account: {
+			type: Account,
+			resolve(parent, args, {db}) {
+				console.log(parent);
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: parent.userid}, 1);
+			}
+		},
 		lifts: {
-			  type: new GraphQLList(Lift),
-			  resolve(parent, args, {db}) {
-			    return db.all(`
-			      SELECT * FROM Lift WHERE workoutId = $workout
-			    `, {$workout: parent.id});
-			  }
+			type: new GraphQLList(Lift),
+			resolve(parent, args, {db}) {
+				return db.query('SELECT * FROM Lift WHERE workoutId = ${id^}',{id: parent.id});
+			}
 		}
-  })
+	})
 });
 
 
-const User = new GraphQLObjectType({
-	name: 'User',
+const Account = new GraphQLObjectType({
+	name: 'Account',
 	fields: () => ({
 		id: {
 			type: GraphQLID
@@ -83,12 +78,10 @@ const User = new GraphQLObjectType({
 			type: GraphQLString
 		},
 		workouts: {
-			  type: new GraphQLList(Workout),
-			  resolve(parent, args, {db}) {
-			    return db.all(`
-			      SELECT * FROM Workout WHERE userId = $user
-			    `, {$user: parent.id});
-			  }
+			type: new GraphQLList(Workout),
+			resolve(parent, args, {db}) {
+				return db.query('SELECT * FROM Workout WHERE userId = ${id^}',{id: parent.id});
+			}
 		}
 	})
 });
@@ -97,51 +90,43 @@ const Query = new GraphQLObjectType({
 	name: 'Query',
 	fields: () => ({
 		viewer: {
-			type: User,
+			type: Account,
 			resolve(parent, args, {db, userId}) {
-				return db.get(`
-						SELECT * FROM User WHERE id = $id
-						`, {id: userId});
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: userId},1);
 			}
 		},
-		user: {
-			type: User,
+		account: {
+			type: Account,
 			args: {
 				id: {
 					type: new GraphQLNonNull(GraphQLID)
 				}
 			},
 			resolve(parent, {id}, {db}) {
-				return db.get(`
-						SELECT * FROM User WHERE id = $id
-						`, {$id: id});
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: id},1);
 			}
 		},
 		workout: {
-		  type: Workout,
-		  args: {
-		    id: {
-		      type: new GraphQLNonNull(GraphQLID)
-		    }
-		  },
-		  resolve(parent, {id}, {db}) {
-		    return db.get(`
-		      SELECT * FROM Workout WHERE id = $id
-		      `, {$id: id});
-		  }
+			type: Workout,
+			args: {
+				id: {
+					type: new GraphQLNonNull(GraphQLID)
+				}
+			},
+			resolve(parent, {id}, {db}) {
+				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: id},1);
+			}
 		},
 		lift: {
-		  type: Lift,
-		  args: {
-		    id: {
-		      type: new GraphQLNonNull(GraphQLID)
-		    }
-		  },
-		  resolve(parent, {id}, {db}) {
-		    return db.get(`
-		      SELECT * FROM Lift WHERE id = $id
-		      `, {$id: id});
-		  }
+			type: Lift,
+			args: {
+				id: {
+					type: new GraphQLNonNull(GraphQLID)
+				}
+			},
+			resolve(parent, {id}, {db}) {
+				return db.query('SELECT * FROM Lift WHERE id = ${id^}',{id: id},1);
+			}
 		}
 	})
 });

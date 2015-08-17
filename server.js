@@ -2,7 +2,7 @@ import Hapi from 'hapi';
 import {graphql} from 'graphql';
 import {promisify} from 'bluebird';
 import {HOST, PORT} from './config';
-import SqlitePlugin from './SqlitePlugin';
+import PostgresPlugin from './PostgresPlugin';
 import Schema from './Schema';
 
 async function graphQLHandler(request, reply) {
@@ -33,7 +33,7 @@ export default async function runServer() {
       port: PORT
     });
 
-    await server.register(SqlitePlugin);
+    await server.register(PostgresPlugin);
 
     server.route({
       method: 'POST',
