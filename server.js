@@ -1,50 +1,16 @@
-import Hapi from 'hapi';
-import {graphql} from 'graphql';
-import {promisify} from 'bluebird';
-import {HOST, PORT} from './config';
-import PostgresPlugin from './PostgresPlugin';
+import express from 'express';
+import graphQLHTTP from 'express-graphql';
+import path from 'path';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import Schema from './Schema';
 
-async function graphQLHandler(request, reply) {
-  const {query, variables = {}} = request.payload;
-  const result = await graphql(
-    Schema,
-    query,
-    {
-      db: request.db,
-      userId: 1
-    },
-    variables
-  );
-  return reply(result);
-}
+const APP_PORT = 3000;
+const GRAPHQL_PORT = 8080;
 
-export default async function runServer() {
-  try {
-    const server = new Hapi.Server();
-
-    // Make server methods promise friendly
-    for (const method of ['register', 'start']) {
-      server[method] = promisify(server[method], server);
-    }
-
-    server.connection({
-      host: HOST,
-      port: PORT
-    });
-
-    await server.register(PostgresPlugin);
-
-    server.route({
-      method: 'POST',
-      path: '/',
-      handler: graphQLHandler
-    });
-
-    await server.start();
-
-    console.log('Server started at ' + server.info.uri);
-  } catch(e) {
-    console.log(e);
-  }
-}
+// Expose a GraphQL endpoint
+var graphQLServer = express();
+graphQLServer.use('/', graphQLHTTP({schema: Schema, pretty: true}));
+graphQLServer.listen(GRAPHQL_PORT, () => console.log(
+  `GraphQL Server is now running on http://localhost:${GRAPHQL_PORT}`
+));

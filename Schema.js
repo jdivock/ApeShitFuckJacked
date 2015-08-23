@@ -1,3 +1,10 @@
+// TODO This feels like bad idea jeans
+// Also, bookshelf or knex might not be the worst idea
+import pgp from 'pg-promise';
+import {CONN_STRING} from './config';
+
+var db = pgp()(CONN_STRING);
+
 import {
 	GraphQLSchema,
 	GraphQLObjectType,
@@ -28,9 +35,9 @@ const Lift = new GraphQLObjectType({
 			type: GraphQLString
 		},
 		workout: {
-			type: Account,
-			resolve(parent, args, {db}) {
-				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: workoutId});
+			type: Workout,
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: obj.workoutid}, 1);
 			}
 		}
 	})
@@ -50,15 +57,14 @@ const Workout = new GraphQLObjectType({
 		},
 		account: {
 			type: Account,
-			resolve(parent, args, {db}) {
-				console.log(parent);
-				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: parent.userid}, 1);
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: obj.userid}, 1);
 			}
 		},
 		lifts: {
 			type: new GraphQLList(Lift),
-			resolve(parent, args, {db}) {
-				return db.query('SELECT * FROM Lift WHERE workoutId = ${id^}',{id: parent.id});
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Lift WHERE workoutId = ${id^}',{id: obj.id});
 			}
 		}
 	})
@@ -79,8 +85,8 @@ const Account = new GraphQLObjectType({
 		},
 		workouts: {
 			type: new GraphQLList(Workout),
-			resolve(parent, args, {db}) {
-				return db.query('SELECT * FROM Workout WHERE userId = ${id^}',{id: parent.id});
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Workout WHERE userId = ${id^}',{id: obj.id});
 			}
 		}
 	})
@@ -91,8 +97,8 @@ const Query = new GraphQLObjectType({
 	fields: () => ({
 		viewer: {
 			type: Account,
-			resolve(parent, args, {db, userId}) {
-				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: userId},1);
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: args.id},1);
 			}
 		},
 		account: {
@@ -102,8 +108,8 @@ const Query = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLID)
 				}
 			},
-			resolve(parent, {id}, {db}) {
-				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: id},1);
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Account WHERE id = ${id^}',{id: args.id},1);
 			}
 		},
 		workout: {
@@ -113,8 +119,8 @@ const Query = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLID)
 				}
 			},
-			resolve(parent, {id}, {db}) {
-				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: id},1);
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Workout WHERE id = ${id^}',{id: args.id},1);
 			}
 		},
 		lift: {
@@ -124,8 +130,8 @@ const Query = new GraphQLObjectType({
 					type: new GraphQLNonNull(GraphQLID)
 				}
 			},
-			resolve(parent, {id}, {db}) {
-				return db.query('SELECT * FROM Lift WHERE id = ${id^}',{id: id},1);
+			resolve(obj, args) {
+				return db.query('SELECT * FROM Lift WHERE id = ${id^}',{id: args.id},1);
 			}
 		}
 	})
