@@ -1,11 +1,7 @@
 import express from 'express';
 import graphQLHTTP from 'express-graphql';
-import path from 'path';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
 import Schema from './Schema';
 
-const APP_PORT = 3000;
 const GRAPHQL_PORT = 8080;
 
 // Expose a GraphQL endpoint
