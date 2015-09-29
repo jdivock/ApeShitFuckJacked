@@ -23,8 +23,10 @@
     "eslint": "^1.5.1",
     "express": "^4.13.3",
     "express-graphql": "^0.3.0",
+    "graphiql": "^0.2.4",
     "graphql": "^0.4.2",
     "pg-promise": "^1.8.5",
+    "react": "^0.13.3",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
   },
